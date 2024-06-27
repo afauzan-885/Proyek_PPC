@@ -107,7 +107,7 @@
                                             <div class="col-3">
                                                 <label for="quantity" class="form-label"
                                                     style="visibility: hidden">qty</label>
-                                                <input type="text" x-model="qty" @input="hitungTotal"
+                                                <input type="text" x-model.number="qty" @input="hitungTotal"
                                                     class="form-control" placeholder="Qty">
                                             </div>
                                         </div>
@@ -276,7 +276,7 @@
                                             <div class="col-3">
                                                 <label for="quantity" class="form-label"
                                                     style="visibility: hidden">qty</label>
-                                                <input type="text" x-model="qty" @input="hitungTotal"
+                                                <input type="text" x-model.number="qty" @input="hitungTotal"
                                                     class="form-control" placeholder="Qty">
                                             </div>
                                         </div>

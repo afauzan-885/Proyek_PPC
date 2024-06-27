@@ -57,7 +57,7 @@
                     <div class="tab-pane fade {{ $activeTab == 'PPM' ? 'show active' : '' }}"
                         id="nav-pembelian_material" role="tabpanel" aria-labelledby="nav-pembelian_material-tab"
                         tabindex="0">
-                        <x-po_costumer.tabel.tabel-pembelian_material :popembelianmaterial="$poPembelianMaterial" />
+                        <x-po_costumer.tabel.tabel-pembelian_material :pembelianmaterialdata="$poPembelianMaterial" />
                         {{-- <x-po_costumer.tabel.tabel-pembelian_material /> --}}
                     </div>
                     <div class="tab-pane fade {{ $activeTab == 'PKM' ? 'show active' : '' }}"
@@ -83,7 +83,7 @@
                 <!-- Modal -->
                 <x-po_costumer.modal.po_masuk :pomasukdata="$warehouses" />
                 <x-po_costumer.modal.pembelian_material />
-                <x-po_costumer.modal.kedatangan_material />
+                <x-po_costumer.modal.kedatangan_material :kedatanganmaterial="$poKedatanganMaterial" />
 
                 <!-- Modal proses material-->
                 <x-po_costumer.modal.modal-proses_material.pemakaian_material />
