@@ -1,0 +1,67 @@
+<div>
+    @props(['pomasuk'])
+    <div class="d-flex justify-content-between mb-2">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#inputpo_masuk">
+            <i class="bi bi-file-earmark-plus"></i>
+            Baru
+        </button>
+        <nav aria-label="Page navigation">
+            <ul class="pagination m-auto">
+                {{ $pomasuk->links() }}
+            </ul>
+        </nav>
+    </div>
+    <div class="border border-dark rounded-3">
+        <div class="table-responsive">
+            <table class="table align-middle text-nowrap text-center custom-table m-0">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama customer</th>
+                        <th>Tanggal PO</th>
+                        <th>Term Of Payment</th>
+                        <th>Quantity</th>
+                        <th>No. PO</th>
+                        <th>Tanggal Pengiriman</th>
+                        <th>Kode Barang</th>
+                        <th>Total Harga</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($pomasuk as $pomasuk)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $pomasuk['nama_customer'] }}</td>
+                            <td>{{ $pomasuk['tanggal_po'] }}</td>
+                            <td>{{ $pomasuk['term_of_payment'] }}</td>
+                            <td>{{ $pomasuk['qty'] }}</td>
+                            <td>{{ $pomasuk['no_po'] }}</td>
+                            <td>{{ $pomasuk['tanggal_pengiriman'] }}</td>
+                            <td>{{ $pomasuk['kode_barang'] }}</td>
+                            <td>Rp. {{ number_format($pomasuk['total_amount'], 0, ',', '.') }}</td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#editpo_masuk" wire:click="showData({{ $pomasuk->id }})">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button type="button" wire:click="delete({{ $pomasuk->id }})"
+                                    class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger"
+                                    data-bs-title="Delete" wire:confirm="Anda yakin menghapus data ini?">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8">Tidak ada data.</td>
+                        </tr>
+                    @endforelse
+                    </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
