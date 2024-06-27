@@ -19,6 +19,7 @@
             this.total = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(this.total);
         }
     }">
+
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -185,6 +186,8 @@
             this.total = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(this.total);
         }
     }">
+
+
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
