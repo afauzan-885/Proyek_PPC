@@ -1,4 +1,5 @@
 <div>
+<div>
     <!-- Pesan Error Atau Succes -->
     <x-error-success />
     <div class="row">
@@ -37,15 +38,21 @@
                         <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane fade {{ $activeTab == 'fg' ? 'show active' : '' }}" id="nav-fg"
                                 role="tabpanel" aria-labelledby="nav-fg-tab" tabindex="0">
-                                {{-- <x-persediaan_barang.tabel.tabel_fg :finishgood="$finishGoods" /> --}}
-                                <livewire:persediaan_barang.Finish_Good_Controller finishGoods />
+                                <x-persediaan_barang.tabel.tabel_fg :finishgood="$finishGoods" />
 
                             </div>
                             <div class="tab-pane fade {{ $activeTab == 'wh' ? 'show active' : '' }}" id="nav-wh"
                                 role="tabpanel" aria-labelledby="nav-wh-tab" tabindex="0">
-                                <livewire:persediaan_barang.Warehouse_Controller Warehouse />
+                                <x-persediaan_barang.tabel.tabel_wh :warehouse="$warehouses" />
                             </div>
+
                         </div>
+                        <!-- Modal Content -->
+
+                        <!-- Finish Goods -->
+                        <x-persediaan_barang.modal.modal_tabel-fg :csdata="$costumerSuppliers" />
+                        <x-persediaan_barang.modal.modal_tabel-wh />
+
                     </div>
                 </div>
             </div>

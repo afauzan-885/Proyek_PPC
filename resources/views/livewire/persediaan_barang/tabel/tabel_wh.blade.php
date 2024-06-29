@@ -1,5 +1,5 @@
 <div>
-    @props(['warehouse'])
+    @props(['Warehouse'])
     <div class="d-flex justify-content-between mb-2">
         <button type="button" class="btn btn-success " data-bs-toggle="modal" data-bs-target="#inputformwh">
             <i class="bi bi-file-earmark-plus"></i>
@@ -7,7 +7,7 @@
         </button>
         <nav aria-label="Page navigation">
             <ul class="pagination m-auto">
-                {{ $warehouse->links() }}
+                {{ $Warehouse->links() }}
             </ul>
         </nav>
     </div>
@@ -28,7 +28,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($warehouse as $warehouse)
+                    @forelse ($Warehouse as $warehouse)
                         <tr>
                             <td>{{ $loop->iteration }}
                             <td>{{ $warehouse->kode_material }}</td>
@@ -57,11 +57,9 @@
                             <td colspan="8">Tidak ada data.</td>
                         </tr>
                     @endforelse
-
-
-
                 </tbody>
             </table>
         </div>
     </div>
+    <x-persediaan_barang.modal.modal_tabel-wh Warehouse />
 </div>

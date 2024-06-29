@@ -23,10 +23,10 @@ class POController extends Component
     $total_amount;
     public $POM_id;
     protected $rules = [
-       'nama_costumer' => 'required',
+       'nama_customer' => 'required',
        'tanggal_po' => 'required',
        'term_of_payment' => 'required',
-       'quantity' => 'required',
+       'qty' => 'required',
        'no_po' => 'required',
        'tanggal_pengiriman' => 'required',
        'kode_barang' => 'required', 

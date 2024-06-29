@@ -1,5 +1,5 @@
 <div>
-    @props(['finishgood'])
+    @props(['finishGoods'])
     <div class="d-flex justify-content-between mb-2">
         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#inputformfg">
             <i class="bi bi-file-earmark-plus"></i>
@@ -7,7 +7,7 @@
         </button>
         <nav aria-label="Page navigation">
             <ul class="pagination m-auto">
-                {{ $finishgood->links() }}
+                {{ $finishGoods->links() }}
             </ul>
         </nav>
     </div>
@@ -28,7 +28,7 @@
                 </thead>
                 <tbody>
 
-                    @forelse ($finishgood as $finishgood)
+                    @forelse ($finishGoods as $finishgood)
                         <tr>
                             <td>{{ $loop->iteration }}
                             <td>{{ $finishgood['kode_costumer'] }}</td>
@@ -60,5 +60,5 @@
             </table>
         </div>
     </div>
-
+    <x-persediaan_barang.modal.modal_tabel-fg :csdata="$costumerSuppliers" />
 </div>

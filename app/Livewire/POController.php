@@ -15,7 +15,7 @@ class POController extends Component
 {
     protected $paginationTheme = 'bootstrap';
     public $warehouses = [];
-    public $nama_customer, $tanggal_po, $term_of_payment, $quantity, $no_po, $tanggal_pengiriman, $kode_barang, $total_amount, $tgl_masuk_material, $nama_supplier, $qty_sheet_lyr, $qty_kg, $surat_jalan, $nama_material, $ukuran, $harga_material;
+    public $nama_customer, $tanggal_po, $kode_material, $term_of_payment, $quantity, $no_po, $tanggal_pengiriman, $kode_barang, $total_amount, $tgl_masuk_material, $nama_supplier, $qty_sheet_lyr, $qty_kg, $surat_jalan, $nama_material, $ukuran, $harga_material;
     public $PPM_id, $PM_id, $PKM_id;
     public $activeTab = 'PM';
     public $qty = 0;
@@ -42,12 +42,13 @@ class POController extends Component
                 ];
             case 'PPM':
                 return [
-                    'nama_material' => 'required|unique:po__kedatangan_material,kode_material',
+                    'kode_material' => 'required|unique:po__kedatangan_material,kode_material',
+                    'nama_material' => 'required',
                     'ukuran' => 'required',
                     'quantity' => 'required',
                     'no_po'=>'required',
                     'harga' => 'required|numeric',
-                    'kode_barang' => 'required|numeric',
+                    'total_amount' => 'required|numeric',
                 ];
             case 'PKM':
                 return [
@@ -107,8 +108,6 @@ class POController extends Component
                     $datapm = PMModel::findOrFail($id);
                     $this->fill($datapm->toArray());
                     $this->PM_id = $id;
-
-                     // Set total_amount dari data yang sudah ada
                     
     
                     // Isi otomatis kolom formulir saat mengedit

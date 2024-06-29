@@ -22,6 +22,19 @@ return new class extends Migration
             $table->timestamps();
         });
 
+         //Pembelian Material
+         Schema::create('po__pembelian_material', function (Blueprint $table) {
+            $table->id();
+            $table->string('kode_material');
+            $table->string('nama_material');
+            $table->string('ukuran', 50);
+            $table->integer('quantity');
+            $table->string('no_po', 50);
+            $table->decimal('harga', 19, 2);
+            $table->decimal('total_amount', 19, 2);
+            $table->timestamps();
+        });
+
         //Kedatangan Material
         Schema::create('po__kedatangan_material', function (Blueprint $table) {
             $table->id();
@@ -33,18 +46,7 @@ return new class extends Migration
             $table->string('surat_jalan', 50);
             $table->timestamps();
         });
-
-        //Pembelian Material
-        Schema::create('po__pembelian_material', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama_material');
-            $table->string('ukuran', 50);
-            $table->integer('quantity');
-            $table->string('no_po', 50);
-            $table->decimal('harga', 19, 2);
-            $table->string('kode_barang', 50);
-            $table->timestamps();
-        });
+ 
 
         //Proses Material
         Schema::create('po__pm__pemakaian_material', function (Blueprint $table) {

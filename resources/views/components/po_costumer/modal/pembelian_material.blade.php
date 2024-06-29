@@ -8,6 +8,8 @@
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                {{-- <form wire:submit=''> --}}
+                @csrf
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-xl-12 col-12">
@@ -15,9 +17,9 @@
                                 <div class="col-6">
                                     <!-- Form Field Start -->
                                     <div class="mb-3">
-                                        <label for="kode_brng" class="form-label">Kode Barang</label>
-                                        <input type="text" class="form-control" id="kode_brng"
-                                            placeholder="Masukkan Kode Barang" />
+                                        <label for="kode_material" class="form-label">Kode material</label>
+                                        <input type="text" class="form-control" id="kode_material"
+                                            placeholder="Masukkan Kode Material" />
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -73,10 +75,23 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">
-                        Submit
-                    </button>
+                    <div class="row">
+                        <div class="col-auto">
+                            @if (session('suksesinput'))
+                                <div class="text-success">
+                                    <small>{{ session('suksesinput') }}</small>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-lg btn-primary">
+                                <span wire:loading.remove>Submit</span>
+                                <span wire:loading><x-loading /></span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
