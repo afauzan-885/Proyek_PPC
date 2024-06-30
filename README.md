@@ -14,8 +14,8 @@ Proyek PPC (Pengolahan Pengeluaran dan Pembukuan) ini dibuat untuk memenuhi tuga
 
 ## Fitur Utama
 
-* **Input Data Pengeluaran:** Memungkinkan pengguna menginput data pengeluaran dengan mudah.
-* **Pembukuan Semi Otomatis:** Mengotomatiskan sebagian proses laporan berdasarkan data pengeluaran yang diinput.
+* **Input Data Pengeluaran:** Memungkinkan pengguna menginput data pengeluaran dan pemasukan barang dengan mudah.
+* **Pembukuan Semi Otomatis:** Mengotomatiskan sebagian proses laporan berdasarkan data yang diinput.
 * **Laporan yang Mudah Dibaca:** Menyajikan laporan yang terstruktur dan mudah dipahami.
 
 ## Teknologi yang Digunakan
