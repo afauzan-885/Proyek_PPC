@@ -37,7 +37,6 @@
                         <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane fade {{ $activeTab == 'fg' ? 'show active' : '' }}" id="nav-fg"
                                 role="tabpanel" aria-labelledby="nav-fg-tab" tabindex="0">
-                                {{-- <x-persediaan_barang.tabel.tabel_fg :finishgood="$finishGoods" /> --}}
                                 <livewire:persediaan_barang.Finish_Good_Controller finishGoods />
 
                             </div>

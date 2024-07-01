@@ -2,6 +2,7 @@
 
 namespace App\Models\POCostumer;
 
+use App\Models\PersediaanBarang\PBWarehouse;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,5 +27,11 @@ class POPembelianMaterial extends Model
         'no_po',
         'harga',
         'kode_barang',
+        'total_amount',
       ];
+
+      public function Warehouse()
+    {
+        return $this->belongsTo(PBWarehouse::class, 'kode_material', 'kode_material');
+    }
 }

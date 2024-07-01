@@ -1,3 +1,4 @@
+{{-- Input Barang WH --}}
 <div class="modal fade" wire:ignore.self id="inputformwh" tabindex="-1" aria-labelledby="inputformwhlabel"
     aria-hidden="true">
     <div class="modal-dialog">
@@ -40,23 +41,7 @@
                                             required />
                                     </div>
                                 </div>
-                                {{-- <div class="col-6">
-                                    <!-- Form Field Start -->
-                                    <div class="mb-3">
-                                        <label for="jumlah_mtrial" class="form-label">Jumlah Material</label>
-                                        <input type="number" class="form-control" id="jumlah_mtrial"
-                                            wire:model="jumlah_material" placeholder="Masukkan Jumlah Material"
-                                            required />
-                                    </div>
-                                </div> --}}
-                                {{-- <div class="col-6">
-                                    <!-- Form Field Start -->
-                                    <div class="mb-3">
-                                        <label for="massa" class="form-label">Massa (Kg)</label>
-                                        <input type="number" class="form-control" id="massa" wire:model="berat"
-                                            placeholder="Masukkan Massa" required />
-                                    </div>
-                                </div> --}}
+
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <label for="harga_mtrial" class="form-label">Harga Material</label>
@@ -66,6 +51,7 @@
                                             x-mask:dynamic="$money($input, ',', '.', 2)" />
                                     </div>
                                 </div>
+
                                 <div class="col-6">
                                     <!-- Form Field Start -->
                                     <div class="mb-3">
@@ -100,6 +86,7 @@
     </div>
 </div>
 
+{{-- Edit Barang WH --}}
 <div wire:ignore.self class="modal fade" id="editformwh" data-bs-backdrop="static" tabindex="-1"
     aria-labelledby="editformwhlabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -123,8 +110,7 @@
                                     <div class="mb-3">
                                         <label for="kodemtrial" class="form-label">Kode Material</label>
                                         <input type="text" class="form-control" id="kodemtrial"
-                                            wire:model="kode_material" placeholder="Masukkan Kode Material" disabled
-                                            readonly />
+                                            wire:model="kode_material" placeholder="Masukkan Kode Material" />
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -145,23 +131,7 @@
                                             required />
                                     </div>
                                 </div>
-                                {{-- <div class="col-6">
-                                    <!-- Form Field Start -->
-                                    <div class="mb-3">
-                                        <label for="jumlah_mtrial" class="form-label">Jumlah Material</label>
-                                        <input type="number" class="form-control" id="jumlah_mtrial"
-                                            wire:model="jumlah_material" placeholder="Masukkan Jumlah Material"
-                                            required />
-                                    </div>
-                                </div> --}}
-                                {{-- <div class="col-6">
-                                    <!-- Form Field Start -->
-                                    <div class="mb-3">
-                                        <label for="massa" class="form-label">Massa (Kg)</label>
-                                        <input type="number" class="form-control" id="massa" wire:model="berat"
-                                            placeholder="Masukkan Massa" required />
-                                    </div>
-                                </div> --}}
+
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <label for="harga_mtrial" class="form-label">Harga Material</label>
@@ -169,6 +139,16 @@
                                             id="harga_mtrial" wire:model.defer="harga_material"
                                             placeholder="Masukkan Harga Material" required
                                             x-mask:dynamic="$money($input, ',', '.', 2)" />
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <!-- Form Field Start -->
+                                    <div class="mb-3">
+                                        <label for="deskripsi" class="form-label">Deskripsi Material</label>
+                                        <input type="text" class="form-control" id="deskripsi"
+                                            wire:model="deskripsi" placeholder="Masukkan Deskripsi Material"
+                                            required />
                                     </div>
                                 </div>
                             </div>

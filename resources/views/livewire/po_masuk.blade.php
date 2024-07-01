@@ -30,20 +30,6 @@
                                         @enderror
                                     </div>
                                 </div>
-                                {{-- <div class="col-6">
-                                    <!-- Form Field Start -->
-                                    <div class="mb-3">
-                                        <label for="kode_barang" class="form-label">Kode
-                                            Barang</label>
-                                        <select wire:model="kode_barang" id="nama_kodebrng" class="form-select" required>
-                                            <option value="">Pilih Kode Barang...</option>
-                                            @foreach ($pomasukdata as $pom)
-                                                <option value="{{ $pom->kode_barang }}">{{ $pom->kode_barang }} -
-                                                    {{ $pom->nama_barang }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div> --}}
 
                                 <div class="col-6">
                                     <div class="mb-3">
@@ -51,11 +37,7 @@
                                         <div class="input-group">
                                             <select wire:model="kode_barang" id="nama_kodebrng" class="form-select"
                                                 required>
-                                                {{-- <option value="">Pilih Kode Barang...</option>
-                                                @foreach ($pomasukdata as $pom)
-                                                    <option value="{{ $pom->kode_barang }}">{{ $pom->kode_barang }} -
-                                                        {{ $pom->nama_barang }}</option>
-                                                @endforeach --}}
+
                                             </select>
                                             <button type="submit" class="btn btn-outline-secondary">
                                                 <i class="bi bi-search"></i>

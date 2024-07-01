@@ -107,7 +107,7 @@ class FinishGoodController extends Component
     }
     public function render()
     {
-        $finishGoods = FGModel::paginate(1);
+        $finishGoods = FGModel::paginate(10);
         $costumerSuppliers = CostumerSupplier::all(); // Ambil data dari model CostumerSupplier
     
         return view('livewire.persediaan_barang.tabel.tabel_fg', [

@@ -52,18 +52,17 @@
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade {{ $activeTab == 'PM' ? 'show active' : '' }}" id="nav-po_masuk"
                         role="tabpanel" aria-labelledby="nav-po_masuk-tab" tabindex="0">
-                        <x-po_costumer.tabel.tabel-po_masuk :pomasuk="$poMasuk" />
+                        <livewire:Po_Costumer.Po_Masuk_Controller poMasuk />
                     </div>
                     <div class="tab-pane fade {{ $activeTab == 'PPM' ? 'show active' : '' }}"
                         id="nav-pembelian_material" role="tabpanel" aria-labelledby="nav-pembelian_material-tab"
                         tabindex="0">
-                        <x-po_costumer.tabel.tabel-pembelian_material :pembelianmaterialdata="$poPembelianMaterial" />
-                        {{-- <x-po_costumer.tabel.tabel-pembelian_material /> --}}
+                        <livewire:Po_Costumer.Po_Pembelian_Material_Controller poPembelianMaterial />
                     </div>
                     <div class="tab-pane fade {{ $activeTab == 'PKM' ? 'show active' : '' }}"
                         id="nav-kedatangan_material" role="tabpanel" aria-labelledby="nav-kedatangan_material-tab"
                         tabindex="0">
-                        <x-po_costumer.tabel.tabel-kedatangan_material :pokedatanganmaterial="$poKedatanganMaterial" />
+                        {{-- <livewire:PO_Costumer.tabel.tabel-kedatangan_material :pokedatanganmaterial="$poKedatanganMaterial" /> --}}
                         {{-- <x-po_costumer.tabel.tabel-kedatangan_material /> --}}
                     </div>
                     <div class="tab-pane fade" id="nav-proses_material" role="tabpanel"
@@ -81,9 +80,9 @@
                 </div>
 
                 <!-- Modal -->
-                <x-po_costumer.modal.po_masuk :pomasukdata="$warehouses" />
-                <x-po_costumer.modal.pembelian_material />
-                <x-po_costumer.modal.kedatangan_material :kedatanganmaterial="$poKedatanganMaterial" />
+                {{-- <x-po_costumer.modal.po_masuk :pomasukdata="$warehouses" /> --}}
+                {{-- <x-po_costumer.modal.pembelian_material /> --}}
+                {{-- <x-po_costumer.modal.kedatangan_material :kedatanganmaterial="$poKedatanganMaterial" /> --}}
 
                 <!-- Modal proses material-->
                 <x-po_costumer.modal.modal-proses_material.pemakaian_material />

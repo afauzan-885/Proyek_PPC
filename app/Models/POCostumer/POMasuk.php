@@ -22,7 +22,7 @@ class POMasuk extends Model
     ];
 
     public function finishGood()
-{
-    return $this->belongsTo(PBFinishGood::class, 'kode_barang', 'kode_barang');
-}
+    {
+        return $this->belongsTo(PBFinishGood::class, 'kode_barang', 'kode_barang');
+    }
 }

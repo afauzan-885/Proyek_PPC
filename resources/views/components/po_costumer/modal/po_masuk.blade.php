@@ -121,6 +121,9 @@
                                         <input type="text" class="form-control" wire:model='no_po' id="no_po"
                                             placeholder="Masukkan No. PO" />
                                     </div>
+                                    @error('no_po')
+                                        <small class="d-block mt-1 text-danger" role="alert">{{ $message }}</small>
+                                    @enderror
                                 </div>
                                 <div class="col-6">
                                     <!-- Form Field Start -->

@@ -30,7 +30,7 @@ return new class extends Migration
             // $table->decimal('jumlah_material', 50);
             // $table->decimal('berat', 10, 2);
             $table->decimal('harga_material', 19, 2);
-            $table->decimal('deskripsi');
+            $table->string('deskripsi');
             $table->timestamps();
         });
     }
