@@ -120,8 +120,7 @@
                                         <label for="kodecs" class="form-label">Kode
                                             Costumer</label>
                                         <input type="text" class="form-control" id="kodecs"
-                                            wire:model="kode_costumer" placeholder="Masukkan Nama Costumer" readonly
-                                            disabled />
+                                            wire:model="kode_costumer" placeholder="Masukkan Nama Costumer" />
                                     </div>
                                 </div>
                                 <div class="col-6">

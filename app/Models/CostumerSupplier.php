@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\PersediaanBarang\PBFinishGood;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -18,4 +19,10 @@ class CostumerSupplier extends Authenticatable
         'kontak_costumer',
         'email_costumer',
     ];
+
+    public function finishGoods()
+    {
+        return $this->hasMany(PBFinishGood::class);
+    }
+
 }

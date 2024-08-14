@@ -19,6 +19,6 @@ class PBFinishGood extends Model
     ];
     public function costumerSupplier()
     {
-        return $this->belongsTo(CostumerSupplier::class, 'kode_costumer', 'kode_costumer'); // Relasi berdasarkan kolom 'kode_costumer'
+        return $this->belongsTo(CostumerSupplier::class);
     }
 }
