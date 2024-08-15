@@ -8,7 +8,7 @@ use Livewire\Component;
 use NumberFormatter;
 use Illuminate\Support\Str;
 
-class PoMasukController extends Component
+class POMasukController extends Component
 {
     protected $paginationTheme = 'bootstrap';
 
