@@ -57,6 +57,7 @@ class FinishGoodController extends Component
     {
         try {
             $datafg = FGModel::findOrFail($id);
+            $datafg->harga = number_format($datafg->harga, 0, ',', '.'); // Format harga untuk tampilan
             $this->fill($datafg->toArray());
             $this->fg_id = $id;
         } catch (ModelNotFoundException $e) {
@@ -65,28 +66,27 @@ class FinishGoodController extends Component
     }
 
     public function updateData()
-{
-    try {
-        $validatedData = $this->validate([
-            'kode_costumer' => 'required',
-            'kode_barang' => 'required',
-            'nama_barang' => 'required',
-            'no_part' => 'required',
-            'harga' => 'required',
-            'tipe_barang' => 'required',
-        ]);
+    {
+        try {
+            $validatedData = $this->validate([
+                'kode_costumer' => 'required',
+                'kode_barang' => 'required',
+                'nama_barang' => 'required',
+                'no_part' => 'required',
+                'harga' => 'required',
+                'tipe_barang' => 'required',
+            ]);
 
-        $validatedData['harga'] = (float)preg_replace('/[^\d,]/', '', $validatedData['harga']);
-        $validatedData['harga'] = str_replace(',', '.', $validatedData['harga']);
+            $validatedData['harga'] = (float) str_replace('.', '', $validatedData['harga']);
 
-        $fg = FGModel::findOrFail($this->fg_id);
-        $fg->update($validatedData);
+            $fg = FGModel::findOrFail($this->fg_id);
+            $fg->update($validatedData);
 
-        session()->flash('suksesupdate', 'Data ' . $fg->kode_costumer . ' berhasil diupdate.');
-    } catch (ModelNotFoundException $e) {
-        session()->flash('error', 'Data tidak ditemukan.');
+            session()->flash('suksesupdate', 'Data ' . $fg->kode_costumer . ' berhasil diupdate.');
+        } catch (ModelNotFoundException $e) {
+            session()->flash('error', 'Data tidak ditemukan.');
+        }
     }
-}
 
     public function updated($fields)
     {

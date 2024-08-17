@@ -33,11 +33,15 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $pomasuk['nama_customer'] }}</td>
-                            <td>{{ $pomasuk['tanggal_po'] }}</td>
+                            <td x-data="{ tanggal: '{{ $pomasuk['tanggal_po'] }}' }">
+                                <span x-text="moment(tanggal).format('DD-MM-YYYY')"></span>
+                            </td>
                             <td>{{ $pomasuk['term_of_payment'] }}</td>
                             <td>{{ $pomasuk['qty'] }}</td>
                             <td>{{ $pomasuk['no_po'] }}</td>
-                            <td>{{ $pomasuk['tanggal_pengiriman'] }}</td>
+                            <td x-data="{ tanggal: '{{ $pomasuk['tanggal_pengiriman'] }}' }">
+                                <span x-text="moment(tanggal).format('DD-MM-YYYY')"></span>
+                            </td>
                             <td>{{ $pomasuk['kode_barang'] }}</td>
                             <td>Rp. {{ number_format($pomasuk['total_amount'], 0, ',', '.') }}</td>
                             <td>
@@ -46,9 +50,8 @@
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
                                 <button type="button" wire:click="delete({{ $pomasuk->id }})"
-                                    class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger"
-                                    data-bs-title="Delete" wire:confirm="Anda yakin menghapus data ini?">
+                                    class="btn btn-outline-danger btn-sm" data-bs-title="Delete"
+                                    wire:confirm="Yakin menghapus {{ $pomasuk->nama_customer }} (PO: {{ $pomasuk->no_po }})">
                                     <i class="bi bi-trash3"></i>
                                 </button>
                             </td>

@@ -67,8 +67,9 @@
                                             </button>
                                         </div>
                                         @error('kode_barang')
-                                            <small class="d-block mt-1 text-danger"
-                                                role="alert">{{ $message }}</small>
+                                            <small class="d-block mt-1 text-danger" role="alert">
+                                                {{ $message }}
+                                            </small>
                                         @enderror
                                     </div>
                                 </div>
@@ -81,6 +82,10 @@
                                             <input type="date" class="form-control" wire:model='tanggal_po'
                                                 id="tgl_po" />
                                         </div>
+                                        @error('no_po')
+                                            <small class="d-block mt-1 text-danger"
+                                                role="alert">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -103,7 +108,7 @@
                                             <div class="col-9">
                                                 <label for="quantity" class="form-label">Harga/Qty</label>
                                                 <input type="text" wire:model='harga_material' class="form-control"
-                                                    placeholder="Otomatis terisi" id="harga_material">
+                                                    placeholder="Otomatis terisi" id="harga_material" readonly>
                                             </div>
                                             <div class="col-3">
                                                 <label for="quantity" class="form-label"
@@ -135,6 +140,10 @@
                                             <input type="date" class="form-control"
                                                 wire:model='tanggal_pengiriman' id="tgl_msk_material" />
                                         </div>
+                                        @error('no_po')
+                                            <small class="d-block mt-1 text-danger"
+                                                role="alert">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -228,13 +237,14 @@
                                         <div class="input-group">
                                             <select wire:ignore wire:model="kode_barang" id="nama_kodebrng"
                                                 class="form-select" required>
-                                                <option value="" selected>Pilih Kode Barang...</option>
+                                                <option value="" selected hidden>Pilih Kode Barang...</option>
                                                 @foreach ($pomasukdata as $pom)
                                                     <option value="{{ $pom->kode_barang }}">{{ $pom->kode_barang }} -
                                                         {{ $pom->nama_barang }}</option>
                                                 @endforeach
                                             </select>
-                                            <button type="submit" class="btn btn-outline-secondary">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                wire:click="cariHarga">
                                                 <i class="bi bi-search"></i>
                                             </button>
                                         </div>
@@ -253,6 +263,10 @@
                                             <input type="date" class="form-control" wire:model='tanggal_po'
                                                 id="tgl_po" />
                                         </div>
+                                        @error('no_po')
+                                            <small class="d-block mt-1 text-danger"
+                                                role="alert">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -276,7 +290,7 @@
                                                 <label for="quantity" class="form-label">Harga/Qty</label>
                                                 <input type="text" wire:model='harga_material'
                                                     class="form-control" placeholder="Otomatis terisi"
-                                                    id="harga_material" readonly>
+                                                    id="harga_material">
                                             </div>
                                             <div class="col-3">
                                                 <label for="quantity" class="form-label"
@@ -294,6 +308,10 @@
                                         <label for="no_po" class="form-label">No. PO</label>
                                         <input type="text" class="form-control" wire:model='no_po' id="no_po"
                                             placeholder="Masukkan No. PO" />
+                                        @error('no_po')
+                                            <small class="d-block mt-1 text-danger"
+                                                role="alert">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -304,6 +322,10 @@
                                             <input type="date" class="form-control"
                                                 wire:model='tanggal_pengiriman' id="tgl_msk_material" />
                                         </div>
+                                        @error('no_po')
+                                            <small class="d-block mt-1 text-danger"
+                                                role="alert">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -318,22 +340,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <div class="row">
-                        <div class="col-auto">
-                            @if (session('suksesupdate'))
-                                <div class="text-success">
-                                    <small>{{ session('suksesupdate') }}</small>
-                                </div>
-                            @endif
-                        </div>
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-lg btn-primary">
-                                <span wire:loading.remove>Update Data</span>
-                                <span wire:loading><x-loading /></span>
-                            </button>
-                        </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <div class="flex-grow-1">
+                        @if (session('suksesupdate'))
+                            <div class="text-success word-break">
+                                <small>{{ session('suksesupdate') }}</small>
+                            </div>
+                        @endif
                     </div>
+                    <button type="submit" class="btn btn-lg btn-primary">
+                        <span wire:loading.remove>Update Data</span>
+                        <span wire:loading><x-loading /></span>
+                    </button>
                 </div>
             </form>
         </div>

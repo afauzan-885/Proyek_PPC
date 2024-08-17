@@ -1,5 +1,4 @@
 <div>
-
     {{-- Input Pembelian Material --}}
     <div class="modal fade" id="pembelian_barang" tabindex="-1" aria-labelledby="pembelian_baranglabel" aria-hidden="true">
         <div class="modal-dialog">

@@ -50,6 +50,7 @@ class WarehouseController extends Component
     {
         try {
             $datawh = WHModel::findOrFail($id);
+            $datawh->harga_material = number_format($datawh->harga_material, 0, ',', '.'); // Format harga untuk tampilan
             $this->fill($datawh->toArray());
             $this->w_id = $id;
         } catch (ModelNotFoundException $e) {

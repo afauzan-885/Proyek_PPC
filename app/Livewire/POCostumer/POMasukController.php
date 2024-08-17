@@ -36,8 +36,9 @@ class POMasukController extends Component
             ->__toString();
 
         PMModel::create($validatedData);
+        $namaCustomer = $validatedData['nama_customer'];
         $this->reset();
-        session()->flash('suksesinput', 'Data PO Masuk berhasil ditambahkan.');
+        session()->flash('suksesinput',   $namaCustomer . ' berhasil ditambahkan.');
     }
 
     public function showData(int $id)
@@ -46,33 +47,36 @@ class POMasukController extends Component
             $datapm = PMModel::findOrFail($id);
             $this->fill($datapm->toArray());
             $this->PM_id = $id;
-            
-            $finishGood = FGModel::where('kode_barang', $this->kode_barang)->get();
+
+            $finishGood = FGModel::where('kode_barang', $this->kode_barang)->first();
             if ($finishGood) {
                 $this->harga_material = $finishGood->harga;
+                $datapm->total_amount = number_format($datapm->total_amount, 0, ',', '.'); // Format harga untuk tampilan
+                
                 $formatter = new NumberFormatter('id_ID', NumberFormatter::DECIMAL);
                 $this->harga_material = $formatter->formatCurrency($finishGood->harga, 'IDR');
-                
+
                 $this->total_amount = $datapm->total_amount;
             }
         } catch (ModelNotFoundException $e) {
-            session()->flash('error', 'Data PO Masuk tidak ditemukan.');
+            session()->flash('error', 'Data tidak ditemukan.');
         }
     }
 
     public function cariHarga()
-{
-    $finishGood = FGModel::where('kode_barang', $this->kode_barang)->first();
-    if ($finishGood) {
-        $this->harga_material = $finishGood->harga;
-        $formatter = new NumberFormatter('id_ID', NumberFormatter::DECIMAL);
-                $this->harga_material = $formatter->formatCurrency($finishGood->harga, 'IDR');
-    } else {
-        
-        $this->harga_material = 'Null';
-        session()->flash('error', 'Kode barang tidak ditemukan.');
+    {
+        $finishGood = FGModel::where('kode_barang', $this->kode_barang)->first();
+        if ($finishGood) {
+            $this->harga_material = $finishGood->harga;
+            $formatter = new NumberFormatter('id_ID', NumberFormatter::DECIMAL);
+                    $this->harga_material = $formatter->formatCurrency($finishGood->harga, 'IDR');
+        } else {
+            
+            $this->harga_material = 'Null';
+            $this->addError('kode_barang', 'Kode barang tidak ditemukan.');
+        }
     }
-}
+
 
     public function updateData()
     {
@@ -88,15 +92,21 @@ class POMasukController extends Component
                 'kode_barang' => 'required',
                 'total_amount' => 'required',
             ]);
+               
+        //Logika Untuk menghilangkan pembatas ribuan
+        $validatedData['total_amount'] = preg_replace('/[^0-9]/', '', $validatedData['total_amount']);
+        $validatedData['total_amount'] = (float) $validatedData['total_amount'];
+        $hargaPerQty = (float) str_replace(['.', ','], ['', '.'], $this->harga_material);
+        $validatedData['total_amount'] = $validatedData['qty'] * $hargaPerQty;
 
-            $validatedData['total_amount'] = (float) preg_replace('/[^\d,]/', '', $validatedData['total_amount']);
-            $validatedData['total_amount'] = str_replace(',', '.', $validatedData['total_amount']);
-
+        PMModel::findOrFail($this->PM_id)->update($validatedData);
+            
             PMModel::findOrFail($this->PM_id)->update($validatedData);
         } catch (ModelNotFoundException $e) {
             session()->flash('error', 'Data tidak ditemukan.');
         }
-        session()->flash('suksesupdate', 'Data PO Masuk berhasil diupdate.');
+        $namaCustomer = $validatedData['nama_customer'];
+        session()->flash('suksesupdate', 'Data ' .$namaCustomer. ' berhasil diupdate.');
     }
 
     public function updated($propertyName)

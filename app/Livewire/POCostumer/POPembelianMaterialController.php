@@ -8,7 +8,7 @@ use Livewire\Component;
 use NumberFormatter;
 use Illuminate\Support\Str;
 
-class PoPembelianMaterialController extends Component
+class POPembelianMaterialController extends Component
 {
     protected $paginationTheme = 'bootstrap';
 
