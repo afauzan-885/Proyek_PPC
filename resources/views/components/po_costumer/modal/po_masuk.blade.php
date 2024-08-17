@@ -61,7 +61,8 @@
                                                         {{ $pom->nama_barang }}</option>
                                                 @endforeach
                                             </select>
-                                            <button type="submit" class="btn btn-outline-secondary">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                wire:click="cariHarga">
                                                 <i class="bi bi-search"></i>
                                             </button>
                                         </div>
@@ -120,10 +121,11 @@
                                         <label for="no_po" class="form-label">No. PO</label>
                                         <input type="text" class="form-control" wire:model='no_po' id="no_po"
                                             placeholder="Masukkan No. PO" />
+                                        @error('no_po')
+                                            <small class="d-block mt-1 text-danger"
+                                                role="alert">{{ $message }}</small>
+                                        @enderror
                                     </div>
-                                    @error('no_po')
-                                        <small class="d-block mt-1 text-danger" role="alert">{{ $message }}</small>
-                                    @enderror
                                 </div>
                                 <div class="col-6">
                                     <!-- Form Field Start -->

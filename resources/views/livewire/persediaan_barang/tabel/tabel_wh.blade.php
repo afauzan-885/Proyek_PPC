@@ -44,10 +44,8 @@
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
                                 <button type="submit" wire:click="delete({{ $warehouse->id }})"
-                                    class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger"
-                                    data-bs-title="Delete"
-                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                    class="btn btn-outline-danger btn-sm" data-bs-custom-class="custom-tooltip-danger"
+                                    wire:confirm="Yakin ingin menghapus {{ $warehouse->nama_material }} dengan kode {{ $warehouse->kode_material }}?">
                                     <i class="bi bi-trash3"></i>
                                 </button>
                             </td>

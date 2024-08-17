@@ -17,7 +17,7 @@ return new class extends Migration
         AFTER UPDATE ON costumer_suppliers
         FOR EACH ROW
         BEGIN
-            UPDATE finish_goods
+            UPDATE pb__finish_goods
             SET kode_costumer = NEW.kode_costumer
             WHERE kode_costumer = OLD.kode_costumer;
         END;

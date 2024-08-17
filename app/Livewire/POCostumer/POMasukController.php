@@ -47,7 +47,7 @@ class POMasukController extends Component
             $this->fill($datapm->toArray());
             $this->PM_id = $id;
             
-            $finishGood = FGModel::where('kode_barang', $this->kode_barang)->first();
+            $finishGood = FGModel::where('kode_barang', $this->kode_barang)->get();
             if ($finishGood) {
                 $this->harga_material = $finishGood->harga;
                 $formatter = new NumberFormatter('id_ID', NumberFormatter::DECIMAL);
@@ -59,6 +59,20 @@ class POMasukController extends Component
             session()->flash('error', 'Data PO Masuk tidak ditemukan.');
         }
     }
+
+    public function cariHarga()
+{
+    $finishGood = FGModel::where('kode_barang', $this->kode_barang)->first();
+    if ($finishGood) {
+        $this->harga_material = $finishGood->harga;
+        $formatter = new NumberFormatter('id_ID', NumberFormatter::DECIMAL);
+                $this->harga_material = $formatter->formatCurrency($finishGood->harga, 'IDR');
+    } else {
+        
+        $this->harga_material = 'Null';
+        session()->flash('error', 'Kode barang tidak ditemukan.');
+    }
+}
 
     public function updateData()
     {

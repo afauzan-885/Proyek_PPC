@@ -44,9 +44,9 @@
                                 </button>
 
                                 <button type="button" wire:click="delete({{ $finishgood->id }})"
-                                    class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger"
-                                    data-bs-title="Delete" wire:confirm="Anda yakin menghapus data ini?">
+                                    class="btn btn-outline-danger btn-sm" data-bs-placement="top"
+                                    data-bs-custom-class="custom-tooltip-danger"
+                                    wire:confirm="Yakin ingin menghapus {{ $finishgood->nama_barang }} dengan kode {{ $finishgood->kode_costumer }}?">
                                     <i class="bi bi-trash3"></i>
                                 </button>
                             </td>

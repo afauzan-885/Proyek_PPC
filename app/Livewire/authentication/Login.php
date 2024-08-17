@@ -26,28 +26,27 @@ class Login extends Component
     ];
 
     public function login()
-    {
-        $credentials = $this->validate();
+{
+    $credentials = $this->validate();
 
-        $user = User::where('email', $this->email)->first();
+    $user = User::where('email', $this->email)->first();
 
-        if ($user && Hash::check($this->password, $user->password)) {
-            Auth::login($user, $this->remember);
+    if ($user && Hash::check($this->password, $user->password)) {
+        Auth::login($user, $this->remember);
 
-            session()->regenerate();
+        session()->regenerate();
+        sleep(2);
 
-            return redirect()->to('/main_app');
-        }
-
-        return back()->with('error', 'Email atau kata sandi salah.');
+        return redirect()->to('/main_app');
     }
+
+    return back()->with('error', 'Email atau kata sandi salah.');
+}
 
     public function logout(Request $request)
     {
         Auth::logout();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect()->route('login');

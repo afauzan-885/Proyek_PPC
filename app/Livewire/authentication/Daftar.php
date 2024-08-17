@@ -34,7 +34,7 @@ class Daftar extends Component
         $this->validateOnly($propertyName); 
     }
 
-    public function register()
+        public function register()
     {
         $this->validate();
 
@@ -45,8 +45,13 @@ class Daftar extends Component
             'password' => Hash::make($this->password),
         ]);
 
+        // Tambahkan jeda waktu 3 detik
+        sleep(3);
+
         session()->flash('message', 'Registrasi berhasil! Silahkan login.');
     }
+
+    
     public function render()
     {
         return view('livewire.daftar', [

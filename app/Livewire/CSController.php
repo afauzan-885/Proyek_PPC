@@ -21,22 +21,18 @@ class CSController extends Component
         'email_costumer' => 'required|email',
     ];
     public function storeCS()
+{
+    $validatedData = $this->validate();
+    CSModel::create($validatedData);
+
+    $namaCustomer = $validatedData['nama_costumer'];
+
+    $this->reset('nama_costumer','kode_costumer','no_telepon_pt','alamat_costumer','kontak_costumer','email_costumer');
+    session()->flash('suksesinput', 'Data ' . $namaCustomer . ' berhasil ditambahkan.');
+}
+
+     public function showCS(int $id) 
     {
-       $validateData=$this->validate();
-
-        CSModel::create($validateData);
-        $this->reset('nama_costumer','kode_costumer','no_telepon_pt','alamat_costumer','kontak_costumer','email_costumer');
-        session()->flash('suksesinput', 'Data berhasil ditambahkan.');
-    }
-
-    // public function updated($fields)
-    // {
-    //     $this->validateOnly($fields);
-    // }
-
-    public function showCS(int $id) 
-    {
-        
         // $CostumerSupplier = CSModel::find($cs_id);
         $CostumerSupplier = CSModel::find($id); 
         $this->cs_id = $CostumerSupplier->id;
@@ -68,8 +64,10 @@ class CSController extends Component
             'kontak_costumer'=> $this->kontak_costumer,
             'email_costumer'=> $this->email_costumer,
         ]);
-        session()->flash('suksesupdate', 'Data berhasil diupdate.');
+        $namacostumer = $CostumerSupplier->nama_costumer;
+        session()->flash('suksesupdate', ' Data ' . $namacostumer . ' berhasil diupdate.');
     }
+
 
     public function closeModal()
     {
@@ -77,10 +75,14 @@ class CSController extends Component
     }
 
     public function delete($id)
-    {
-        CSModel::find($id)->delete();
-        session()->flash('sukseshapus', 'Data berhasil dihapus.');
-    }
+{
+    $customer = CSModel::find($id);
+    $namaCustomer = $customer->nama_costumer;
+    $customer->delete();
+
+    // Tampilkan pesan flash dengan nama customer
+    session()->flash('sukseshapus', 'Data ' . $namaCustomer . ' berhasil dihapus.');
+}
 
     public function render()
     {

@@ -3,7 +3,7 @@
     <!-- Pesan Error Atau Succes -->
     <x-error-success />
 
-    <div wire:ignore.self class="row">
+    <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
@@ -61,10 +61,9 @@
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
                                                 <button type="button" wire:click="delete({{ $CostumerSupplier->id }})"
-                                                    class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger"
-                                                    data-bs-title="Delete"
-                                                    wire:confirm="Anda yakin menghapus data ini?">
+                                                    class="btn btn-outline-danger btn-sm" data-bs-placement="top"
+                                                    data-bs-custom-class="custom-tooltip-danger"
+                                                    wire:confirm="Anda yakin ingin menghapus Customer {{ $CostumerSupplier->nama_costumer }}?">
                                                     <i class="bi bi-trash3"></i>
                                                 </button>
                                             </td>
