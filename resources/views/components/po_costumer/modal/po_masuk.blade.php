@@ -341,7 +341,7 @@
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
-                    <div class="flex-grow-1">
+                    <div class="flex-grow-1" style="max-width: 320px">
                         @if (session('suksesupdate'))
                             <div class="text-success word-break">
                                 <small>{{ session('suksesupdate') }}</small>
