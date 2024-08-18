@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -15,6 +16,7 @@ return new class extends Migration
             $table->date('tanggal_po');
             $table->string('term_of_payment', 50);
             $table->integer('qty');
+            $table->decimal('harga', 19, 2);
             $table->string('no_po', 50)->unique();
             $table->date('tanggal_pengiriman');
             $table->string('kode_barang', 50);

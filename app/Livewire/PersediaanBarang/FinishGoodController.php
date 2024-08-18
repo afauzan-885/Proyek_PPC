@@ -48,9 +48,10 @@ class FinishGoodController extends Component
         }
 
         FGModel::create($validatedData);
+        sleep(1);
 
         $this->reset(); // Reset semua input field setelah menyimpan
-        session()->flash('suksesinput', 'Data Finish Good berhasil ditambahkan.');
+        session()->flash('suksesinput', 'Item ' . $validatedData['nama_barang'] . ' dengan kode ' . $validatedData['kode_barang'] . ' berhasil ditambahkan.');
     }
 
     public function showData(int $id)
@@ -78,11 +79,12 @@ class FinishGoodController extends Component
             ]);
 
             $validatedData['harga'] = (float) str_replace('.', '', $validatedData['harga']);
+            sleep(1);
 
             $fg = FGModel::findOrFail($this->fg_id);
             $fg->update($validatedData);
 
-            session()->flash('suksesupdate', 'Data ' . $fg->kode_costumer . ' berhasil diupdate.');
+            session()->flash('suksesupdate', 'Item ' . $fg->nama_barang . ' dengan kode ' . $fg->kode_costumer . ' berhasil diupdate.');
         } catch (ModelNotFoundException $e) {
             session()->flash('error', 'Data tidak ditemukan.');
         }
@@ -97,7 +99,7 @@ class FinishGoodController extends Component
     public function delete($id)
     {
         FGModel::find($id)->delete();
-        session()->flash('sukseshapus', 'Data Finish Good berhasil dihapus.');
+        session()->flash('sukseshapus', 'Data berhasil dihapus.');
     }
 
     public function closeModal()

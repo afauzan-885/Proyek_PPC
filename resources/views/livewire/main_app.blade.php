@@ -104,7 +104,7 @@
 
                 <!-- Versi Website start -->
                 <div class="app-footer">
-                    <span>PPC Beta v0.1</span>
+                    <span>PPC Beta v0.2</span>
                 </div>
                 <!-- Versi Website end -->
 

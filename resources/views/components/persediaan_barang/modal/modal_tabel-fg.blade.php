@@ -93,27 +93,24 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <div class="row">
-                            <div class="col-auto">
-                                @if (session('suksesinput'))
-                                    <div class="text-success">
-                                        <small>{{ session('suksesinput') }}</small>
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="col-auto">
-                                <button type="submit" class="btn btn-lg btn-primary">
-                                    <span wire:loading.remove>Submit</span>
-                                    <span wire:loading><x-loading /></span>
-                                </button>
-                            </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <div class="flex-grow-1" style="max-width: 320px">
+                            @if (session('suksesinput'))
+                                <div class="text-success word-break">
+                                    <small>{{ session('suksesinput') }}</small>
+                                </div>
+                            @endif
                         </div>
+                        <button type="submit" class="btn btn-lg btn-primary">
+                            <span wire:loading.remove>Submit Data</span>
+                            <span wire:loading><x-loading /></span>
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
     <div class="modal fade" id="editformfg" wire:ignore.self data-bs-backdrop="static" tabindex="-1"
         aria-labelledby="editformfglabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -189,22 +186,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <div class="row">
-                            <div class="col-auto">
-                                @if (session('suksesupdate'))
-                                    <div class="text-success">
-                                        <small>{{ session('suksesupdate') }}</small>
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="col-auto">
-                                <button type="submit" class="btn btn-lg btn-primary">
-                                    <span wire:loading.remove>Update Data</span>
-                                    <span wire:loading><x-loading /></span>
-                                </button>
-                            </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <div class="flex-grow-1" style="max-width: 320px">
+                            @if (session('suksesupdate'))
+                                <div class="text-success word-break">
+                                    <small>{{ session('suksesupdate') }}</small>
+                                </div>
+                            @endif
                         </div>
+                        <button type="submit" class="btn btn-lg btn-primary">
+                            <span wire:loading.remove>Update Data</span>
+                            <span wire:loading><x-loading /></span>
+                        </button>
                     </div>
                 </form>
             </div>

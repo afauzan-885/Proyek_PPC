@@ -15,6 +15,7 @@ class POMasuk extends Model
         'tanggal_po',
         'term_of_payment',
         'qty',
+        'harga',
         'no_po',
         'tanggal_pengiriman',
         'kode_barang',
@@ -23,6 +24,6 @@ class POMasuk extends Model
 
     public function finishGood()
     {
-        return $this->belongsTo(PBFinishGood::class, 'kode_barang', 'kode_barang');
+        return $this->belongsTo(PBFinishGood::class);
     }
 }

@@ -3,7 +3,7 @@
 <div class="modal fade" wire:ignore.self id="inputpo_masuk" tabindex="-1" aria-labelledby="inputpo_masuklabel"
     aria-hidden="true" x-data="{
         qty: @entangle('qty'),
-        hargaMaterial: @entangle('harga_material'),
+        hargaMaterial: @entangle('harga'),
         total: @entangle('total_amount'), // Ikat total dengan total_amount di Livewire
     
         init() {
@@ -107,8 +107,8 @@
                                         <div class="row g-1">
                                             <div class="col-9">
                                                 <label for="quantity" class="form-label">Harga/Qty</label>
-                                                <input type="text" wire:model='harga_material' class="form-control"
-                                                    placeholder="Otomatis terisi" id="harga_material" readonly>
+                                                <input type="text" wire:model='harga' class="form-control"
+                                                    placeholder="Otomatis terisi" id="harga" readonly>
                                             </div>
                                             <div class="col-3">
                                                 <label for="quantity" class="form-label"
@@ -158,22 +158,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <div class="row">
-                        <div class="col-auto">
-                            @if (session('suksesinput'))
-                                <div class="text-success">
-                                    <small>{{ session('suksesinput') }}</small>
-                                </div>
-                            @endif
-                        </div>
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-lg btn-primary">
-                                <span wire:loading.remove>Submit</span>
-                                <span wire:loading><x-loading /></span>
-                            </button>
-                        </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <div class="flex-grow-1" style="max-width: 320px">
+                        @if (session('suksesinput'))
+                            <div class="text-success word-break">
+                                <small>{{ session('suksesinput') }}</small>
+                            </div>
+                        @endif
                     </div>
+                    <button type="submit" class="btn btn-lg btn-primary">
+                        <span wire:loading.remove>Submit Data</span>
+                        <span wire:loading><x-loading /></span>
+                    </button>
                 </div>
             </form>
         </div>
@@ -184,7 +180,7 @@
 <div class="modal fade" wire:ignore.self data-bs-backdrop="static" id="editpo_masuk" tabindex="-1"
     aria-labelledby="editpo_masuklabel" aria-hidden="true" x-data="{
         qty: @entangle('qty'),
-        hargaMaterial: @entangle('harga_material'),
+        hargaMaterial: @entangle('harga'),
         total: @entangle('total_amount'), // Ikat total dengan total_amount di Livewire
     
         init() {
@@ -288,9 +284,8 @@
                                         <div class="row g-1">
                                             <div class="col-9">
                                                 <label for="quantity" class="form-label">Harga/Qty</label>
-                                                <input type="text" wire:model='harga_material'
-                                                    class="form-control" placeholder="Otomatis terisi"
-                                                    id="harga_material">
+                                                <input type="text" wire:model='harga' class="form-control"
+                                                    placeholder="Otomatis terisi" id="harga">
                                             </div>
                                             <div class="col-3">
                                                 <label for="quantity" class="form-label"

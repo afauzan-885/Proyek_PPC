@@ -12,7 +12,7 @@ class POMasukController extends Component
 {
     protected $paginationTheme = 'bootstrap';
 
-    public $nama_customer, $tanggal_po, $term_of_payment, $qty, $no_po, $tanggal_pengiriman, $kode_barang, $total_amount, $harga_material;
+    public $nama_customer, $tanggal_po, $term_of_payment, $qty, $no_po, $tanggal_pengiriman, $kode_barang, $total_amount, $harga;
     public $PM_id;
 
     protected $rules = [
@@ -20,6 +20,7 @@ class POMasukController extends Component
         'tanggal_po' => 'required',
         'term_of_payment' => 'required',
         'qty' => 'required',
+        'harga' => 'required',
         'no_po' => 'required',
         'tanggal_pengiriman' => 'required',
         'kode_barang' => 'required',
@@ -50,11 +51,11 @@ class POMasukController extends Component
 
             $finishGood = FGModel::where('kode_barang', $this->kode_barang)->first();
             if ($finishGood) {
-                $this->harga_material = $finishGood->harga;
+                $this->harga = $finishGood->harga;
                 $datapm->total_amount = number_format($datapm->total_amount, 0, ',', '.'); // Format harga untuk tampilan
                 
                 $formatter = new NumberFormatter('id_ID', NumberFormatter::DECIMAL);
-                $this->harga_material = $formatter->formatCurrency($finishGood->harga, 'IDR');
+                $this->harga = $formatter->formatCurrency($finishGood->harga, 'IDR');
 
                 $this->total_amount = $datapm->total_amount;
             }
@@ -66,13 +67,13 @@ class POMasukController extends Component
     public function cariHarga()
     {
         $finishGood = FGModel::where('kode_barang', $this->kode_barang)->first();
+
         if ($finishGood) {
-            $this->harga_material = $finishGood->harga;
+            $this->harga = $finishGood->harga;
             $formatter = new NumberFormatter('id_ID', NumberFormatter::DECIMAL);
-                    $this->harga_material = $formatter->formatCurrency($finishGood->harga, 'IDR');
+            $this->harga = $formatter->formatCurrency($finishGood->harga, 'IDR');
+            $this->resetErrorBag('kode_barang'); // Reset error jika data ditemukan
         } else {
-            
-            $this->harga_material = 'Null';
             $this->addError('kode_barang', 'Kode barang tidak ditemukan.');
         }
     }
@@ -96,7 +97,7 @@ class POMasukController extends Component
         //Logika Untuk menghilangkan pembatas ribuan
         $validatedData['total_amount'] = preg_replace('/[^0-9]/', '', $validatedData['total_amount']);
         $validatedData['total_amount'] = (float) $validatedData['total_amount'];
-        $hargaPerQty = (float) str_replace(['.', ','], ['', '.'], $this->harga_material);
+        $hargaPerQty = (float) str_replace(['.', ','], ['', '.'], $this->harga);
         $validatedData['total_amount'] = $validatedData['qty'] * $hargaPerQty;
 
         PMModel::findOrFail($this->PM_id)->update($validatedData);
@@ -120,13 +121,13 @@ class POMasukController extends Component
                 $finishGood = FGModel::where('kode_barang', $this->kode_barang)->first();
                 if ($finishGood) {
                     $this->hitungTotalAmount(); 
-                    $this->harga_material = $finishGood->harga;
+                    $this->harga = $finishGood->harga;
                     $formatter = new NumberFormatter('id_ID', NumberFormatter::DECIMAL);
-                    $this->harga_material = $formatter->formatCurrency($finishGood->harga, 'IDR');
+                    $this->harga = $formatter->formatCurrency($finishGood->harga, 'IDR');
                     $this->total_amount = $finishGood->total_amount;
                     $this->hitungTotalAmount(); 
                 } else {
-                    $this->reset(['nama_customer', 'harga_material', 'total_harga']);
+                    $this->reset(['nama_customer', 'harga', 'total_harga']);
                     session()->flash('message', 'Kode barang tidak valid.');
                 }
                 break;
@@ -136,7 +137,7 @@ class POMasukController extends Component
     private function hitungTotalAmount()
     {
         //Membersihkan angka sebelum melakukan operasi perhitungan
-        $harga_input = (float) str_replace(['.', ','], ['', '.'], $this->harga_material); 
+        $harga_input = (float) str_replace(['.', ','], ['', '.'], $this->harga); 
 
         $this->total_amount = $harga_input * $this->qty;
 
