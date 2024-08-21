@@ -285,7 +285,7 @@
                                             <div class="col-9">
                                                 <label for="quantity" class="form-label">Harga/Qty</label>
                                                 <input type="text" wire:model='harga' class="form-control"
-                                                    placeholder="Otomatis terisi" id="harga">
+                                                    placeholder="Otomatis terisi" id="harga" readonly>
                                             </div>
                                             <div class="col-3">
                                                 <label for="quantity" class="form-label"

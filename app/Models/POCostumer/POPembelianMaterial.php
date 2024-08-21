@@ -14,24 +14,19 @@ class POPembelianMaterial extends Model
      * @var string
      */
     protected $table = 'po__pembelian_material';
-
-    /**
-     * Atribut yang dapat diisi secara massal.
-     * @var array
-     */
     use HasFactory;
     protected $fillable = [
         'nama_material',
         'ukuran',
-        'quantity',
+        'qty',
         'no_po',
-        'harga',
-        'kode_barang',
+        'harga_material',
+        'kode_material',
         'total_amount',
       ];
 
       public function Warehouse()
     {
-        return $this->belongsTo(PBWarehouse::class, 'kode_material', 'kode_material');
+        return $this->belongsTo(PBWarehouse::class);
     }
 }

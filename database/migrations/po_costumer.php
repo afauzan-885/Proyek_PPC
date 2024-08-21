@@ -30,9 +30,9 @@ return new class extends Migration
             $table->string('kode_material');
             $table->string('nama_material');
             $table->string('ukuran', 50);
-            $table->integer('quantity');
+            $table->integer('qty');
             $table->string('no_po', 50);
-            $table->decimal('harga', 19, 2);
+            $table->decimal('harga_material', 19, 2);
             $table->decimal('total_amount', 19, 2);
             $table->timestamps();
         });

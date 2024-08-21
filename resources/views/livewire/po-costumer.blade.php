@@ -1,5 +1,4 @@
 <div class="row">
-
     <div class="col-12">
         <div class="card">
             <div class="card-header">
@@ -80,7 +79,7 @@
                 </div>
 
                 <!-- Modal -->
-                {{-- <x-po_costumer.modal.po_masuk :pomasukdata="$warehouses" /> --}}
+                {{-- <x-po_costumer.modal.po_masuk :pomasukdata="$finishgoods" /> --}}
                 {{-- <x-po_costumer.modal.pembelian_material /> --}}
                 {{-- <x-po_costumer.modal.kedatangan_material :kedatanganmaterial="$poKedatanganMaterial" /> --}}
 

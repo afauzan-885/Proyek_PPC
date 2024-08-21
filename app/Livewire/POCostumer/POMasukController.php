@@ -37,6 +37,7 @@ class POMasukController extends Component
             ->__toString();
 
         PMModel::create($validatedData);
+        sleep(1);
         $namaCustomer = $validatedData['nama_customer'];
         $this->reset();
         session()->flash('suksesinput',   $namaCustomer . ' berhasil ditambahkan.');
@@ -67,9 +68,10 @@ class POMasukController extends Component
     public function cariHarga()
     {
         $finishGood = FGModel::where('kode_barang', $this->kode_barang)->first();
-
+        sleep(1);
         if ($finishGood) {
             $this->harga = $finishGood->harga;
+            
             $formatter = new NumberFormatter('id_ID', NumberFormatter::DECIMAL);
             $this->harga = $formatter->formatCurrency($finishGood->harga, 'IDR');
             $this->resetErrorBag('kode_barang'); // Reset error jika data ditemukan
@@ -93,7 +95,7 @@ class POMasukController extends Component
                 'kode_barang' => 'required',
                 'total_amount' => 'required',
             ]);
-               
+            sleep(1);
         //Logika Untuk menghilangkan pembatas ribuan
         $validatedData['total_amount'] = preg_replace('/[^0-9]/', '', $validatedData['total_amount']);
         $validatedData['total_amount'] = (float) $validatedData['total_amount'];
@@ -162,11 +164,11 @@ class POMasukController extends Component
     public function render()
     {
         $poMasuk = PMModel::paginate(10);
-        $warehouses = FGModel::all();
+        $finishgoods = FGModel::all();
         
         return view('livewire.po_costumer.tabel.tabel-po_masuk', [
             'poMasuk' => $poMasuk,
-        ])->with('warehouses', $warehouses);
+        ])->with('finishgoods', $finishgoods);
     }
 
 }
