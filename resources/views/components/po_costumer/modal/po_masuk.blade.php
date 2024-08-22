@@ -49,6 +49,7 @@
                                         @enderror
                                     </div>
                                 </div>
+
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <label for="nama_kodebrng" class="form-label">Kode Barang</label>
@@ -82,7 +83,7 @@
                                             <input type="date" class="form-control" wire:model='tanggal_po'
                                                 id="tgl_po" />
                                         </div>
-                                        @error('no_po')
+                                        @error('tgl_po')
                                             <small class="d-block mt-1 text-danger"
                                                 role="alert">{{ $message }}</small>
                                         @enderror

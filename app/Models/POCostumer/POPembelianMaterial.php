@@ -8,13 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class POPembelianMaterial extends Model
 {
-    /**
-     * Nama tabel yang terkait dengan model ini.
-     *
-     * @var string
-     */
-    protected $table = 'po__pembelian_material';
     use HasFactory;
+    protected $table = 'po__pembelian_material';
     protected $fillable = [
         'nama_material',
         'ukuran',

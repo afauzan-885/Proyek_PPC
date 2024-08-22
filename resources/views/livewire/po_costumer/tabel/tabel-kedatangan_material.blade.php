@@ -1,16 +1,13 @@
-<x.po_costumer>
+<div>
+    @props(['poKedatanganMaterial'])
     <div class="d-flex justify-content-between mb-2">
-        <button type="button" class="btn btn-success " data-bs-toggle="modal" data-bs-target="#kedatangan_material">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#inputkedatangan_material">
             <i class="bi bi-file-earmark-plus"></i>
             Baru
         </button>
         <nav aria-label="Page navigation example">
             <ul class="pagination m-auto">
-                <li class="page-item"><a class="page-link" href="#">Mundur</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Maju</a></li>
+                {{ $poKedatanganMaterial->links() }}
             </ul>
         </nav>
     </div>
@@ -29,60 +26,35 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Araceli Zhang</td>
-                        <td>20/10/2020</td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-check-circle me-2 text-success fs-5"></i>
-                                Subscribed
-                            </div>
-                        </td>
-                        <td>United States</td>
-                        <td>SK-9000</td>
-                        <td>
-                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip"
-                                data-bs-placement="top" data-bs-custom-class="custom-tooltip-primary"
-                                data-bs-title="Edit">
-                                <i class="bi bi-pencil-square"></i>
-                            </button>
-                            <button class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip"
-                                data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger"
-                                data-bs-title="Delete">
-                                <i class="bi bi-trash3"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Carmen Mccall</td>
-                        <td>info@example.com</td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-check-circle me-2 text-success fs-5"></i>
-                                Subscribed
-                            </div>
-                        </td>
-                        <td>India</td>
-                        <td>SK-9000</td>
-                        <td>
-                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip"
-                                data-bs-placement="top" data-bs-custom-class="custom-tooltip-primary"
-                                data-bs-title="Edit">
-                                <i class="bi bi-pencil-square"></i>
-                            </button>
-                            <button class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip"
-                                data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger"
-                                data-bs-title="Delete">
-                                <i class="bi bi-trash3"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    </td>
-                    </tr>
+                    @forelse ($poKedatanganMaterial as $kedatanganmaterial)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $kedatanganmaterial['nama_material'] }}</td>
+                            <td>{{ $kedatanganmaterial['tgl_msk_material'] }}</td>
+                            <td>{{ $kedatanganmaterial['nama_supplier'] }}</td>
+                            <td>{{ $kedatanganmaterial['qty_sheet_lyr'] }}</td>
+                            <td>{{ $kedatanganmaterial['surat_jalan'] }}</td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#editkedatangan_material"
+                                    wire:click="showData({{ $kedatanganmaterial->id }})">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button type="button" wire:click="delete({{ $kedatanganmaterial->id }})"
+                                    class="btn btn-outline-danger btn-sm" data-bs-title="Delete"
+                                    wire:confirm="Yakin menghapus {{ $kedatanganmaterial->nama_material }} ?">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8">Tidak ada data.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
     </div>
-    </x.persediaan_barang>
+    <x-po_costumer.modal.kedatangan_material />
+</div>

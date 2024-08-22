@@ -11,10 +11,9 @@ class POKedatanganMaterial extends Model
     protected $table = 'po__kedatangan_material';
     protected $fillable = [
         'nama_material',
-        'tgl_masuk_material',
+        'tgl_msk_material',
         'nama_supplier',
         'qty_sheet_lyr',
-        'qty_kg',
         'surat_jalan',
       ];
 }

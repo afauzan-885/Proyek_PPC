@@ -61,27 +61,26 @@
                     <div class="tab-pane fade {{ $activeTab == 'PKM' ? 'show active' : '' }}"
                         id="nav-kedatangan_material" role="tabpanel" aria-labelledby="nav-kedatangan_material-tab"
                         tabindex="0">
-                        {{-- <livewire:PO_Costumer.tabel.tabel-kedatangan_material :pokedatanganmaterial="$poKedatanganMaterial" /> --}}
-                        {{-- <x-po_costumer.tabel.tabel-kedatangan_material /> --}}
+                        <livewire:Po_Costumer.Po_Kedatangan_Material_Controller :poKedatanganMaterial />
                     </div>
                     <div class="tab-pane fade" id="nav-proses_material" role="tabpanel"
                         aria-labelledby="nav-proses_material-tab" tabindex="0">
-                        <x-po_costumer.tabel.tabel-proses_material />
+                        {{-- <x-po_costumer.tabel.tabel-proses_material /> --}}
                     </div>
                     <div class="tab-pane fade" id="nav-jadwal_pengiriman" role="tabpanel"
                         aria-labelledby="nav-jadwal_pengiriman-tab" tabindex="0">
-                        <x-po_costumer.tabel.tabel-jadwal_pengiriman />
+                        {{-- <x-po_costumer.tabel.tabel-jadwal_pengiriman /> --}}
                     </div>
                     <div class="tab-pane fade" id="nav-laporan" role="tabpanel" aria-labelledby="nav-laporan-tab"
                         tabindex="0">
-                        <x-po_costumer.tabel.tabel-laporan />
+                        {{-- <x-po_costumer.tabel.tabel-laporan /> --}}
                     </div>
                 </div>
 
                 <!-- Modal -->
                 {{-- <x-po_costumer.modal.po_masuk :pomasukdata="$finishgoods" /> --}}
                 {{-- <x-po_costumer.modal.pembelian_material /> --}}
-                {{-- <x-po_costumer.modal.kedatangan_material :kedatanganmaterial="$poKedatanganMaterial" /> --}}
+
 
                 <!-- Modal proses material-->
                 <x-po_costumer.modal.modal-proses_material.pemakaian_material />

@@ -40,11 +40,10 @@ return new class extends Migration
         //Kedatangan Material
         Schema::create('po__kedatangan_material', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_material');
-            $table->date('tgl_masuk_material');
-            $table->string('nama_supplier');
-            $table->integer('qty_sheet_lyr');
-            $table->decimal('qty_kg', 10, 2);
+            $table->string('nama_material', 50);
+            $table->date('tgl_msk_material');
+            $table->string('nama_supplier', 50);
+            $table->string('qty_sheet_lyr', 50);
             $table->string('surat_jalan', 50);
             $table->timestamps();
         });

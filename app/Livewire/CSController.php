@@ -34,14 +34,8 @@ class CSController extends Component
      public function showCS(int $id) 
     {
         // $CostumerSupplier = CSModel::find($cs_id);
-        $CostumerSupplier = CSModel::find($id); 
-        $this->cs_id = $CostumerSupplier->id;
-        $this->nama_costumer= $CostumerSupplier ->nama_costumer;
-        $this->kode_costumer= $CostumerSupplier ->kode_costumer;
-        $this->no_telepon_pt= $CostumerSupplier ->no_telepon_pt;
-        $this->alamat_costumer= $CostumerSupplier ->alamat_costumer;
-        $this->kontak_costumer= $CostumerSupplier ->kontak_costumer;
-        $this->email_costumer= $CostumerSupplier ->email_costumer;
+        $validatedData = CSModel::find($id);
+        $this->fill($validatedData->toArray());
     }
 
     public function updateCS()
