@@ -56,7 +56,7 @@
                                             <td>
                                                 <button type="button" data-bs-toggle="modal"
                                                     data-bs-target="#editformcs"
-                                                    wire:click="showCS({{ $CostumerSupplier->id }})"
+                                                    wire:click="showData({{ $CostumerSupplier->id }})"
                                                     class="btn btn-outline-primary btn-sm">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>

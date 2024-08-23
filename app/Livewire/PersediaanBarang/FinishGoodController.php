@@ -24,7 +24,7 @@ class FinishGoodController extends Component
     }
 
     protected $rules = [
-        'kode_costumer' => 'required|unique:pb__finish_goods,kode_costumer',
+        'kode_costumer' => 'required',
         'kode_barang' => 'required|unique:pb__finish_goods,kode_barang',
         'nama_barang' => 'required',
         'no_part' => 'required',
@@ -32,11 +32,19 @@ class FinishGoodController extends Component
         'tipe_barang' => 'required',
     ];
 
+    public function messages()
+    {
+        return [
+            'kode_barang.unique' => 'kode barang yang sama telah ada',
+             '*' => 'Form ini tidak boleh kosong'
+        ];
+    }
+
     public function storeData()
     {
         $validatedData = $this->validate();
 
-        $hargaKeys = ['harga']; // Hanya untuk harga di Finish Good
+        $hargaKeys = ['harga'];
 
         foreach ($hargaKeys as $hargaKey) {
             if (isset($validatedData[$hargaKey])) {

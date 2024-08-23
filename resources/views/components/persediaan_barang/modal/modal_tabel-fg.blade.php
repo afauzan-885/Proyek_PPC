@@ -42,7 +42,7 @@
                                         <div class="mb-3">
                                             <label for="nama_kodebrng" class="form-label">Kode Barang</label>
                                             <input type="text" class="form-control" id="nama_kodebrng"
-                                                wire:model="kode_barang" placeholder="Masukkan Kode Barang" required />
+                                                wire:model="kode_barang" placeholder="Masukkan Kode Barang" />
                                             @error('kode_barang')
                                                 <small class="d-block mt-1 text-danger" role="alert">
                                                     {{ $message }}
@@ -55,7 +55,12 @@
                                         <div class="mb-3">
                                             <label for="nama_brng" class="form-label">Nama Barang</label>
                                             <input type="text" class="form-control" id="nama_brng"
-                                                wire:model="nama_barang" placeholder="Masukkan Nama Barang" required />
+                                                wire:model="nama_barang" placeholder="Masukkan Nama Barang" />
+                                            @error('nama_barang')
+                                                <small class="d-block mt-1 text-danger" role="alert">
+                                                    {{ $message }}
+                                                </small>
+                                            @enderror
                                         </div>
                                     </div>
 
@@ -63,23 +68,32 @@
                                         <div class="mb-3">
                                             <label for="no_part" class="form-label">Part. Number</label>
                                             <input type="text" class="form-control" id="no_part"
-                                                wire:model="no_part" placeholder="Masukkan No. Part" required />
+                                                wire:model="no_part" placeholder="Masukkan No. Part" />
+                                            @error('no_part')
+                                                <small class="d-block mt-1 text-danger" role="alert">
+                                                    {{ $message }}
+                                                </small>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="harga" class="form-label">Harga</label>
                                             <input type="text" min="1" step="any" class="form-control"
-                                                id="harga" wire:model="harga" placeholder="Masukkan Harga" required
+                                                id="harga" wire:model="harga" placeholder="Masukkan Harga"
                                                 x-mask:dynamic="$money($input, ',', '.')" />
+                                            @error('harga')
+                                                <small class="d-block mt-1 text-danger" role="alert">
+                                                    {{ $message }}
+                                                </small>
+                                            @enderror
                                         </div>
                                     </div>
 
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="tipe_brng" class="form-label">Tipe Barang</label>
-                                            <select class="form-select" id="tipe_brng" wire:model="tipe_barang"
-                                                required>
+                                            <select class="form-select" id="tipe_brng" wire:model="tipe_barang">
                                                 <option value="" selected hidden>
                                                     Silahkan pilih...
                                                 </option>
@@ -87,6 +101,11 @@
                                                 <option value="W-Workshop">W-Workshop</option>
                                                 <option value="A-Assy">A-Assy</option>
                                             </select>
+                                            @error('tipe_brng')
+                                                <small class="d-block mt-1 text-danger" role="alert">
+                                                    {{ $message }}
+                                                </small>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -133,30 +152,28 @@
                                             <label for="kodecs" class="form-label">Kode Costumer</label>
                                             <input type="text" class="form-control" id="kodecs"
                                                 wire:model="kode_costumer" placeholder="Masukkan Kode Costumer"
-                                                required disabled />
+                                                disabled />
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="nama_kodebrng" class="form-label">Kode Barang</label>
                                             <input type="text" class="form-control" id="nama_kodebrng"
-                                                wire:model="kode_barang" placeholder="Masukkan Kode Barang"
-                                                required />
+                                                wire:model="kode_barang" placeholder="Masukkan Kode Barang" />
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="nama_brng" class="form-label">Nama Barang</label>
                                             <input type="text" class="form-control" id="nama_brng"
-                                                wire:model="nama_barang" placeholder="Masukkan Nama Barang"
-                                                required />
+                                                wire:model="nama_barang" placeholder="Masukkan Nama Barang" />
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="no_part" class="form-label">Part. Number</label>
                                             <input type="text" class="form-control" id="no_part"
-                                                wire:model="no_part" placeholder="Masukkan No. Part" required />
+                                                wire:model="no_part" placeholder="Masukkan No. Part" />
                                         </div>
                                     </div>
 
@@ -165,15 +182,14 @@
                                             <label for="harga" class="form-label">Harga</label>
                                             <input type="text" min="1" step="any" class="form-control"
                                                 id="harga" wire:model="harga" placeholder="Masukkan Harga"
-                                                required x-mask:dynamic="$money($input, ',', '.')" />
+                                                x-mask:dynamic="$money($input, ',', '.')" />
                                         </div>
                                     </div>
 
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="tipe_brng" class="form-label">Tipe Barang</label>
-                                            <select class="form-select" id="tipe_brng" wire:model="tipe_barang"
-                                                required>
+                                            <select class="form-select" id="tipe_brng" wire:model="tipe_barang">
                                                 <option selected>
                                                 </option>
                                                 <option value="S-Stamping">S-Stamping</option>

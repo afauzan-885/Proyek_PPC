@@ -26,6 +26,13 @@ class POPembelianMaterialController extends Component
         'total_amount' => 'required|numeric',
     ];
 
+    public function messages()
+    {
+        return [
+             '*' => 'Form ini tidak boleh kosong'
+        ];
+    }
+
     public function storeData()
     {
         $validatedData = $this->validate();

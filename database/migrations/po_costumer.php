@@ -54,8 +54,9 @@ return new class extends Migration
             $table->id();
             $table->string('nama_material');
             $table->integer('jumlah_pengeluaran_material');
-            $table->date('tanggal_keluar_po');
-            $table->date('tanggal_keluar_pt');
+            $table->string('no_po');
+            $table->string('satuan');
+            $table->date('tgl_pemakaian_mtrial');
             $table->timestamps();
         });
 

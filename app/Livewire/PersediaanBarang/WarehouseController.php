@@ -20,11 +20,16 @@ class WarehouseController extends Component
         'kode_material' => 'required|unique:pb__warehouses,kode_material',
         'nama_material' => 'required',
         'ukuran_material' => 'required',
-        // 'jumlah_material'=>'required',
-        // 'berat' => 'required|numeric',
         'harga_material' => 'required',
         'deskripsi' => 'required',
     ];
+
+    public function messages()
+    {
+        return [
+             '*' => 'Form ini tidak boleh kosong'
+        ];
+    }
 
     public function storeData()
     {
@@ -65,8 +70,6 @@ class WarehouseController extends Component
                 'kode_material' => 'required',
                 'nama_material' => 'required',
                 'ukuran_material' => 'required',
-                // 'jumlah_material' => 'required',
-                // 'berat' => 'required',
                 'harga_material' => 'required',
                 'deskripsi' => 'required',
             ]);

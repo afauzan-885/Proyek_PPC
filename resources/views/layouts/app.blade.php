@@ -22,7 +22,7 @@
 <body>
 
     {{ $slot }}
-    <!-- Required jQuery first, then Bootstrap Bundle JS -->
+    <!--  jQuery first, then Bootstrap Bundle JS -->
     <script data-navigate-once src="assets/js/jquery.min.js"></script>
     <script data-navigate-once src="assets/js/bootstrap.bundle.min.js"></script>
 

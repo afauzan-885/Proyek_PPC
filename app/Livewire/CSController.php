@@ -2,6 +2,7 @@
 namespace App\Livewire;
 
 use App\Models\CostumerSupplier as CSModel;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -18,9 +19,17 @@ class CSController extends Component
         'no_telepon_pt' => 'required',
         'alamat_costumer' => 'required',
         'kontak_costumer'=>'required',
-        'email_costumer' => 'required|email',
+        'email_costumer' => 'required',
     ];
-    public function storeCS()
+
+    public function messages()
+    {
+        return [
+            'kode_costumer.unique' => 'Kode yang sama telah ada',
+             '*' => 'Form ini tidak boleh kosong'
+        ];
+    }
+    public function storeData()
 {
     $validatedData = $this->validate();
     CSModel::create($validatedData);
@@ -31,36 +40,32 @@ class CSController extends Component
     session()->flash('suksesinput', 'Data ' . $namaCustomer . ' berhasil ditambahkan.');
 }
 
-     public function showCS(int $id) 
+     public function showData(int $id) 
     {
-        // $CostumerSupplier = CSModel::find($cs_id);
         $validatedData = CSModel::find($id);
         $this->fill($validatedData->toArray());
     }
 
-    public function updateCS()
+    public function updateData()
     {
-        $this->validate([
+        try {
+            $validatedData = $this->validate([
             'nama_costumer' => 'required',
-            'kode_costumer' => 'required|',
+            'kode_costumer' => 'required',
             'no_telepon_pt' => 'required',
             'alamat_costumer' => 'required',
-            'kontak_costumer'=>'required',
-            'email_costumer' => 'required|',
+            'kontak_costumer'=> 'required',
+            'email_costumer' => 'required',
         ]);
-    
-        $CostumerSupplier = CSModel::find($this->cs_id);
-        $CostumerSupplier->update([
-            'nama_costumer'=> $this->nama_costumer,
-            'kode_costumer'=> $this->kode_costumer,
-            'no_telepon_pt'=> $this->no_telepon_pt,
-            'alamat_costumer'=> $this->alamat_costumer,
-            'kontak_costumer'=> $this->kontak_costumer,
-            'email_costumer'=> $this->email_costumer,
-        ]);
-        $namacostumer = $CostumerSupplier->nama_costumer;
-        session()->flash('suksesupdate', ' Data ' . $namacostumer . ' berhasil diupdate.');
-    }
+        
+        CSModel::findOrFail($this->cs_id)->update($validatedData);
+        } catch (ModelNotFoundException $e) {
+            session()->flash('error', 'Data customer tidak ditemukan.');
+        }
+        
+        $namacostumer = $validatedData['nama_costumer'];
+            session()->flash('suksesupdate', ' Data ' . $namacostumer . ' berhasil diupdate.');
+     }
 
 
     public function closeModal()

@@ -27,6 +27,13 @@ class POMasukController extends Component
         'total_amount' => 'required',
     ];
 
+    public function messages()
+    {
+        return [
+             '*' => 'Form ini tidak boleh kosong'
+        ];
+    }
+
     public function storeData()
     {
         $validatedData = $this->validate();
@@ -103,11 +110,10 @@ class POMasukController extends Component
         $validatedData['total_amount'] = $validatedData['qty'] * $hargaPerQty;
 
         PMModel::findOrFail($this->PM_id)->update($validatedData);
-            
-            PMModel::findOrFail($this->PM_id)->update($validatedData);
         } catch (ModelNotFoundException $e) {
             session()->flash('error', 'Data tidak ditemukan.');
         }
+
         $namaCustomer = $validatedData['nama_customer'];
         session()->flash('suksesupdate', 'Data ' .$namaCustomer. ' berhasil diupdate.');
     }

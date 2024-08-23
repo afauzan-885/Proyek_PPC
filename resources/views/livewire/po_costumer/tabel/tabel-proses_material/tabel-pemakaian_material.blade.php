@@ -1,16 +1,13 @@
-<x.po_costumer>
+<div>
+    @props(['pemakaianMaterial'])
     <div class="d-flex justify-content-between mb-2">
-        <button type="button" class="btn btn-success " data-bs-toggle="modal" data-bs-target="#pemakaian_material">
+        <button type="button" class="btn btn-success " data-bs-toggle="modal" data-bs-target="#inputpemakaian_material">
             <i class="bi bi-file-earmark-plus"></i>
             Baru
         </button>
-        <nav aria-label="Page navigation example">
+        <nav aria-label="Page navigation">
             <ul class="pagination m-auto">
-                <li class="page-item"><a class="page-link" href="#">Mundur</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Maju</a></li>
+                {{ $pemakaianMaterial->links() }}
             </ul>
         </nav>
     </div>
@@ -23,64 +20,45 @@
                         <th>No</th>
                         <th>Nama Material</th>
                         <th>Jumlah Pengeluaran Material</th>
-                        <th>Tanggal Keluar PO</th>
+                        <th>Tanggal Pemakaian Material</th>
                         <th>No. PO</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Araceli Zhang</td>
-                        <td>info@example.com</td>
-                        <td>20/10/2020</td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-check-circle me-2 text-success fs-5"></i>
-                                Subscribed
-                            </div>
-                        </td>
-                        <td>
-                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip"
-                                data-bs-placement="top" data-bs-custom-class="custom-tooltip-primary"
-                                data-bs-title="Edit">
-                                <i class="bi bi-pencil-square"></i>
-                            </button>
-                            <button class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip"
-                                data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger"
-                                data-bs-title="Delete">
-                                <i class="bi bi-trash3"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Carmen Mccall</td>
-                        <td>info@example.com</td>
-                        <td>20/10/2020</td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-check-circle me-2 text-success fs-5"></i>
-                                Subscribed
-                            </div>
-                        </td>
-                        <td>
-                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip"
-                                data-bs-placement="top" data-bs-custom-class="custom-tooltip-primary"
-                                data-bs-title="Edit">
-                                <i class="bi bi-pencil-square"></i>
-                            </button>
-                            <button class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip"
-                                data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger"
-                                data-bs-title="Delete">
-                                <i class="bi bi-trash3"></i>
-                            </button>
-                        </td>
-                    </tr>
+                    @forelse ($pemakaianMaterial as $pemakaianmaterial)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $pemakaianmaterial['nama_material'] }}</td>
+                            <td>{{ $pemakaianmaterial['jumlah_pengeluaran_material'] }}
+                                {{ $pemakaianmaterial['satuan'] }}</td>
+                            <td x-data="{ tanggal: '{{ $pemakaianmaterial['tgl_pemakaian_mtrial'] }}' }">
+                                <span x-text="moment(tanggal).format('DD-MM-YYYY')"></span>
+                            </td>
+                            <td>{{ $pemakaianmaterial['no_po'] }}</td>
+                            <td>
+                                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#editpemakaian_material"
+                                    wire:click="showData({{ $pemakaianmaterial->id }})">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button type="button" wire:click="delete({{ $pemakaianmaterial->id }})"
+                                    class="btn btn-outline-danger btn-sm"
+                                    wire:confirm="Yakin menghapus {{ $pemakaianmaterial->nama_customer }} (PO: {{ $pemakaianmaterial->no_po }})">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8">Tidak ada data.</td>
+                        </tr>
+                    @endforelse
                     </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-</x.po_costumer>
+    <x-po_costumer.modal.modal-proses_material.pemakaian_material />
+</div>

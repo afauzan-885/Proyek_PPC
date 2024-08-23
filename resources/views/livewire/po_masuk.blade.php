@@ -35,8 +35,7 @@
                                     <div class="mb-3">
                                         <label for="nama_kodebrng" class="form-label">Kode Barang</label>
                                         <div class="input-group">
-                                            <select wire:model="kode_barang" id="nama_kodebrng" class="form-select"
-                                                required>
+                                            <select wire:model="kode_barang" id="nama_kodebrng" class="form-select">
 
                                             </select>
                                             <button type="submit" class="btn btn-outline-secondary">

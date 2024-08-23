@@ -44,11 +44,11 @@
                                             <label for="nama_material" class="form-label">Nama Material</label>
                                             <input type="text" class="form-control" id="nama_material"
                                                 wire:model='nama_material' placeholder="Otomatis" readonly />
+                                            @error('nama_material')
+                                                <small class="d-block mt-1 text-danger"
+                                                    role="alert">{{ $message }}</small>
+                                            @enderror
                                         </div>
-                                        @error('nama_material')
-                                            <small class="d-block mt-1 text-danger"
-                                                role="alert">{{ $message }}</small>
-                                        @enderror
                                     </div>
 
                                     <div class="col-6">
@@ -56,7 +56,7 @@
                                             <label for="nama_mtrial" class="form-label">Kode material</label>
                                             <div class="input-group">
                                                 <select wire:ignore wire:model="kode_material" id="nama_mtrial"
-                                                    class="form-select" required>
+                                                    class="form-select">
                                                     <option value="" selected hidden>Pilih Kode material...
                                                     </option>
                                                     @foreach ($pembelianmaterialdata as $pm)
@@ -205,7 +205,7 @@
                                             <label for="nama_mtrial" class="form-label">Kode material</label>
                                             <div class="input-group">
                                                 <select wire:ignore wire:model="kode_material" id="nama_mtrial"
-                                                    class="form-select" required>
+                                                    class="form-select">
                                                     <option value="" selected hidden>Pilih Kode material...
                                                     </option>
                                                     @foreach ($pembelianmaterialdata as $pm)

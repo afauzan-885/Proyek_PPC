@@ -18,12 +18,12 @@
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" id="email" wire:model="email" class="form-control"
-                                placeholder="Masukkan Email" required autofocus />
+                                placeholder="Masukkan Email" autofocus />
                         </div>
                         <div class="mb-3">
                             <label for="kata_sandi" class="form-label">Kata Sandi</label>
                             <input type="password" id="kata_sandi" wire:model="password" class="form-control"
-                                placeholder="Masukkan Kata Sandi" required />
+                                placeholder="Masukkan Kata Sandi" />
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="form-check m-0">

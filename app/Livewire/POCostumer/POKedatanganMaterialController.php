@@ -30,6 +30,13 @@ class POKedatanganMaterialController extends Component
         'surat_jalan' => 'required',
     ];
 
+    public function messages()
+    {
+        return [
+             '*' => 'Form ini tidak boleh kosong'
+        ];
+    }
+
     public function storeData()
     {
         $validatedData = $this->validate();
@@ -56,7 +63,8 @@ class POKedatanganMaterialController extends Component
         } catch (ModelNotFoundException $e) {
             session()->flash('error', 'Data tidak ditemukan.');
         }
-        session()->flash('suksesupdate', 'Data berhasil diupdate.');
+        $namaMaterial = $validatedData['nama_material'];
+        session()->flash('suksesupdate', 'Material ' . $namaMaterial . ' berhasil diupdate.');
     }
 
 

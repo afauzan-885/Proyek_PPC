@@ -22,10 +22,10 @@ class Daftar extends Component
     public $password_confirmation;
 
     protected $rules = [
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users',
-        'role' => 'required|in:admin,member',
-        'password' => 'required|string|min:8|confirmed',
+        'name' => '|string|max:255',
+        'email' => '|string|email|max:255|unique:users',
+        'role' => '|in:admin,member',
+        'password' => '|string|min:8|confirmed',
     ];
 
     public function updated($propertyName)

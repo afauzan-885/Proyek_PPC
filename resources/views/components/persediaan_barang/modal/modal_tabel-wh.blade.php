@@ -22,6 +22,11 @@
                                         <label for="kodemtrial" class="form-label">Kode Material</label>
                                         <input type="text" class="form-control" id="kodemtrial"
                                             wire:model="kode_material" placeholder="Masukkan Kode Material" />
+                                        @error('kode_material')
+                                            <small class="d-block mt-1 text-danger" role="alert">
+                                                {{ $message }}
+                                            </small>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -29,7 +34,12 @@
                                     <div class="mb-3">
                                         <label for="nama_mtrial" class="form-label">Nama Material</label>
                                         <input type="text" class="form-control" id="nama_mtrial"
-                                            wire:model="nama_material" placeholder="Masukkan Nama Material" required />
+                                            wire:model="nama_material" placeholder="Masukkan Nama Material" />
+                                        @error('nama_material')
+                                            <small class="d-block mt-1 text-danger" role="alert">
+                                                {{ $message }}
+                                            </small>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -37,8 +47,12 @@
                                     <div class="mb-3">
                                         <label for="ukuran_mtrial" class="form-label">Ukuran Material</label>
                                         <input type="text" class="form-control" id="ukuran_mtrial"
-                                            wire:model="ukuran_material" placeholder="Masukkan Ukuran Material"
-                                            required />
+                                            wire:model="ukuran_material" placeholder="Masukkan Ukuran Material" />
+                                        @error('ukuran_material')
+                                            <small class="d-block mt-1 text-danger" role="alert">
+                                                {{ $message }}
+                                            </small>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -47,8 +61,13 @@
                                         <label for="harga_mtrial" class="form-label">Harga Material</label>
                                         <input type="text" min="1" step="any" class="form-control"
                                             id="harga_mtrial" wire:model.defer="harga_material"
-                                            placeholder="Masukkan Harga Material" required
+                                            placeholder="Masukkan Harga Material"
                                             x-mask:dynamic="$money($input, ',', '.', 2)" />
+                                        @error('harga_material')
+                                            <small class="d-block mt-1 text-danger" role="alert">
+                                                {{ $message }}
+                                            </small>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -57,7 +76,12 @@
                                     <div class="mb-3">
                                         <label for="deskripsi" class="form-label">Deskripsi Material</label>
                                         <input type="text" class="form-control" id="deskripsi" wire:model="deskripsi"
-                                            placeholder="Masukkan Deskripsi Material" required />
+                                            placeholder="Masukkan Deskripsi Material" />
+                                        @error('deskripsi')
+                                            <small class="d-block mt-1 text-danger" role="alert">
+                                                {{ $message }}
+                                            </small>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -118,8 +142,7 @@
                                     <div class="mb-3">
                                         <label for="nama_mtrial" class="form-label">Nama Material</label>
                                         <input type="text" class="form-control" id="nama_mtrial"
-                                            wire:model="nama_material" placeholder="Masukkan Nama Material"
-                                            required />
+                                            wire:model="nama_material" placeholder="Masukkan Nama Material" />
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -127,8 +150,7 @@
                                     <div class="mb-3">
                                         <label for="ukuran_mtrial" class="form-label">Ukuran Material</label>
                                         <input type="text" class="form-control" id="ukuran_mtrial"
-                                            wire:model="ukuran_material" placeholder="Masukkan Ukuran Material"
-                                            required />
+                                            wire:model="ukuran_material" placeholder="Masukkan Ukuran Material" />
                                     </div>
                                 </div>
 
@@ -137,7 +159,7 @@
                                         <label for="harga_mtrial" class="form-label">Harga Material</label>
                                         <input type="text" min="1" step="any" class="form-control"
                                             id="harga_mtrial" wire:model.defer="harga_material"
-                                            placeholder="Masukkan Harga Material" required
+                                            placeholder="Masukkan Harga Material"
                                             x-mask:dynamic="$money($input, ',', '.', 2)" />
                                     </div>
                                 </div>
@@ -147,8 +169,7 @@
                                     <div class="mb-3">
                                         <label for="deskripsi" class="form-label">Deskripsi Material</label>
                                         <input type="text" class="form-control" id="deskripsi"
-                                            wire:model="deskripsi" placeholder="Masukkan Deskripsi Material"
-                                            required />
+                                            wire:model="deskripsi" placeholder="Masukkan Deskripsi Material" />
                                     </div>
                                 </div>
                             </div>

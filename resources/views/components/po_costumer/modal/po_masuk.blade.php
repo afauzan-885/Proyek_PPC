@@ -55,7 +55,7 @@
                                         <label for="nama_kodebrng" class="form-label">Kode Barang</label>
                                         <div class="input-group">
                                             <select wire:ignore wire:model="kode_barang" id="nama_kodebrng"
-                                                class="form-select" required>
+                                                class="form-select">
                                                 <option value="" selected hidden>Pilih Kode Barang...</option>
                                                 @foreach ($pomasukdata as $pom)
                                                     <option value="{{ $pom->kode_barang }}">{{ $pom->kode_barang }} -
@@ -83,7 +83,7 @@
                                             <input type="date" class="form-control" wire:model='tanggal_po'
                                                 id="tgl_po" />
                                         </div>
-                                        @error('tgl_po')
+                                        @error('tanggal_po')
                                             <small class="d-block mt-1 text-danger"
                                                 role="alert">{{ $message }}</small>
                                         @enderror
@@ -233,7 +233,7 @@
                                         <label for="nama_kodebrng" class="form-label">Kode Barang</label>
                                         <div class="input-group">
                                             <select wire:ignore wire:model="kode_barang" id="nama_kodebrng"
-                                                class="form-select" required>
+                                                class="form-select">
                                                 <option value="" selected hidden>Pilih Kode Barang...</option>
                                                 @foreach ($pomasukdata as $pom)
                                                     <option value="{{ $pom->kode_barang }}">{{ $pom->kode_barang }} -

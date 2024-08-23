@@ -21,8 +21,8 @@ class Login extends Component
     public $remember = false; // Default untuk 'remember me' adalah false
 
     protected $rules = [
-        'email' => 'required|email',
-        'password' => 'required',
+        'email' => '|email',
+        'password' => '',
     ];
 
     public function login()

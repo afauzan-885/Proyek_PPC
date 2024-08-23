@@ -4,7 +4,7 @@ namespace App\Models\POCostumer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PO_PM_WipProduk extends Model
+class PO_PM_WipProduct extends Model
 {
     use HasFactory;
     protected $table = 'po__pm__produk_wip';
