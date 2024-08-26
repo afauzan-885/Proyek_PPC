@@ -19,7 +19,7 @@
                             <div class="col-xl-12 col-12">
                                 <div class="row">
 
-                                    <div class="col-6">
+                                    {{-- <div class="col-6">
                                         <div class="mb-3">
                                             <label for="kode_costumer" class="form-label">Kode Costumer</label>
                                             <select wire:ignore wire:model="kode_costumer" id="kode_costumer"
@@ -36,7 +36,7 @@
                                                 </small>
                                             @enderror
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="col-6">
                                         <div class="mb-3">
@@ -120,7 +120,7 @@
                                 </div>
                             @endif
                         </div>
-                        <button type="submit" class="btn btn-lg btn-primary">
+                        <button type="submit" class="btn btn btn-primary">
                             <span wire:loading.remove>Submit Data</span>
                             <span wire:loading><x-loading /></span>
                         </button>
@@ -147,14 +147,14 @@
                         <div class="row">
                             <div class="col-xl-12 col-12">
                                 <div class="row">
-                                    <div class="col-6">
+                                    {{-- <div class="col-6">
                                         <div class="mb-3">
                                             <label for="kodecs" class="form-label">Kode Costumer</label>
                                             <input type="text" class="form-control" id="kodecs"
                                                 wire:model="kode_costumer" placeholder="Masukkan Kode Costumer"
                                                 disabled />
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="nama_kodebrng" class="form-label">Kode Barang</label>
@@ -210,7 +210,7 @@
                                 </div>
                             @endif
                         </div>
-                        <button type="submit" class="btn btn-lg btn-primary">
+                        <button type="submit" class="btn btn btn-primary">
                             <span wire:loading.remove>Update Data</span>
                             <span wire:loading><x-loading /></span>
                         </button>

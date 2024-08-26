@@ -41,6 +41,7 @@ return new class extends Migration
         Schema::create('po__kedatangan_material', function (Blueprint $table) {
             $table->id();
             $table->string('nama_material', 50);
+            $table->string('kode_material', 50);
             $table->date('tgl_msk_material');
             $table->string('nama_supplier', 50);
             $table->string('qty_sheet_lyr', 50);
@@ -62,7 +63,7 @@ return new class extends Migration
 
         Schema::create('po__pm__produk_wip', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_material');
+            $table->string('nama_produk');
             $table->date('tanggal_produksi');
             $table->string('shift', 50);
             $table->string('no_mesin', 50);
@@ -87,7 +88,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_customer');
             $table->string('no_po', 50);
-            $table->integer('pengeluaran_material');
+            $table->string('pengeluaran_barang');
             $table->date('tanggal_keluar_pt');
             $table->string('surat_jalan', 50);
             $table->timestamps();

@@ -30,7 +30,9 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $kedatanganmaterial['nama_material'] }}</td>
-                            <td>{{ $kedatanganmaterial['tgl_msk_material'] }}</td>
+                            <td x-data="{ tanggal: '{{ $kedatanganmaterial['tgl_msk_material'] }}' }">
+                                <span x-text="moment(tanggal).format('DD-MM-YYYY')"></span>
+                            </td>
                             <td>{{ $kedatanganmaterial['nama_supplier'] }}</td>
                             <td>{{ $kedatanganmaterial['qty_sheet_lyr'] }}</td>
                             <td>{{ $kedatanganmaterial['surat_jalan'] }}</td>

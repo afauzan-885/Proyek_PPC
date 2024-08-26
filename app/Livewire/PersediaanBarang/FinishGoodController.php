@@ -28,6 +28,7 @@ class FinishGoodController extends Component
         'kode_barang' => 'required|unique:pb__finish_goods,kode_barang',
         'nama_barang' => 'required',
         'no_part' => 'required',
+        // 'stok' => 'required',
         'harga' => 'required',
         'tipe_barang' => 'required',
     ];
@@ -82,6 +83,7 @@ class FinishGoodController extends Component
                 'kode_barang' => 'required',
                 'nama_barang' => 'required',
                 'no_part' => 'required',
+                // 'stok' => 'required',
                 'harga' => 'required',
                 'tipe_barang' => 'required',
             ]);
@@ -106,8 +108,11 @@ class FinishGoodController extends Component
 
     public function delete($id)
     {
-        FGModel::find($id)->delete();
-        session()->flash('sukseshapus', 'Data berhasil dihapus.');
+        $finishgood = FGModel::find($id);
+        $namaBarang = $finishgood->nama_barang;
+        $finishgood->delete();
+
+        $this->dispatch('toastify',  $namaBarang . ' berhasil dihapus.');
     }
 
     public function closeModal()

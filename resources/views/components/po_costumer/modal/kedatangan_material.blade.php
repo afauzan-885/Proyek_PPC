@@ -7,7 +7,8 @@
                     <h5 class="modal-title" id="inputkedatangan_materiallabel">
                         Input Kedatangan Material
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" wire:click='closeModal'
+                        aria-label="Close"></button>
                 </div>
                 <form wire:submit="storeData">
                     @csrf
@@ -23,6 +24,17 @@
                                             <input type="text" class="form-control" wire:model="nama_material"
                                                 id="nama_material" placeholder="Masukkan Nama Material" />
                                             @error('nama_material')
+                                                <small class="d-block mt-1 text-danger"
+                                                    role="alert">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="kode_material" class="form-label">Kode Material</label>
+                                            <input type="text" class="form-control" wire:model="kode_material"
+                                                id="kode_material" placeholder="Masukkan Kode Material" />
+                                            @error('kode_material')
                                                 <small class="d-block mt-1 text-danger"
                                                     role="alert">{{ $message }}</small>
                                             @enderror
@@ -93,7 +105,7 @@
                                 </div>
                             @endif
                         </div>
-                        <button type="submit" class="btn btn-lg btn-primary">
+                        <button type="submit" class="btn btn btn-primary">
                             <span wire:loading.remove>Submit Data</span>
                             <span wire:loading><x-loading /></span>
                         </button>
@@ -111,7 +123,8 @@
                     <h5 class="modal-title" id="inputkedatangan_materiallabel">
                         Input Kedatangan Material
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" wire:click='closeModal'
+                        aria-label="Close"></button>
                 </div>
                 <form wire:submit="updateData">
                     @csrf
@@ -127,6 +140,18 @@
                                             <input type="text" class="form-control" wire:model="nama_material"
                                                 id="nama_material" placeholder="Masukkan Nama Material" />
                                             @error('nama_material')
+                                                <small class="d-block mt-1 text-danger"
+                                                    role="alert">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="kode_material" class="form-label">Kode Material</label>
+                                            <input type="text" class="form-control" wire:model="kode_material"
+                                                id="kode_material" placeholder="Masukkan Kode Material" />
+                                            @error('kode_material')
                                                 <small class="d-block mt-1 text-danger"
                                                     role="alert">{{ $message }}</small>
                                             @enderror
@@ -201,7 +226,7 @@
                                 </div>
                             @endif
                         </div>
-                        <button type="submit" class="btn btn-lg btn-primary">
+                        <button type="submit" class="btn btn btn-primary">
                             <span wire:loading.remove>Update Data</span>
                             <span wire:loading><x-loading /></span>
                         </button>

@@ -14,6 +14,7 @@ class POKedatanganMaterialController extends Component
 
     public
     $nama_material,
+    $kode_material,
     $tgl_msk_material,
     $nama_supplier,
     $qty_sheet_lyr,
@@ -24,6 +25,7 @@ class POKedatanganMaterialController extends Component
 
     protected $rules = [
         'nama_material' => 'required',
+        'kode_material' => 'required',
         'tgl_msk_material' => 'required',
         'nama_supplier' => 'required',
         'qty_sheet_lyr' => 'required',
@@ -40,6 +42,8 @@ class POKedatanganMaterialController extends Component
     public function storeData()
     {
         $validatedData = $this->validate();
+
+        
         PKMModel::create($validatedData);
 
         $this->reset('nama_material', 'tgl_msk_material','nama_supplier','qty_sheet_lyr','surat_jalan');
@@ -70,9 +74,13 @@ class POKedatanganMaterialController extends Component
 
     public function delete($id)
     {
-        PKMModel::findOrFail($id)->delete();
-        session()->flash('sukseshapus', 'Data berhasil dihapus.');
+        $kedatanganMaterial = PKMModel::find($id);
+        $kedatanganmaterial = $kedatanganMaterial->nama_material;
+        $kedatanganMaterial->delete();
+
+        $this->dispatch('toastify', 'Material '. $kedatanganmaterial . ' berhasil dihapus.');
     }
+
     
     public function closeModal()
     {

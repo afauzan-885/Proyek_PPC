@@ -143,7 +143,7 @@
                                 @endif
                             </div>
                             <div class="col-auto">
-                                <button type="submit" class="btn btn-lg btn-primary">
+                                <button type="submit" class="btn btn btn-primary">
                                     <span wire:loading.remove>Submit</span>
                                     <span wire:loading><x-loading /></span>
                                 </button>
@@ -182,7 +182,8 @@
                     <h5 class="modal-title" id="editpembelian_baranglabel">
                         Edit Pembelian Material
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" wire:click='closeModal'
+                        aria-label="Close"></button>
                 </div>
 
                 <form wire:submit="updateData">
@@ -285,7 +286,7 @@
                                 </div>
                             @endif
                         </div>
-                        <button type="submit" class="btn btn-lg btn-primary">
+                        <button type="submit" class="btn btn btn-primary">
                             <span wire:loading.remove>Update Data</span>
                             <span wire:loading><x-loading /></span>
                         </button>

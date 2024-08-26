@@ -71,31 +71,17 @@
                     </div>
                     <div class="tab-pane fade {{ $activeTab == 'PoPM' ? 'show active' : '' }}" id="nav-proses_material"
                         role="tabpanel" aria-labelledby="nav-proses_material-tab" tabindex="0">
-                        <livewire:Po_Costumer.Po_Proses_Material_Controller :poKedatanganMaterial />
-                        {{-- <x-po_costumer.tabel.tabel-proses_material /> --}}
+                        <livewire:Po_Costumer.Po_Proses_Material_Controller />
                     </div>
                     <div class="tab-pane fade" id="nav-jadwal_pengiriman" role="tabpanel"
                         aria-labelledby="nav-jadwal_pengiriman-tab" tabindex="0">
-                        {{-- <x-po_costumer.tabel.tabel-jadwal_pengiriman /> --}}
+                        <livewire:Po_Costumer.Po_Jadwal_Pengiriman_Controller :poJadwalPengiriman />
                     </div>
                     <div class="tab-pane fade" id="nav-laporan" role="tabpanel" aria-labelledby="nav-laporan-tab"
                         tabindex="0">
                         {{-- <x-po_costumer.tabel.tabel-laporan /> --}}
                     </div>
                 </div>
-
-                <!-- Modal -->
-                {{-- <x-po_costumer.modal.po_masuk :pomasukdata="$finishgoods" /> --}}
-                {{-- <x-po_costumer.modal.pembelian_material /> --}}
-
-
-                <!-- Modal proses material-->
-
-                <x-po_costumer.modal.modal-proses_material.wip_product />
-                <x-po_costumer.modal.modal-proses_material.fg_product />
-
-                <x-po_costumer.modal.jadwal_pengiriman />
-
             </div>
         </div>
     </div>

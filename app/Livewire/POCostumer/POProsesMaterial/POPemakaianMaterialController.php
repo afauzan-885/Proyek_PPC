@@ -75,8 +75,11 @@ class POPemakaianMaterialController extends Component
 
     public function delete($id)
     {
-        PoPM::findOrFail($id)->delete();
-        session()->flash('sukseshapus', 'Data berhasil dihapus.');
+        $pemakaianMaterial = PoPM::findOrFail($id);
+        $pemakaianmaterial = $pemakaianMaterial->nama_material;
+        $pemakaianMaterial->delete();
+
+        $this->dispatch('toastify', 'Material '. $pemakaianmaterial . ' berhasil dihapus.');
     }
     
     public function closeModal()

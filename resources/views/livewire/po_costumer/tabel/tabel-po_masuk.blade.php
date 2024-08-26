@@ -67,5 +67,5 @@
             </table>
         </div>
     </div>
-    <x-po_costumer.modal.po_masuk :pomasukdata="$finishgoods" />
+    <x-po_costumer.modal.po_masuk :pomasukdata="$finishgoods" :costumersupplier="$costumersupplier" />
 </div>

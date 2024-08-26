@@ -2,6 +2,7 @@
 
 namespace App\Models\POCostumer;
 
+use App\Models\CostumerSupplier;
 use App\Models\PersediaanBarang\PBFinishGood;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,5 +26,10 @@ class POMasuk extends Model
     public function finishGood()
     {
         return $this->belongsTo(PBFinishGood::class);
+    }
+    
+    public function costumerSupplier()
+    {
+        return $this->belongsTo(CostumerSupplier::class, 'kode_customer', 'kode_customer');
     }
 }

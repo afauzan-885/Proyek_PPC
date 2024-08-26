@@ -17,12 +17,14 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Kode Costumer</th>
+                        {{-- <th>Kode Costumer</th> --}}
                         <th>Kode Barang</th>
                         <th>Nama Barang</th>
                         <th>No. Part</th>
+                        <th>Stok</th>
                         <th>Harga</th>
                         <th>Tipe Barang</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -31,12 +33,14 @@
                     @forelse ($finishGoods as $finishgood)
                         <tr>
                             <td>{{ $loop->iteration }}
-                            <td>{{ $finishgood['kode_costumer'] }}</td>
+                                {{-- <td>{{ $finishgood['kode_costumer'] }}</td> --}}
                             <td>{{ $finishgood['kode_barang'] }}</td>
                             <td>{{ $finishgood['nama_barang'] }}</td>
                             <td>{{ $finishgood['no_part'] }}</td>
+                            <td>{{ $finishgood['stok'] }}</td>
                             <td>Rp. {{ number_format($finishgood['harga'], 0, ',', '.') }}</td>
                             <td>{{ $finishgood['tipe_barang'] }}</td>
+                            <td>{{ $finishgood['status'] }}</td>
                             <td>
                                 <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#editformfg" wire:click="showData({{ $finishgood->id }})">
@@ -60,5 +64,7 @@
             </table>
         </div>
     </div>
+
+    {{-- Modal Input --}}
     <x-persediaan_barang.modal.modal_tabel-fg :csdata="$costumerSuppliers" />
 </div>

@@ -25,10 +25,13 @@
             <livewire:Po_Costumer.Po_Proses_Material.Po_Pemakaian_MaterialController pemakaianMaterial />
         </div>
         <div class="tab-pane fade" id="produk_fg" role="tabpanel">
+            <livewire:Po_Costumer.Po_Proses_Material.Po_Produk_FG_Controller produkFG />
             {{-- <x-po_costumer.tabel.tabel-proses_material.tabel-produk_fg /> --}}
         </div>
         <div class="tab-pane fade" id="produk_wip" role="tabpanel">
+            <livewire:Po_Costumer.Po_Proses_Material.Po_Produk_WIP_Controller produkWIP />
             {{-- <x-po_costumer.tabel.tabel-proses_material.tabel-produk_wip /> --}}
         </div>
     </div>
+    <!-- Modal proses material-->
 </div>

@@ -100,7 +100,7 @@
                             @endif
                         </div>
                         <div class="col-auto">
-                            <button type="submit" class="btn btn-lg btn-primary">
+                            <button type="submit" class="btn btn btn-primary">
                                 <span wire:loading.remove>Submit</span>
                                 <span wire:loading><x-loading /></span>
                             </button>
@@ -195,7 +195,7 @@
                             </div>
                         @endif
                     </div>
-                    <button type="submit" class="btn btn-lg btn-primary">
+                    <button type="submit" class="btn btn btn-primary">
                         <span wire:loading.remove>Update Data</span>
                         <span wire:loading><x-loading /></span>
                     </button>

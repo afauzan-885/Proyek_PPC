@@ -22,14 +22,12 @@
 <body>
 
     {{ $slot }}
+
     <!--  jQuery first, then Bootstrap Bundle JS -->
     <script data-navigate-once src="assets/js/jquery.min.js"></script>
     <script data-navigate-once src="assets/js/bootstrap.bundle.min.js"></script>
 
-    {{-- Modal Fixed --}}
-    {{-- <script>
-        $.fn.modal.Constructor.prototype.show = () => $('.modal-backdrop').not(":first").remove()
-    </script> --}}
+    <script src="assets\js\toast-notifikasi.js"></script>
 
     {{-- Script AutoNumeric --}}
     {{-- <script src="assets\js\AutoNumeric\AutoNumeric.js"></script>
@@ -41,13 +39,14 @@
 
 
 
+    <!-- Toastify JS -->
+    <script data-navigate-once src="assets/vendor/toastify/toastify.js"></script>
+    <script data-navigate-once src="assets/vendor/toastify/custom.js"></script>
     <!-- Overlay Scroll JS -->
     <script src="assets/vendor/overlay-scroll/jquery.overlayScrollbars.min.js"></script>
     <script src="assets/vendor/overlay-scroll/custom-scrollbar.js"></script>
 
-    <!-- Toastify JS -->
-    {{-- <script data-navigate-once src="assets/vendor/toastify/toastify.js"></script>
-    <script data-navigate-once src="assets/vendor/toastify/custom.js"></script> --}}
+
 
     {{-- <script src="{{ asset('assets/js/analisis_dashboard.js') }}"></script> --}}
 
@@ -57,7 +56,7 @@
     <!-- Apex Charts -->
     <script src="assets/vendor/apex/apexcharts.min.js"></script>
     <script src="assets\vendor\apex\custom\grafik\grafik_dashboard.js"></script>
-    <script src="public\assets\js/pusher.min.js"></script>
+    {{-- <script src="public\assets\js/pusher.min.js"></script> --}}
 
     <!-- Datepicker -->
     <script src="assets/vendor/daterange/daterange.js"></script>

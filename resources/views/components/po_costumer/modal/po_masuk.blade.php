@@ -38,6 +38,32 @@
 
                                 <div class="col-6">
                                     <!-- Form Field Start -->
+
+                                    <!-- AutoComplete Project -->
+                                    {{-- <div class="mb-3">
+                                            <label for="namacs" class="form-label">Nama customer</label>
+                                            <input type="search" role="search" class="form-control me-2"
+                                                wire:model.live.debounce.400ms="searchCustomer" id="namacs"
+                                                placeholder="Masukkan Nama customer" aria-label="searchCustomer" />
+                                            @if (sizeof($costumersupplier) > 0)
+                                                <ul class="list-group absolute mt-1 shadow"
+                                                    style="position: absolute; display: grid; z-index: 1;">
+                                                    @foreach ($costumersupplier as $customer)
+                                                        <li wire:click="selectCustomer({{ $customer->id }})"
+                                                            class="list-group-item d-flex justify-content-between align-items-center">
+                                                            <span> {{ $customer->nama_costumer }}</span>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+                                            @error('nama_costumer')
+                                                <small class="d-block mt-1 text-danger" role="alert">
+                                                    {{ $message }}
+                                                </small>
+                                            @enderror
+                                        </div> --}}
+
+
                                     <div class="mb-3">
                                         <label for="namacs" class="form-label">Nama customer</label>
                                         <input type="text" class="form-control" wire:model="nama_customer"
@@ -58,12 +84,12 @@
                                                 class="form-select">
                                                 <option value="" selected hidden>Pilih Kode Barang...</option>
                                                 @foreach ($pomasukdata as $pom)
-                                                    <option value="{{ $pom->kode_barang }}">{{ $pom->kode_barang }} -
+                                                    <option value="{{ $pom->kode_barang }}">{{ $pom->kode_barang }}
+                                                        -
                                                         {{ $pom->nama_barang }}</option>
                                                 @endforeach
                                             </select>
-                                            <button type="button" class="btn btn-outline-secondary"
-                                                wire:click="cariHarga">
+                                            <button type="button" class="btn btn-outline-secondary" wire:click="cari">
                                                 <i class="bi bi-search"></i>
                                             </button>
                                         </div>
@@ -167,7 +193,7 @@
                             </div>
                         @endif
                     </div>
-                    <button type="submit" class="btn btn-lg btn-primary">
+                    <button type="submit" class="btn btn btn-primary">
                         <span wire:loading.remove>Submit Data</span>
                         <span wire:loading><x-loading /></span>
                     </button>
@@ -344,7 +370,7 @@
                             </div>
                         @endif
                     </div>
-                    <button type="submit" class="btn btn-lg btn-primary">
+                    <button type="submit" class="btn btn btn-primary">
                         <span wire:loading.remove>Update Data</span>
                         <span wire:loading><x-loading /></span>
                     </button>

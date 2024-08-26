@@ -149,9 +149,13 @@ class POPembelianMaterialController extends Component
 
     public function delete($id)
     {
-        PPMModel::findOrFail($id)->delete();
-        session()->flash('sukseshapus', 'Data Pembelian Material berhasil dihapus.');
+        $pembelianMaterial = PPMModel::find($id);
+        $namamaterial = $pembelianMaterial->nama_material;
+        $pembelianMaterial->delete();
+
+        $this->dispatch('toastify', 'Material '. $namamaterial . ' berhasil dihapus.');
     }
+
     
     public function closeModal()
     {

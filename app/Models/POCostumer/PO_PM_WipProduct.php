@@ -9,7 +9,7 @@ class PO_PM_WipProduct extends Model
     use HasFactory;
     protected $table = 'po__pm__produk_wip';
     protected $fillable = [
-        'nama_material',
+        'nama_produk',
         'tanggal_produksi',
         'shift',
         'no_mesin',

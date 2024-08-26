@@ -2,6 +2,7 @@
 namespace App\Livewire\POCostumer;
 
 use App\Models\POCostumer\POMasuk as PMModel;
+use App\Models\CostumerSupplier as CSModel;
 use App\Models\PersediaanBarang\PBfinishGood as FGModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\Component;
@@ -13,8 +14,7 @@ class POMasukController extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $nama_customer, $tanggal_po, $term_of_payment, $qty, $no_po, $tanggal_pengiriman, $kode_barang, $total_amount, $harga;
-    public $PM_id;
-
+    public $PM_id, $costumersupplier, $searchCustomer;
     protected $rules = [
         'nama_customer' => 'required',
         'tanggal_po' => 'required',
@@ -26,7 +26,6 @@ class POMasukController extends Component
         'kode_barang' => 'required',
         'total_amount' => 'required',
     ];
-
     public function messages()
     {
         return [
@@ -72,7 +71,7 @@ class POMasukController extends Component
         }
     }
 
-    public function cariHarga()
+    public function cari()
     {
         $finishGood = FGModel::where('kode_barang', $this->kode_barang)->first();
         sleep(1);
@@ -86,7 +85,6 @@ class POMasukController extends Component
             $this->addError('kode_barang', 'Kode barang tidak ditemukan.');
         }
     }
-
 
     public function updateData()
     {
@@ -156,8 +154,12 @@ class POMasukController extends Component
 
     public function delete($id)
     {
-        PMModel::findOrFail($id)->delete();
-        session()->flash('sukseshapus', 'Data PO Masuk berhasil dihapus.');
+        $pomasuk = PMModel::find($id);
+        $namaCustomer = $pomasuk->nama_customer;
+        $pomasuk->delete();
+
+        $this->dispatch('toastify', 'Customer '. $namaCustomer . ' berhasil dihapus.');
+        // session()->flash('sukseshapus', 'Data PO Masuk berhasil dihapus.');
     }
 
     public function closeModal()
@@ -167,14 +169,30 @@ class POMasukController extends Component
         $this->resetValidation(); 
     }
 
+    // public function searchCustomers()
+    // {
+    //     if (strlen($this->searchCustomer) >= 1) {
+    //         $this->costumersupplier = CSModel::where('nama_costumer', 'like', '%' . $this->searchCustomer . '%')->limit(7)->get();
+    //     } else {
+    //         $this->costumersupplier = [];
+    //     }
+    // }
+
+   
     public function render()
     {
+        // $result = [];
         $poMasuk = PMModel::paginate(10);
         $finishgoods = FGModel::all();
-        
+
+        // $this->searchCustomers(); // Panggil fungsi searchCustomers
+
         return view('livewire.po_costumer.tabel.tabel-po_masuk', [
             'poMasuk' => $poMasuk,
-        ])->with('finishgoods', $finishgoods);
+            'finishgoods' => $finishgoods,
+            // 'costumersupplier' => $this->costumersupplier,
+        ]);
     }
+        
 
 }

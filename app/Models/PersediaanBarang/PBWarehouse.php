@@ -13,10 +13,10 @@ class PBWarehouse extends Model
         'kode_material',
         'nama_material',
         'ukuran_material',
-        // 'jumlah_material',
-        // 'berat',
+        'stok_material',
         'harga_material',
-        'deskripsi'
+        'deskripsi',
+        'status'
     ];
     public function pokedatanganmaterial()
     {

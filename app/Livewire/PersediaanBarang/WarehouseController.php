@@ -14,13 +14,15 @@ class WarehouseController extends Component
     protected $paginationTheme = 'bootstrap';
 
     //Public Warehouse
-    public $kode_material, $nama_material, $ukuran_material, $jumlah_material, $berat, $harga_material, $w_id, $deskripsi;
+    public $kode_material, $status, $nama_material, $ukuran_material, $jumlah_material, $berat, $harga_material, $w_id, $deskripsi;
 
     protected $rules = [
         'kode_material' => 'required|unique:pb__warehouses,kode_material',
         'nama_material' => 'required',
         'ukuran_material' => 'required',
         'harga_material' => 'required',
+        // 'stok_material' => 'required',
+        // 'status' => 'required',
         'deskripsi' => 'required',
     ];
 
@@ -45,6 +47,11 @@ class WarehouseController extends Component
                     ->__toString();
             }
         }
+
+       // Set stok_material ke 0 secara otomatis
+       $validatedData['stok_material'] = 0; 
+        
+        sleep(1);
         WHModel::create($validatedData);
 
         $this->reset();
@@ -71,11 +78,19 @@ class WarehouseController extends Component
                 'nama_material' => 'required',
                 'ukuran_material' => 'required',
                 'harga_material' => 'required',
+                // 'stok_material' => 'required',
+                // 'status' => 'required',
                 'deskripsi' => 'required',
             ]);
 
             $validatedData['harga_material'] = (float)preg_replace('/[^\d,]/', '', $validatedData['harga_material']);
             $validatedData['harga_material'] = str_replace(',', '.', $validatedData['harga_material']);
+
+            $warehouse = WHModel::findOrFail($this->w_id);
+            $warehouse->update($validatedData);
+
+            // Tambahkan baris ini untuk memicu render ulang komponen
+            $this->emit('materialUpdated');
 
             WHModel::findOrFail($this->w_id)->update($validatedData);
         } catch (ModelNotFoundException $e) {
@@ -86,10 +101,13 @@ class WarehouseController extends Component
 
     public function delete($id)
     {
-        WHModel::find($id)->delete();
-        session()->flash('sukseshapus', 'Data Warehouse berhasil dihapus.');
-    }
+        $warehouse=WHModel::find($id);
+        $namaMaterial = $warehouse->nama_material;
+        $warehouse->delete();
 
+        $this->dispatch('toastify', 'Material '. $namaMaterial . ' berhasil dihapus.');
+    }
+   
     public function closeModal()
     {
         $this->reset();

@@ -1,5 +1,5 @@
     <div class="page-wrapper">
-
+        <x-toast />
         <!-- Main container start -->
         <div class="main-container">
 

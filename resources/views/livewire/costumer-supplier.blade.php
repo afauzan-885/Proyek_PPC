@@ -2,7 +2,6 @@
     {{-- wire:poll.5s --}}
     <!-- Pesan Error Atau Succes -->
     <x-error-success />
-
     <div class="row">
         <div class="col-12">
             <div class="card">

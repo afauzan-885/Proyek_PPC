@@ -1,91 +1,61 @@
-<x.po_costumer>
-    <x.po_costumer>
-        <div class="d-flex justify-content-between mb-2">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#fg_product">
-                <i class="bi bi-file-earmark-plus"></i>
-                Baru
-            </button>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination m-auto">
-                    <li class="page-item"><a class="page-link" href="#">Mundur</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Maju</a></li>
-                </ul>
-            </nav>
-        </div>
-        <div class="border border-dark rounded-3">
-            <div class="table-responsive">
-                <table class="table align-middle text-nowrap text-center custom-table m-0">
-                    <thead>
+<div>
+    @props(['produkFG'])
+    <div class="d-flex justify-content-between mb-2">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#inputfg_product">
+            <i class="bi bi-file-earmark-plus"></i>
+            Baru
+        </button>
+        <nav aria-label="Page navigation">
+            <ul class="pagination m-auto">
+                {{ $produkFG->links() }}
+            </ul>
+        </nav>
+    </div>
+    <div class="border border-dark rounded-3">
+        <div class="table-responsive">
+            <table class="table align-middle text-nowrap text-center custom-table m-0">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Produk</th>
+                        <th>Shift Produksi</th>
+                        <th>QTY- Awal</th>
+                        <th>QTY- Masuk</th>
+                        <th>QTY- Keluar</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($produkFG as $produkfg)
                         <tr>
-                            <th>No</th>
-                            <th>Nama Produk</th>
-                            <th>Shift Produksi</th>
-                            <th>QTY- Awal</th>
-                            <th>QTY- Masuk</th>
-                            <th>QTY- Keluar</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Araceli Zhang</td>
-                            <td>info@example.com</td>
-                            <td>20/10/2020</td>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $produkfg['nama_produk'] }}</td>
+                            <td>{{ $produkfg['shift_produksi'] }}</td>
+                            <td>{{ $produkfg['qty_awal'] }}</td>
+                            <td>{{ $produkfg['qty_in'] }}</td>
+                            <td>{{ $produkfg['qty_out'] }}</td>
                             <td>
-                                <div class="d-flex align-items-center">
-                                    <i class="bi bi-check-circle me-2 text-success fs-5"></i>
-                                    Subscribed
-                                </div>
-                            </td>
-                            <td>United States</td>
-                            <td>
-                                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip-primary"
-                                    data-bs-title="Edit">
+                                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#editfg_product" wire:click="showData({{ $produkfg->id }})">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
-                                <button class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger"
-                                    data-bs-title="Delete">
+                                <button type="button" wire:click="delete({{ $produkfg->id }})"
+                                    class="btn btn-outline-danger btn-sm"
+                                    wire:confirm="Yakin menghapus {{ $produkfg->nama_produk }} (Shift: {{ $produkfg->shift_produksi }})">
                                     <i class="bi bi-trash3"></i>
                                 </button>
                             </td>
                         </tr>
+                    @empty
                         <tr>
-                            <td>2</td>
-                            <td>Carmen Mccall</td>
-                            <td>info@example.com</td>
-                            <td>20/10/2020</td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <i class="bi bi-check-circle me-2 text-success fs-5"></i>
-                                    Subscribed
-                                </div>
-                            </td>
-                            <td>India</td>
-                            <td>
-                                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip-primary"
-                                    data-bs-title="Edit">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-                                <button class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger"
-                                    data-bs-title="Delete">
-                                    <i class="bi bi-trash3"></i>
-                                </button>
-                            </td>
+                            <td colspan="8">Tidak ada data.</td>
                         </tr>
-                        </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                    @endforelse
+                    </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        </x.persediaan_barang>
-
-    </x.po_costumer>
+    </div>
+    <x-po_costumer.modal.modal-proses_material.fg_product />
+</div>

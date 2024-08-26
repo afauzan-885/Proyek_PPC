@@ -1,97 +1,68 @@
-<x.po_costumer>
-    <x.po_costumer>
-        <div class="d-flex justify-content-between mb-2">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#wip_product">
-                <i class="bi bi-file-earmark-plus"></i>
-                Baru
-            </button>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination m-auto">
-                    <li class="page-item"><a class="page-link" href="#">Mundur</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Maju</a></li>
-                </ul>
-            </nav>
-        </div>
-        <div class="border border-dark rounded-3">
-            <div class="table-responsive">
-                <table class="table align-middle text-nowrap text-center custom-table m-0">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Material</th>
-                            <th>Tanggal Produksi</th>
-                            <th>Shift</th>
-                            <th>No. Mesin</th>
-                            <th>Proses Produksi</th>
-                            <th>Hasil OK (QTY)</th>
-                            <th>Hasil NG (QTY)</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Araceli Zhang</td>
-                            <td>info@example.com</td>
-                            <td>20/10/2020</td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <i class="bi bi-check-circle me-2 text-success fs-5"></i>
-                                    Subscribed
-                                </div>
-                            </td>
-                            <td>United States</td>
-                            <td>United States</td>
-                            <td>United States</td>
-                            <td>
-                                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip-primary"
-                                    data-bs-title="Edit">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-                                <button class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger"
-                                    data-bs-title="Delete">
-                                    <i class="bi bi-trash3"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Carmen Mccall</td>
-                            <td>info@example.com</td>
-                            <td>20/10/2020</td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <i class="bi bi-check-circle me-2 text-success fs-5"></i>
-                                    Subscribed
-                                </div>
-                            </td>
-                            <td>India</td>
-                            <td>India</td>
-                            <td>United States</td>
-                            <td>
-                                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip-primary"
-                                    data-bs-title="Edit">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-                                <button class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger"
-                                    data-bs-title="Delete">
-                                    <i class="bi bi-trash3"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        </x.persediaan_barang>
+<div>
+    @props(['produkWIP'])
+    <div class="d-flex justify-content-between mb-2">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#inputwip_product">
+            <i class="bi bi-file-earmark-plus"></i>
+            Baru
+        </button>
+        <nav aria-label="Page navigation">
+            <ul class="pagination m-auto">
+                {{ $produkWIP->links() }}
+            </ul>
+        </nav>
+    </div>
+    <div class="border border-dark rounded-3">
+        <div class="table-responsive">
+            <table class="table align-middle text-nowrap text-center custom-table m-0">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Produk</th>
+                        <th>Tanggal Produksi</th>
+                        <th>Shift</th>
+                        <th>No. Mesin</th>
+                        <th>Proses Produksi</th>
+                        <th>Hasil OK/Baik (QTY)</th>
+                        <th>Hasil NG/Cacat (QTY)</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-    </x.po_costumer>
+                    @forelse ($produkWIP as $produkwip)
+                        <tr>
+                            <td>{{ $loop->iteration }}
+                            <td>{{ $produkwip['nama_produk'] }}</td>
+                            <td x-data="{ tanggal: '{{ $produkwip['tanggal_produksi'] }}' }">
+                                <span x-text="moment(tanggal).format('DD-MM-YYYY')"></span>
+                            </td>
+                            <td>{{ $produkwip['shift'] }}</td>
+                            <td>{{ $produkwip['no_mesin'] }}</td>
+                            <td>{{ $produkwip['proses_produksi'] }}</td>
+                            <td>{{ $produkwip['hasil_ok'] }}</td>
+                            <td>{{ $produkwip['hasil_ng'] }}</td>
+                            <td>
+                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#editwip_product" wire:click="showData({{ $produkwip->id }})">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+
+                                <button type="button" wire:click="delete({{ $produkwip->id }})"
+                                    class="btn btn-outline-danger btn-sm" data-bs-placement="top"
+                                    data-bs-custom-class="custom-tooltip-danger"
+                                    wire:confirm="Yakin ingin menghapus {{ $produkwip->nama_material }}?">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8">Tidak ada data.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <x-po_costumer.modal.modal-proses_material.wip_product />
+</div>

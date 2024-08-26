@@ -60,7 +60,7 @@ class CSController extends Component
         
         CSModel::findOrFail($this->cs_id)->update($validatedData);
         } catch (ModelNotFoundException $e) {
-            session()->flash('error', 'Data customer tidak ditemukan.');
+            // session()->flash('error', 'Data customer tidak ditemukan.');
         }
         
         $namacostumer = $validatedData['nama_costumer'];
@@ -74,14 +74,14 @@ class CSController extends Component
     }
 
     public function delete($id)
-{
-    $customer = CSModel::find($id);
-    $namaCustomer = $customer->nama_costumer;
-    $customer->delete();
+    {
+        $customer = CSModel::find($id);
+        $namaCustomer = $customer->nama_costumer;
+        $customer->delete();
 
-    // Tampilkan pesan flash dengan nama customer
-    session()->flash('sukseshapus', 'Data ' . $namaCustomer . ' berhasil dihapus.');
-}
+        $this->dispatch('toastify',  $namaCustomer . ' berhasil dihapus.');
+        // Tampilkan pesan flash dengan nama customer
+    }
 
     public function render()
     {
