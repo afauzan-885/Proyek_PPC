@@ -4,7 +4,7 @@
 
 # Proyek PPC
 
-Proyek PPC (Pengolahan Pengeluaran dan Pembukuan) ini dibuat untuk memenuhi tugas kuliah dan bertujuan untuk mempermudah alur kerja dalam menginput serta membukukan laporan secara semi otomatis.
+Proyek PPC (Program Planning and Controll) ini dibuat untuk memenuhi tugas kuliah dan bertujuan untuk mempermudah alur kerja dalam menginput serta membukukan laporan secara semi otomatis.
 
 ## Tujuan Proyek
 
