@@ -13,7 +13,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_costumer');
             $table->string('kode_costumer', 50)->unique();
-            $table->string('no_telepon_pt', 20);
+            $table->string('no_telepon_pt', 30);
             $table->text('alamat_costumer');
             $table->string('email_costumer');
             $table->text('kontak_costumer')->nullable();

@@ -31,8 +31,7 @@
                                     id="rememberPassword" />
                                 <label class="form-check-label" for="rememberPassword">Ingatkan Saya</label>
                             </div>
-                            <a href="/lupa-password" class="text-blue text-decoration-underline">Lupa
-                                Sandi?</a>
+                            <a href="/lupa-password" class="text-blue text-decoration-underline">Lupa Sandi?</a>
                         </div>
                     </div>
                     <div class="d-grid py-3 mt-4">

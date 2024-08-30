@@ -166,7 +166,7 @@ class POPembelianMaterialController extends Component
 
     public function render()
     {
-        $poPembelianMaterial = PPMModel::paginate(10);
+        $poPembelianMaterial = PPMModel::paginate(9);
         $warehouses = WHModel::all();
         
         return view('livewire.po_costumer.tabel.tabel-pembelian_material', [

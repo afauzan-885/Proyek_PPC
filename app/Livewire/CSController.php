@@ -85,7 +85,7 @@ class CSController extends Component
 
     public function render()
     {
-        $CostumerSuppliers = CSModel::paginate(10);
+        $CostumerSuppliers = CSModel::paginate(9);
         return view('livewire.costumer-supplier', [
             'CostumerSupplier'=>$CostumerSuppliers]);
     }

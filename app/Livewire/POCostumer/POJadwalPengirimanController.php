@@ -92,7 +92,7 @@ class POJadwalPengirimanController extends Component
 
     public function render()
     {
-        $poJadwalPengiriman = PJPModel::paginate(10);
+        $poJadwalPengiriman = PJPModel::paginate(9);
         
         return view('livewire.po_costumer.tabel.tabel-jadwal_pengiriman', [
             'poJadwalPengiriman' => $poJadwalPengiriman,

@@ -1,6 +1,7 @@
 <div>
-    <div class="modal fade" wire:ignore.self id="inputkedatangan_material" tabindex="-1"
-        aria-labelledby="inputkedatangan_materiallabel" aria-hidden="true">
+    @props(['datawarehouse'])
+    <div class="modal fade" wire:ignore.self id="inputkedatangan_material" aria-labelledby="inputkedatangan_materiallabel"
+        aria-hidden="true" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -15,8 +16,8 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-xl-12 col-12">
-                                <div class="row">
 
+                                <div class="row">
                                     <div class="col-6">
                                         <!-- Form Field Start -->
                                         <div class="mb-3">
@@ -32,8 +33,21 @@
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="kode_material" class="form-label">Kode Material</label>
-                                            <input type="text" class="form-control" wire:model="kode_material"
-                                                id="kode_material" placeholder="Masukkan Kode Material" />
+                                            <div class="input-group" wire:change="validateKodeMaterial">
+                                                <select wire:model="kode_material" id="kode_material"
+                                                    class="form-select">
+                                                    <option value="" selected hidden>Pilih Kode Barang...</option>
+                                                    @foreach ($datawarehouse as $wh)
+                                                        <option value="{{ $wh->kode_material }}">
+                                                            {{ $wh->kode_material }} - {{ $wh->nama_material }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    wire:click="cari">
+                                                    <i class="bi bi-search"></i>
+                                                </button>
+                                            </div>
                                             @error('kode_material')
                                                 <small class="d-block mt-1 text-danger"
                                                     role="alert">{{ $message }}</small>
@@ -71,14 +85,30 @@
                                     </div>
 
                                     <div class="col-6">
-                                        <div class="mb-3">
-                                            <label for="qty_sheet_lyr" class="form-label">QTY (Sheet/Lyr/Kg)</label>
-                                            <input type="text" class="form-control" wire:model="qty_sheet_lyr"
-                                                id="qty_sheet_lyr" placeholder="Cnth: 3 Lembar/3 Kg/3 Layer" />
-                                            @error('qty_sheet_lyr')
-                                                <small class="d-block mt-1 text-danger"
-                                                    role="alert">{{ $message }}</small>
-                                            @enderror
+                                        <div class="row g-1">
+                                            <div class="col-6">
+                                                <label for="qty" class="form-label">QTY</label>
+                                                <input type="text" class="form-control" wire:model="qty"
+                                                    id="qty" placeholder="3 Kg/3 Lyr" />
+                                                @error('qty')
+                                                    <small class="d-block mt-1 text-danger"
+                                                        role="alert">{{ $message }}</small>
+                                                @enderror
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="satuan" class="form-label">Satuan</label>
+                                                <select class="form-select" wire:model="satuan">
+                                                    <option value="" selected hidden>
+                                                        Pilih...
+                                                    <option value="Layer">Layer</option>
+                                                    <option value="Kg">Kg</option>
+                                                    <option value="Sheet">Sheet</option>
+                                                </select>
+                                                @error('satuan')
+                                                    <small class="d-block mt-1 text-danger"
+                                                        role="alert">{{ $message }}</small>
+                                                @enderror
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-6">
@@ -157,6 +187,17 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="kode_material" class="form-label">Kode Material</label>
+                                            <input type="text" class="form-control" wire:model="kode_material"
+                                                id="kode_material" placeholder="Masukkan Kode Material" />
+                                            @error('kode_material')
+                                                <small class="d-block mt-1 text-danger"
+                                                    role="alert">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
 
                                     <div class="col-6">
                                         <!-- Form Field Start -->
@@ -189,10 +230,10 @@
 
                                     <div class="col-6">
                                         <div class="mb-3">
-                                            <label for="qty_sheet_lyr" class="form-label">QTY (Sheet/Lyr/Kg)</label>
-                                            <input type="text" class="form-control" wire:model="qty_sheet_lyr"
-                                                id="qty_sheet_lyr" placeholder="Cnth: 3 Lembar/3 Kg/3 Layer" />
-                                            @error('qty_sheet_lyr')
+                                            <label for="qty" class="form-label">QTY (Sheet/Lyr/Kg)</label>
+                                            <input type="text" class="form-control" wire:model="qty"
+                                                id="qty" placeholder="Cnth: 3 Lembar/3 Kg/3 Layer" />
+                                            @error('qty')
                                                 <small class="d-block mt-1 text-danger"
                                                     role="alert">{{ $message }}</small>
                                             @enderror
@@ -235,4 +276,5 @@
             </div>
         </div>
     </div>
+
 </div>

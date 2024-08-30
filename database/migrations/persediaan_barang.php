@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('kode_material', 50)->unique();
             $table->string('nama_material');
             $table->string('ukuran_material', 50);
-            $table->integer('stok_material', 20);
+            $table->integer('stok_material');
             // $table->decimal('berat', 10, 2);
             $table->decimal('harga_material', 19, 2);
             $table->string('deskripsi');

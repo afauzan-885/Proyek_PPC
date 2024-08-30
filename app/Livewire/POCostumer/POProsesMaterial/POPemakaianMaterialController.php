@@ -91,7 +91,7 @@ class POPemakaianMaterialController extends Component
 
     public function render()
     {
-        $pemakaianMaterial = PoPM::paginate(10);
+        $pemakaianMaterial = PoPM::paginate(9);
         
         return view('livewire.po_costumer.tabel.tabel-proses_material.tabel-pemakaian_material', [
             'pemakaianMaterial' => $pemakaianMaterial,

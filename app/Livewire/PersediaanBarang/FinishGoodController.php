@@ -24,7 +24,7 @@ class FinishGoodController extends Component
     }
 
     protected $rules = [
-        'kode_costumer' => 'required',
+        // 'kode_costumer' => 'required',
         'kode_barang' => 'required|unique:pb__finish_goods,kode_barang',
         'nama_barang' => 'required',
         'no_part' => 'required',
@@ -123,7 +123,7 @@ class FinishGoodController extends Component
     }
     public function render()
     {
-        $finishGoods = FGModel::paginate(10);
+        $finishGoods = FGModel::paginate(9);
         $costumerSuppliers = CostumerSupplier::all(); // Ambil data dari model CostumerSupplier
     
         return view('livewire.persediaan_barang.tabel.tabel_fg', [

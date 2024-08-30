@@ -10,7 +10,7 @@ class PBFinishGood extends Model
     use HasFactory;
     protected $table = 'pb__finish_goods';
     protected $fillable = [
-        'kode_costumer', 
+        // 'kode_costumer', 
         'kode_barang',
         'nama_barang',
         'no_part',

@@ -78,7 +78,7 @@ class WarehouseController extends Component
                 'nama_material' => 'required',
                 'ukuran_material' => 'required',
                 'harga_material' => 'required',
-                // 'stok_material' => 'required',
+                'stok_material' => 'required',
                 // 'status' => 'required',
                 'deskripsi' => 'required',
             ]);
@@ -90,7 +90,7 @@ class WarehouseController extends Component
             $warehouse->update($validatedData);
 
             // Tambahkan baris ini untuk memicu render ulang komponen
-            $this->emit('materialUpdated');
+            $this->dispatch('materialUpdated');
 
             WHModel::findOrFail($this->w_id)->update($validatedData);
         } catch (ModelNotFoundException $e) {
@@ -117,7 +117,7 @@ class WarehouseController extends Component
 
     public function render()
     {
-        $warehouses = WHModel::paginate(10);
+        $warehouses = WHModel::paginate(9);
         return view('livewire.persediaan_barang.tabel.tabel_wh', [
             'Warehouse' => $warehouses,
         ]);

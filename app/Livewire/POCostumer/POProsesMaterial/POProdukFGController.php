@@ -87,7 +87,7 @@ class POProdukFGController extends Component
 
     public function render()
     {
-        $produkFG = PoFG::paginate(10);
+        $produkFG = PoFG::paginate(9);
         
         return view('livewire.po_costumer.tabel.tabel-proses_material.tabel-produk_fg', [
             'produkFG' => $produkFG,

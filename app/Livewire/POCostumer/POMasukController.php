@@ -37,10 +37,15 @@ class POMasukController extends Component
     {
         $validatedData = $this->validate();
 
-        $validatedData['total_amount'] = (float) Str::of($validatedData['total_amount'])
-            ->replaceMatches('/[^0-9,]/', '')
-            ->replace(',', '.')
-            ->__toString();
+        function toFloat($value) {
+            return (float) Str::of($value)
+                ->replaceMatches('/[^0-9,]/', '')
+                ->replace(',', '.')
+                ->__toString();
+        }
+        
+        $validatedData['total_amount'] = toFloat($validatedData['total_amount']);
+        $validatedData['harga'] = toFloat($validatedData['harga']);
 
         PMModel::create($validatedData);
         sleep(1);
@@ -182,7 +187,7 @@ class POMasukController extends Component
     public function render()
     {
         // $result = [];
-        $poMasuk = PMModel::paginate(10);
+        $poMasuk = PMModel::paginate(9);
         $finishgoods = FGModel::all();
 
         // $this->searchCustomers(); // Panggil fungsi searchCustomers

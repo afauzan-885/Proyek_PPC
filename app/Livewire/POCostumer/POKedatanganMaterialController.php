@@ -3,6 +3,7 @@
 namespace App\Livewire\POCostumer;
 
 use App\Models\POCostumer\POKedatanganMaterial as PKMModel;
+use App\Models\PersediaanBarang\PBWarehouse as WHModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -17,36 +18,52 @@ class POKedatanganMaterialController extends Component
     $kode_material,
     $tgl_msk_material,
     $nama_supplier,
-    $qty_sheet_lyr,
-    $qty_kg,
-    $surat_jalan;
+    $qty,
+    $surat_jalan,
+    $satuan;
 
     public $PKM_id;
 
     protected $rules = [
         'nama_material' => 'required',
-        'kode_material' => 'required',
+        'kode_material' => 'required|unique:po__kedatangan_material,kode_material',
         'tgl_msk_material' => 'required',
         'nama_supplier' => 'required',
-        'qty_sheet_lyr' => 'required',
+        'qty' => 'required',
         'surat_jalan' => 'required',
+        'satuan' => 'required',
     ];
+    public function validateKodeMaterial()
+    {
+        $this->validateOnly('kode_material'); // Hanya validasi field 'kode_material'
+    }
 
     public function messages()
     {
         return [
-             '*' => 'Form ini tidak boleh kosong'
+            '*' => 'Form ini tidak boleh kosong',
+            'kode_material.unique' => 'Kode telah di input sebelumnya', 
         ];
+    }
+
+    public function cari ()
+    {
+        $warehouse = WHModel::where('kode_material', $this->kode_material)->first();
+        sleep(1);
+        if($warehouse){
+            $this->nama_material = $warehouse->nama_material;
+            $this->resetErrorBag('kode_material');
+        }else{
+            $this->addError('kode_material', 'Kode tidak ditemukan');
+        }
     }
 
     public function storeData()
     {
         $validatedData = $this->validate();
-
-        
         PKMModel::create($validatedData);
 
-        $this->reset('nama_material', 'tgl_msk_material','nama_supplier','qty_sheet_lyr','surat_jalan');
+        $this->reset('nama_material','kode_material', 'tgl_msk_material','nama_supplier','qty','surat_jalan');
         session()->flash('suksesinput', 'Material berhasil ditambahkan.');
     }
 
@@ -91,10 +108,12 @@ class POKedatanganMaterialController extends Component
 
     public function render()
     {
-        $poKedatanganMaterial = PKMModel::paginate(10);
+        $poKedatanganMaterial = PKMModel::paginate(9);
+        $warehouse = WHModel::all();
         
         return view('livewire.po_costumer.tabel.tabel-kedatangan_material', [
             'poKedatanganMaterial' => $poKedatanganMaterial,
+            'warehouse' => $warehouse,
         ]);
     }
 }

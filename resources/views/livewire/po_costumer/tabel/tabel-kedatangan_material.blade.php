@@ -34,7 +34,7 @@
                                 <span x-text="moment(tanggal).format('DD-MM-YYYY')"></span>
                             </td>
                             <td>{{ $kedatanganmaterial['nama_supplier'] }}</td>
-                            <td>{{ $kedatanganmaterial['qty_sheet_lyr'] }}</td>
+                            <td>{{ $kedatanganmaterial['qty'] }} {{ $kedatanganmaterial['satuan'] }}</td>
                             <td>{{ $kedatanganmaterial['surat_jalan'] }}</td>
                             <td>
                                 <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
@@ -58,5 +58,5 @@
             </table>
         </div>
     </div>
-    <x-po_costumer.modal.kedatangan_material />
+    <x-po_costumer.modal.kedatangan_material :datawarehouse="$warehouse" />
 </div>

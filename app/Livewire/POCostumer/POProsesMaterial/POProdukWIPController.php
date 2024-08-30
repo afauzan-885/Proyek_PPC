@@ -96,7 +96,7 @@ class POProdukWIPController extends Component
 
     public function render()
     {
-        $produkWIP = PoWIP::paginate(10);
+        $produkWIP = PoWIP::paginate(9);
         
         return view('livewire.po_costumer.tabel.tabel-proses_material.tabel-produk_wip', [
             'produkWIP' => $produkWIP,

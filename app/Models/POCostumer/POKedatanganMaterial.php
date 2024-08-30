@@ -15,8 +15,9 @@ class POKedatanganMaterial extends Model
       'nama_material',
       'tgl_msk_material',
       'nama_supplier',
-      'qty_sheet_lyr',
+      'qty',
       'surat_jalan',
+      'satuan',
   ];
   public function warehouse()
   {
