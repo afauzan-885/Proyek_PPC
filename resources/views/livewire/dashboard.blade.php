@@ -2,24 +2,13 @@
     <div class="row">
         <div class="col-xl-4 col-sm-6 col-xl-4 col-12">
             <div class="card mb-4">
-                <a href="{{ route('costumer_supplier') }}"wire:navigate>
+                <a href="{{ route('costumer_supplier') }}" wire:navigate>
                     <div class="card-body">
                         <div class="d-flex flex-row">
                             <div class="icon-box lg rounded-3 bg-light mb-4">
                                 <i class="fa-solid fa-envelope-open-text text-primary fs-2"></i>
                             </div>
                             <div class="ms-4">
-                                {{-- <h1 class="fw-bold mb-2 d-flex align-items-center">
-                                    <span class="jumlah-customer-value">{{ $jumlahCustomer }}</span>
-                                    @if ($incrementCustomer > 0)
-                                        <span class="increment-icon-container">
-                                            <i class="text-success increment-icon"></i>
-                                            <span class="increment-value">
-                                                <h5>({{ $incrementCustomer }})</h5>
-                                            </span>
-                                        </span>
-                                    @endif
-                                </h1> --}}
                                 <h1 class="fw-bold mb-2">0</h1>
                                 <h5 class="m-0 fw-normal opacity-50">Costumer Supplier</h5>
                             </div>
@@ -31,7 +20,7 @@
         </div>
         <div class="col-xl-4 col-sm-6 col-xl-4 col-12">
             <div class="card mb-4">
-                <a href="{{ route('persediaan_barang') }}"wire:navigate>
+                <a href="{{ route('persediaan_barang') }}" wire:navigate>
                     <div class="card-body">
                         <div class="d-flex flex-row">
                             <div class="icon-box lg rounded-3 bg-light mb-4">
@@ -50,7 +39,7 @@
 
         <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-xl-4 col-12">
             <div class="card mb-4">
-                <a href="{{ route('po_costumer') }}"wire:navigate>
+                <a href="{{ route('po_costumer') }}" wire:navigate>
                     <div class="card-body">
                         <div class="d-flex flex-row">
                             <div class="icon-box lg rounded-3 bg-light mb-4">
@@ -68,41 +57,24 @@
         </div>
     </div>
     <!-- ========== Grafik Section ========== -->
-    <div class="card">
+    {{-- <div class="card">
         <div class="card-header text-center border-0">
             <h3 class="card-title">Grafik Kemajuan</h3>
         </div>
         <div class="row">
             <div class="col-xl-4 col-12">
-                {{-- <div class="card mb-2">
-                    <div class="card-header text-center">
-                        <h5 class="card-title">Jumlah Costumer</h5>
-                    </div>
-                    <div class="card-body">
-                        <div id="jumlah_costumer"></div>
-                    </div>
-                </div> --}}
+                Isi
             </div>
             <div class="col-xl-4 col-12">
                 <div class="card mb-2">
-                    {{-- <div class="card-header text-center">
-                        <h5 class="card-title">Jumlah Barang</h5>
-                    </div>
-                    <div class="card-body">
-                        <div id="jumlah_barang"></div>
-                    </div> --}}
+                    Isi
                 </div>
             </div>
             <div class="col-xl-4 col-12">
                 <div class="card mb-2">
-                    {{-- <div class="card-header text-center">
-                        <h5 class="card-title">Jumlah PO</h5>
-                    </div>
-                    <div class="card-body">
-                        <div id="jumlah_po"></div>
-                    </div> --}}
+                    Isi
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>

@@ -8,13 +8,15 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\Component;
 use NumberFormatter;
 use Illuminate\Support\Str;
+use Livewire\WithPagination;
 
 class POMasukController extends Component
 {
+    use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
     public $nama_customer, $tanggal_po, $term_of_payment, $qty, $no_po, $tanggal_pengiriman, $kode_barang, $total_amount, $harga;
-    public $PM_id, $costumersupplier, $searchCustomer;
+    public $PM_id, $costumersupplier, $lastPage, $searchTerm='', $page, $query;
     protected $rules = [
         'nama_customer' => 'required',
         'tanggal_po' => 'required',
@@ -65,7 +67,6 @@ class POMasukController extends Component
             if ($finishGood) {
                 $this->harga = $finishGood->harga;
                 $datapm->total_amount = number_format($datapm->total_amount, 0, ',', '.'); // Format harga untuk tampilan
-                
                 $formatter = new NumberFormatter('id_ID', NumberFormatter::DECIMAL);
                 $this->harga = $formatter->formatCurrency($finishGood->harga, 'IDR');
 
@@ -106,6 +107,7 @@ class POMasukController extends Component
                 'total_amount' => 'required',
             ]);
             sleep(1);
+       
         //Logika Untuk menghilangkan pembatas ribuan
         $validatedData['total_amount'] = preg_replace('/[^0-9]/', '', $validatedData['total_amount']);
         $validatedData['total_amount'] = (float) $validatedData['total_amount'];
@@ -174,6 +176,21 @@ class POMasukController extends Component
         $this->resetValidation(); 
     }
 
+    public function updatedSearchTerm()
+    {
+        if ($this->searchTerm) { // Jika ada input pencarian
+            if (empty($this->lastPage)) { 
+                $this->lastPage = $this->page; // Simpan halaman saat ini jika pencarian baru dimulai
+            }
+            $this->resetPage(); // Reset ke halaman 1 saat pencarian berlangsung
+        } else {
+            if ($this->lastPage) {
+                $this->setPage($this->lastPage);
+                $this->lastPage = null; // Reset lastPage setelah digunakan
+            }
+        }
+    }
+
     // public function searchCustomers()
     // {
     //     if (strlen($this->searchCustomer) >= 1) {
@@ -187,7 +204,21 @@ class POMasukController extends Component
     public function render()
     {
         // $result = [];
-        $poMasuk = PMModel::paginate(9);
+
+        $searchTerm = '%' . strtolower(str_replace([' ', '.'], '', $this->searchTerm)) . '%';
+
+        $poMasuk = PMModel::where(function ($query) use ($searchTerm) {
+            $query->whereRaw('LOWER(REPLACE(REPLACE(nama_customer, " ", ""), ".", "")) LIKE ?', [$searchTerm])
+                ->orWhereRaw('LOWER(REPLACE(REPLACE(no_po, " ", ""), ".", "")) LIKE ?', [$searchTerm])
+                ->orWhereRaw('LOWER(REPLACE(REPLACE(term_of_payment, " ", ""), ".", "")) LIKE ?', [$searchTerm])
+                ->orWhereRaw('LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")) LIKE ?', [$searchTerm]);
+        })
+        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(nama_customer, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(no_po, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(term_of_payment, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+        ->paginate(9);
+
         $finishgoods = FGModel::all();
 
         // $this->searchCustomers(); // Panggil fungsi searchCustomers

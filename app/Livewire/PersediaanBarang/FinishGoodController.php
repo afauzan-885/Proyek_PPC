@@ -13,24 +13,21 @@ class FinishGoodController extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    public $costumerSuppliers = [];
+    public $query;
 
     //Public Finish Good
-    public $kode_costumer, $kode_barang, $nama_barang, $no_part, $harga, $tipe_barang, $deskripsi = '', $fg_id;
+    public $kode_barang, $nama_barang, $no_part, $harga, $tipe_barang, $deskripsi;
 
-    public function mount()
-    {
-        $this->costumerSuppliers = CostumerSupplier::all();
-    }
+    public $fg_id,  $searchTerm='', $lastPage, $page;
 
     protected $rules = [
-        // 'kode_costumer' => 'required',
         'kode_barang' => 'required|unique:pb__finish_goods,kode_barang',
         'nama_barang' => 'required',
         'no_part' => 'required',
-        // 'stok' => 'required',
+        // 'stok_material' => 'required',
         'harga' => 'required',
         'tipe_barang' => 'required',
+        // 'status' => 'required',
     ];
 
     public function messages()
@@ -79,13 +76,13 @@ class FinishGoodController extends Component
     {
         try {
             $validatedData = $this->validate([
-                'kode_costumer' => 'required',
                 'kode_barang' => 'required',
                 'nama_barang' => 'required',
                 'no_part' => 'required',
-                // 'stok' => 'required',
+                // 'stok_material' => 'required',
                 'harga' => 'required',
                 'tipe_barang' => 'required',
+                // 'status' => 'required',
             ]);
 
             $validatedData['harga'] = (float) str_replace('.', '', $validatedData['harga']);
@@ -94,16 +91,10 @@ class FinishGoodController extends Component
             $fg = FGModel::findOrFail($this->fg_id);
             $fg->update($validatedData);
 
-            session()->flash('suksesupdate', 'Item ' . $fg->nama_barang . ' dengan kode ' . $fg->kode_costumer . ' berhasil diupdate.');
+            session()->flash('suksesupdate', 'Item ' . $fg->nama_barang . ' dengan kode ' . $fg->kode_barang . ' berhasil diupdate.');
         } catch (ModelNotFoundException $e) {
             session()->flash('error', 'Data tidak ditemukan.');
         }
-    }
-
-    public function updated($fields)
-    {
-        $this->validateOnly($fields);
-        $this->costumerSuppliers = CostumerSupplier::all();
     }
 
     public function delete($id)
@@ -121,11 +112,36 @@ class FinishGoodController extends Component
         $this->resetErrorBag();
         $this->resetValidation();
     }
+
+    public function updatedSearchTerm()
+    {
+        if ($this->searchTerm) { // Jika ada input pencarian
+            if (empty($this->lastPage)) { 
+                $this->lastPage = $this->page; // Simpan halaman saat ini jika pencarian baru dimulai
+            }
+            $this->resetPage(); // Reset ke halaman 1 saat pencarian berlangsung
+        } else {
+            if ($this->lastPage) {
+                $this->setPage($this->lastPage);
+                $this->lastPage = null; // Reset lastPage setelah digunakan
+            }
+        }
+    }
+
     public function render()
     {
-        $finishGoods = FGModel::paginate(9);
+        $searchTerm = '%' . strtolower(str_replace([' ', '.'], '', $this->searchTerm)) . '%';
+
+        $finishGoods = FGModel::where(function ($query) use ($searchTerm) {
+            $query->whereRaw('LOWER(REPLACE(REPLACE(nama_barang, " ", ""), ".", "")) LIKE ?', [$searchTerm])
+                ->orWhereRaw('LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")) LIKE ?', [$searchTerm]);
+        })
+        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(nama_barang, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+        ->paginate(9);
+
+
         $costumerSuppliers = CostumerSupplier::all(); // Ambil data dari model CostumerSupplier
-    
         return view('livewire.persediaan_barang.tabel.tabel_fg', [
             'finishGoods' => $finishGoods,
         ])

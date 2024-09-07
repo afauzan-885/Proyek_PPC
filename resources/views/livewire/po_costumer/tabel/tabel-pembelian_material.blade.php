@@ -1,15 +1,34 @@
 <div>
     @props(['poPembelianMaterial'])
-    <div class="d-flex justify-content-between mb-2">
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#inputpembelian_barang">
-            <i class="bi bi-file-earmark-plus"></i>
-            Baru
-        </button>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination m-auto">
-                {{ $poPembelianMaterial->links() }}
-            </ul>
-        </nav>
+    <div class="d-flex bd-highlight mb-1">
+        <div class="bd-highlight p-1">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#inputpembelian_barang">
+                <i class="bi bi-file-earmark-plus"></i>
+                Baru
+            </button>
+        </div>
+        <div class="bd-highlight  mt-1">
+            <div wire:submit="search" wire:ignore>
+                <input type="search" wire:model.live="searchTerm" class='form-control' role="search"
+                    placeholder="Cari Data...">
+            </div>
+        </div>
+        <div class="bd-highlight mt-2">
+            <div x-data="{ tooltip: 'Fitur dalam Pengembangan, jika menggunakannya Page akan direset ke Page 1' }">
+                <button x-tooltip="tooltip"
+                    style="border: none !important; outline: none !important;  background-color: transparent !important; max-width: 50px !important">
+                    <i class="bi bi-question-circle help-icon"></i>
+                </button>
+            </div>
+        </div>
+        <div class=" ms-auto bd-highlight">
+            <nav aria-label="Page navigation">
+                <ul wire:ignore class="pagination m-auto">
+                    <span wire:loading>Memuat..</span>
+                    {{ $poPembelianMaterial->links() }}
+                </ul>
+            </nav>
+        </div>
     </div>
     <div class="border border-dark rounded-3">
         <div class="table-responsive">
@@ -53,7 +72,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8">Tidak ada data.</td>
+                            <td colspan="8">Tidak ada data :(</td>
                         </tr>
                     @endforelse
                 </tbody>

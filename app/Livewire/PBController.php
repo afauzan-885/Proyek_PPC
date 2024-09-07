@@ -14,6 +14,12 @@ class PBController extends Component
         session(['activeTab' => $tab]);
     }
     
+    public function placeholder(array $params = [])
+    {
+        
+        return view('livewire.placeholder.pb_po_placeholder', $params);
+    }
+
     // #[Computed]
     public function render()
     {

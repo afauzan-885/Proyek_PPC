@@ -10,6 +10,7 @@ class PO_PM_WipProduct extends Model
     protected $table = 'po__pm__produk_wip';
     protected $fillable = [
         'nama_produk',
+        'kode_barang',
         'tanggal_produksi',
         'shift',
         'no_mesin',

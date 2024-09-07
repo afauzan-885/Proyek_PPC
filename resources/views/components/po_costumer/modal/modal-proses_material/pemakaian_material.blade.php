@@ -1,3 +1,4 @@
+@props(['datawarehouse'])
 <div class="modal fade" wire:ignore.self id="inputpemakaian_material" tabindex="-1"
     aria-labelledby="inputpemakaian_materiallabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -17,24 +18,29 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="mb-3">
-                                        <label for="nama_material" class="form-label">Nama Material</label>
-                                        <input type="text" class="form-control" wire:model="nama_material"
-                                            id="nama_material" placeholder="Masukkan Nama Material" />
-                                        @error('nama_material')
-                                            <small class="d-block mt-1 text-danger"
-                                                role="alert">{{ $message }}</small>
-                                        @enderror
+                                        <label for="kode_material" class="form-label">Kode Material</label>
+                                        <div class="input-group" wire:change.debounce.500ms="validateKodeMaterial">
+                                            <select wire:model="kode_material" id="kode_material" class="form-select">
+                                                <option value="" selected hidden>Pilih Kode Barang...</option>
+                                                @foreach ($datawarehouse as $wh)
+                                                    <option value="{{ $wh->kode_material }}">
+                                                        {{ $wh->kode_material }} - {{ $wh->nama_material }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
+                                    @error('kode_material')
+                                        <small class="d-block mt-1 text-danger" role="alert">{{ $message }}</small>
+                                    @enderror
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="jumlah_pengeluaran_material" class="form-label">Jumlah
                                                 Pengeluaran</label>
-                                            <input type="text" x-model.number="jumlah_pengeluaran_material"
-                                                wire:model.defer="jumlah_pengeluaran_material"
-                                                @input="jumlah_pengeluaran_material = jumlah_pengeluaran_material.replace(/[^0-9]/g, '')"
-                                                class="form-control" placeholder="Qty">
+                                            <input type="text" wire:model="jumlah_pengeluaran_material"
+                                                wire:blur='cari' class="form-control" placeholder="Qty">
                                             @error('jumlah_pengeluaran_material')
                                                 <small class="d-block mt-1 text-danger"
                                                     role="alert">{{ $message }}</small>
@@ -44,13 +50,8 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="satuan" class="form-label">Satuan</label>
-                                            <select class="form-select" wire:model="satuan">
-                                                <option value="" selected hidden>
-                                                    Pilih Satuan...
-                                                <option value="Layer">Layer</option>
-                                                <option value="Kg">Kg</option>
-                                                <option value="Sheet">Sheet</option>
-                                            </select>
+                                            <input type="text" class="form-control" wire:model="satuan" readonly>
+
                                             @error('satuan')
                                                 <small class="d-block mt-1 text-danger"
                                                     role="alert">{{ $message }}</small>
@@ -62,7 +63,7 @@
                                     <div class="mb-3">
                                         <label for="tgl_pemakaian_mtrial" class="form-label">Tanggal Pemakaian
                                             Material</label>
-                                        <div class="input-group">
+                                        <div class="input-group" wire:change='cari'>
                                             <input type="date" class="form-control" wire:model="tgl_pemakaian_mtrial"
                                                 id="tgl_pemakaian_mtrial" />
                                         </div>
@@ -94,6 +95,10 @@
                             <div class="text-success word-break">
                                 <small>{{ session('suksesinput') }}</small>
                             </div>
+                        @elseif (session('error'))
+                            <div class="text-danger word-break">
+                                <small>{{ session('error') }}</small>
+                            </div>
                         @endif
                     </div>
                     <button type="submit" class="btn btn btn-primary">
@@ -107,7 +112,7 @@
 </div>
 
 {{-- Edit Form Modal --}}
-<div class="modal fade" wire:ignore.self id="editpemakaian_material" data-bs-backdrop="static" tabindex="-1"
+<div class="modal fade" wire:ignore.self id="editpemakaian_material" tabindex="-1"
     aria-labelledby="editpemakaian_material" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -126,24 +131,31 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="mb-3">
-                                        <label for="nama_material" class="form-label">Nama Material</label>
-                                        <input type="text" class="form-control" wire:model="nama_material"
-                                            id="nama_material" placeholder="Masukkan Nama Material" />
-                                        @error('nama_material')
-                                            <small class="d-block mt-1 text-danger"
-                                                role="alert">{{ $message }}</small>
-                                        @enderror
+                                        <label for="kode_material" class="form-label">Kode Material</label>
+                                        <div class="input-group" wire:change.debounce.500ms="validateKodeMaterial">
+                                            <select wire:model="kode_material" id="kode_material"
+                                                class="form-select">
+                                                <option value="" selected hidden>Pilih Kode Barang...</option>
+                                                @foreach ($datawarehouse as $wh)
+                                                    <option value="{{ $wh->kode_material }}">
+                                                        {{ $wh->kode_material }} - {{ $wh->nama_material }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
+                                    @error('kode_material')
+                                        <small class="d-block mt-1 text-danger"
+                                            role="alert">{{ $message }}</small>
+                                    @enderror
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="jumlah_pengeluaran_material" class="form-label">Jumlah
                                                 Pengeluaran</label>
-                                            <input type="text" x-model.number="jumlah_pengeluaran_material"
-                                                wire:model.defer="jumlah_pengeluaran_material"
-                                                @input="jumlah_pengeluaran_material = jumlah_pengeluaran_material.replace(/[^0-9]/g, '')"
-                                                class="form-control" placeholder="Qty">
+                                            <input type="number" wire:model="jumlah_pengeluaran_material"
+                                                wire:blur='cari' class="form-control" placeholder="Qty">
                                             @error('jumlah_pengeluaran_material')
                                                 <small class="d-block mt-1 text-danger"
                                                     role="alert">{{ $message }}</small>
@@ -153,13 +165,8 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="satuan" class="form-label">Satuan</label>
-                                            <select class="form-select" wire:model="satuan">
-                                                <option value="" selected hidden>
-                                                    Pilih Satuan...
-                                                <option value="Layer">Layer</option>
-                                                <option value="Kg">Kg</option>
-                                                <option value="Sheet">Sheet</option>
-                                            </select>
+                                            <input type="text" class="form-control" wire:model="satuan" readonly>
+
                                             @error('satuan')
                                                 <small class="d-block mt-1 text-danger"
                                                     role="alert">{{ $message }}</small>
@@ -171,7 +178,7 @@
                                     <div class="mb-3">
                                         <label for="tgl_pemakaian_mtrial" class="form-label">Tanggal Pemakaian
                                             Material</label>
-                                        <div class="input-group">
+                                        <div class="input-group" wire:change='cari'>
                                             <input type="date" class="form-control"
                                                 wire:model="tgl_pemakaian_mtrial" id="tgl_pemakaian_mtrial" />
                                         </div>

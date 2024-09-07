@@ -12,6 +12,7 @@ class POJadwalPengiriman extends Model
     protected $fillable = [
         'nama_customer',
         'no_po',
+        'permintaan_po',
         'pengeluaran_barang',
         'tanggal_keluar_pt',
         'surat_jalan',

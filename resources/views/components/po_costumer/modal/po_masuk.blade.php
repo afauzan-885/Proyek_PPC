@@ -267,7 +267,7 @@
                                                 @endforeach
                                             </select>
                                             <button type="button" class="btn btn-outline-secondary"
-                                                wire:click="cariHarga">
+                                                wire:click="cari">
                                                 <i class="bi bi-search"></i>
                                             </button>
                                         </div>
@@ -367,6 +367,10 @@
                         @if (session('suksesupdate'))
                             <div class="text-success word-break">
                                 <small>{{ session('suksesupdate') }}</small>
+                            </div>
+                        @elseif (session('error'))
+                            <div class="text-danger word-break">
+                                <small>{{ session('error') }}</small>
                             </div>
                         @endif
                     </div>

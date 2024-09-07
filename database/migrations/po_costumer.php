@@ -16,11 +16,11 @@ return new class extends Migration
             $table->date('tanggal_po');
             $table->string('term_of_payment', 50);
             $table->integer('qty');
-            $table->decimal('harga', 19, 2);
+            $table->decimal('harga', 19);
             $table->string('no_po', 50)->unique();
             $table->date('tanggal_pengiriman');
             $table->string('kode_barang', 50);
-            $table->decimal('total_amount', 19, 2);
+            $table->decimal('total_amount', 19);
             $table->timestamps();
         });
 
@@ -32,8 +32,8 @@ return new class extends Migration
             $table->string('ukuran', 50);
             $table->integer('qty');
             $table->string('no_po', 50);
-            $table->decimal('harga_material', 19, 2);
-            $table->decimal('total_amount', 19, 2);
+            $table->decimal('harga_material', 19);
+            $table->decimal('total_amount', 19);
             $table->timestamps();
         });
 
@@ -54,7 +54,7 @@ return new class extends Migration
         //Proses Material
         Schema::create('po__pm__pemakaian_material', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_material');
+            $table->string('kode_material');
             $table->integer('jumlah_pengeluaran_material');
             $table->string('no_po');
             $table->string('satuan');
@@ -65,9 +65,10 @@ return new class extends Migration
         Schema::create('po__pm__produk_wip', function (Blueprint $table) {
             $table->id();
             $table->string('nama_produk');
+            $table->string('kode_barang');
             $table->date('tanggal_produksi');
-            $table->string('shift', 50);
-            $table->string('no_mesin', 50);
+            $table->string('shift', 10);
+            $table->string('no_mesin', 20);
             $table->string('proses_produksi');
             $table->integer('hasil_ok');
             $table->integer('hasil_ng');
@@ -77,10 +78,11 @@ return new class extends Migration
         Schema::create('po__pm__produk_fg', function (Blueprint $table) {
             $table->id();
             $table->string('nama_produk');
-            $table->string('shift_produksi', 50);
+            $table->string('kode_produk');
+            $table->string('shift_produksi', 10);
             $table->integer('qty_awal');
             $table->integer('qty_in');
-            $table->integer('qty_out');
+            // $table->integer('qty_out');
             $table->timestamps();
         });
 
@@ -89,6 +91,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_customer');
             $table->string('no_po', 50);
+            $table->string('permintaan_po', 50);
             $table->string('pengeluaran_barang');
             $table->date('tanggal_keluar_pt');
             $table->string('surat_jalan', 50);

@@ -1,5 +1,4 @@
     <div class="page-wrapper">
-        <x-toast />
         <!-- Main container start -->
         <div class="main-container">
 
@@ -46,6 +45,7 @@
                         </a>
                     </div>
                     <!-- End Logo PT Mode Mobile -->
+                    <x-toast />
 
                     <!-- Profil -->
                     <div class="header-actions">
@@ -84,13 +84,13 @@
                     <div class="container-fluid">
 
                         @if (Route::is('main_app'))
-                            <livewire:dashboard />
+                            <livewire:dashboard lazy />
                         @elseif (Route::is('costumer_supplier'))
-                            <livewire:cs-controller />
+                            <livewire:cs-controller lazy />
                         @elseif (Route::is('persediaan_barang'))
-                            <livewire:pb_controller />
+                            <livewire:pb_controller lazy />
                         @elseif (Route::is('po_costumer'))
-                            <livewire:po-controller />
+                            <livewire:po-controller lazy />
                         @endif
 
                     </div>

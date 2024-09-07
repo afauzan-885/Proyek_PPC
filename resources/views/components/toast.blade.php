@@ -1,54 +1,35 @@
-{{-- <div aria-live="polite" aria-atomic="true" class="position-relative">
-    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 11">
-
-        <div class="toast" id="toastify">
-            <div class="toast-header">
-                <span class="text-success me-2"><i class="bi bi-check-circle-fill"></i></span>
-                <strong class="me-auto">Berhasil</strong>
-                <small class="text-body-secondary" id="toastTime">just now</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast" id="toastify">
-                <div class="toast-body">
-                </div>
-            </div>
+<div wire:offline class="align-items-center text-white bg-danger border-0 position-fixed bottom-0 end-0 p-2 m-4"
+    id="liveToast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="show d-flex">
+        <div class="toast-body">
+            Jaringan anda terputus
+            <small class="p-2" x-text="currentTime"></small>
         </div>
     </div>
 </div>
 
+
 <script>
-    document.addEventListener('livewire:init', () => {
-        Livewire.on('notifikasi_toast', () => {
-            // Tampilkan toast
-            $("#toastify").toast('show');
+    function timerComponent() {
+        return {
+            currentTime: '',
+            intervalId: null,
 
-            // Update waktu secara real-time dan berikan keterangan "sejak berapa lama"
-            const toastTimeElement = document.getElementById('toastTime');
-            const startTime = new Date();
-            const updateTime = () => {
+            init() {
+                this.updateTime();
+                this.intervalId = setInterval(() => this.updateTime(), 1000);
+            },
+
+            updateTime() {
                 const now = new Date();
-                const elapsedTime = Math.floor((now - startTime) /
-                    1000); // Hitung selisih waktu dalam detik
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2,
+                    '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');
 
-                if (elapsedTime < 60) {
-                    toastTimeElement.textContent = `${elapsedTime} detik yang lalu`;
-                } else if (elapsedTime < 3600) {
-                    const minutes = Math.floor(elapsedTime / 60);
-                    toastTimeElement.textContent = `${minutes} menit yang lalu`;
-                } else {
-                    const hours = Math.floor(elapsedTime / 3600);
-                    toastTimeElement.textContent = `${hours} jam yang lalu`;
-                }
-            };
+                this.currentTime = `${hours}:${minutes}:${seconds}`;
 
-            updateTime(); // Set waktu awal
-            const intervalId = setInterval(updateTime, 1000); // Update setiap 1 detik
-
-            // Sembunyikan toast setelah 5 detik
-            setTimeout(() => {
-                clearInterval(intervalId);
-                $("#toastify").toast('hide');
-            }, 5000);
-        });
-    });
-</script> --}}
+            },
+        }
+    }
+</script>

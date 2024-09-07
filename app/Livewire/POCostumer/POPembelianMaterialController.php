@@ -8,13 +8,15 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\Component;
 use NumberFormatter;
 use Illuminate\Support\Str;
+use Livewire\WithPagination;
 
 class POPembelianMaterialController extends Component
 {
+    use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
     public $kode_material, $nama_material, $ukuran, $qty, $no_po, $harga_material, $total_amount;
-    public $PPM_id;
+    public $PPM_id, $lastPage, $searchTerm='', $page, $query;
 
     protected $rules = [
         'kode_material' => 'required|unique:po__pembelian_material,kode_material',
@@ -164,9 +166,35 @@ class POPembelianMaterialController extends Component
         $this->resetValidation(); 
     }
 
+    public function updatedSearchTerm()
+    {
+        if ($this->searchTerm) { // Jika ada input pencarian
+            if (empty($this->lastPage)) { 
+                $this->lastPage = $this->page; // Simpan halaman saat ini jika pencarian baru dimulai
+            }
+            $this->resetPage(); // Reset ke halaman 1 saat pencarian berlangsung
+        } else {
+            if ($this->lastPage) {
+                $this->setPage($this->lastPage);
+                $this->lastPage = null; // Reset lastPage setelah digunakan
+            }
+        }
+    }
+
     public function render()
     {
-        $poPembelianMaterial = PPMModel::paginate(9);
+        $searchTerm = '%' . strtolower(str_replace([' ', '.'], '', $this->searchTerm)) . '%';
+
+        $poPembelianMaterial = PPMModel::where(function ($query) use ($searchTerm) {
+            $query->whereRaw('LOWER(REPLACE(REPLACE(kode_material, " ", ""), ".", "")) LIKE ?', [$searchTerm])
+                ->orWhereRaw('LOWER(REPLACE(REPLACE(nama_material, " ", ""), ".", "")) LIKE ?', [$searchTerm])
+                ->orWhereRaw('LOWER(REPLACE(REPLACE(no_po, " ", ""), ".", "")) LIKE ?', [$searchTerm]);
+        })
+        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(no_po, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(kode_material, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(nama_material, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+        ->paginate(9);
+
         $warehouses = WHModel::all();
         
         return view('livewire.po_costumer.tabel.tabel-pembelian_material', [

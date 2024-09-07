@@ -13,9 +13,9 @@ class WarehouseController extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
-    //Public Warehouse
-    public $kode_material, $status, $nama_material, $ukuran_material, $jumlah_material, $berat, $harga_material, $w_id, $deskripsi;
+    public $kode_material, $status, $nama_material, $ukuran_material, $jumlah_material, $berat, $harga_material, $wh_id, $deskripsi, $stok_material;
 
+    public $lastPage, $searchTerm='', $page, $query;
     protected $rules = [
         'kode_material' => 'required|unique:pb__warehouses,kode_material',
         'nama_material' => 'required',
@@ -29,14 +29,14 @@ class WarehouseController extends Component
     public function messages()
     {
         return [
-             '*' => 'Form ini tidak boleh kosong'
+             '*' => 'Form ini tidak boleh kosong',
+             'kode_material.unique' => 'Kode yang sama telah ada'
         ];
     }
 
     public function storeData()
     {
         $validatedData = $this->validate();
-
         $hargaKeys = ['harga_material'];
 
         foreach ($hargaKeys as $hargaKey) {
@@ -48,9 +48,7 @@ class WarehouseController extends Component
             }
         }
 
-       // Set stok_material ke 0 secara otomatis
-       $validatedData['stok_material'] = 0; 
-        
+
         sleep(1);
         WHModel::create($validatedData);
 
@@ -64,7 +62,7 @@ class WarehouseController extends Component
             $datawh = WHModel::findOrFail($id);
             $datawh->harga_material = number_format($datawh->harga_material, 0, ',', '.'); // Format harga untuk tampilan
             $this->fill($datawh->toArray());
-            $this->w_id = $id;
+            $this->wh_id = $id;
         } catch (ModelNotFoundException $e) {
             session()->flash('error', 'Data Warehouse tidak ditemukan.');
         }
@@ -86,13 +84,13 @@ class WarehouseController extends Component
             $validatedData['harga_material'] = (float)preg_replace('/[^\d,]/', '', $validatedData['harga_material']);
             $validatedData['harga_material'] = str_replace(',', '.', $validatedData['harga_material']);
 
-            $warehouse = WHModel::findOrFail($this->w_id);
+            $warehouse = WHModel::findOrFail($this->wh_id);
             $warehouse->update($validatedData);
 
             // Tambahkan baris ini untuk memicu render ulang komponen
             $this->dispatch('materialUpdated');
 
-            WHModel::findOrFail($this->w_id)->update($validatedData);
+            WHModel::findOrFail($this->wh_id)->update($validatedData);
         } catch (ModelNotFoundException $e) {
             session()->flash('error', 'Data tidak ditemukan.');
         }
@@ -115,9 +113,33 @@ class WarehouseController extends Component
         $this->resetValidation();
     }
 
+    public function updatedSearchTerm()
+    {
+        if ($this->searchTerm) { // Jika ada input pencarian
+            if (empty($this->lastPage)) { 
+                $this->lastPage = $this->page; // Simpan halaman saat ini jika pencarian baru dimulai
+            }
+            $this->resetPage(); // Reset ke halaman 1 saat pencarian berlangsung
+        } else {
+            if ($this->lastPage) {
+                $this->setPage($this->lastPage);
+                $this->lastPage = null; // Reset lastPage setelah digunakan
+            }
+        }
+    }
+
     public function render()
     {
-        $warehouses = WHModel::paginate(9);
+        $searchTerm = '%' . strtolower(str_replace([' ', '.'], '', $this->searchTerm)) . '%';
+
+        $warehouses = WHModel::where(function ($query) use ($searchTerm) {
+            $query->whereRaw('LOWER(REPLACE(REPLACE(nama_material, " ", ""), ".", "")) LIKE ?', [$searchTerm])
+                ->orWhereRaw('LOWER(REPLACE(REPLACE(kode_material, " ", ""), ".", "")) LIKE ?', [$searchTerm]);
+        })
+        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(nama_material, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(kode_material, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+        ->paginate(9);
+
         return view('livewire.persediaan_barang.tabel.tabel_wh', [
             'Warehouse' => $warehouses,
         ]);

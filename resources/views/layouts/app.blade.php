@@ -11,9 +11,10 @@
     <link rel="stylesheet" href="assets/css/main.min.css" />
 
     <!--  Vendor CSS -->
+    <link rel="stylesheet" href="assets/css/tippy.css" />
+    <link rel="stylesheet" href="assets/css/hierarchy-select.min.css" />
     <link rel="stylesheet" href="assets/vendor/overlay-scroll/OverlayScrollbars.min.css" />
     <link rel="stylesheet" href="./assets/fonts/fontawesome-free-web/css/all.css">
-    <link rel="stylesheet" href="./assets/vendor/daterange/daterange.css">
     <!-- Toastify CSS -->
     <link rel="stylesheet" href="assets/vendor/toastify/toastify.css" />
     <title>{{ $title ?? 'PPC' }}</title>
@@ -26,41 +27,21 @@
     <!--  jQuery first, then Bootstrap Bundle JS -->
     <script data-navigate-once src="assets/js/jquery.min.js"></script>
     <script data-navigate-once src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/tooltip_alpinejs.js" defer></script>
 
-    <script src="assets\js\toast-notifikasi.js"></script>
-
-    {{-- Script AutoNumeric --}}
-    {{-- <script src="assets\js\AutoNumeric\AutoNumeric.js"></script>
-    <script src="assets\js\AutoNumeric\AutoNumericDefaultSettings.js"></script>
-    <script src="public\assets\js\AutoNumeric\AutoNumericEnum.js"></script>
-    <script src="public\assets\js\AutoNumeric\AutoNumericEvents.js"></script>
-    <script src="public\assets\js\AutoNumeric\AutoNumericHelper.js"></script>
-    <script src="public\assets\js\AutoNumeric\AutoNumericOptions.js"></script> --}}
-
-
+    <script src="assets/js/toast-notifikasi.js"></script>
+    @stack('scripts')
 
     <!-- Toastify JS -->
     <script data-navigate-once src="assets/vendor/toastify/toastify.js"></script>
-    <script data-navigate-once src="assets/vendor/toastify/custom.js"></script>
     <!-- Overlay Scroll JS -->
     <script src="assets/vendor/overlay-scroll/jquery.overlayScrollbars.min.js"></script>
     <script src="assets/vendor/overlay-scroll/custom-scrollbar.js"></script>
-
-
-
-    {{-- <script src="{{ asset('assets/js/analisis_dashboard.js') }}"></script> --}}
+    <script src="assets/js/hierarchy-select.js"></script>
 
     <!-- Moment JS -->
     <script src="assets/js/moment.min.js"></script>
 
-    <!-- Apex Charts -->
-    <script src="assets/vendor/apex/apexcharts.min.js"></script>
-    <script src="assets\vendor\apex\custom\grafik\grafik_dashboard.js"></script>
-    {{-- <script src="public\assets\js/pusher.min.js"></script> --}}
-
-    <!-- Datepicker -->
-    <script src="assets/vendor/daterange/daterange.js"></script>
-    <script src="assets/js/custom-daterange.js"></script>
 
     <!-- Custom JS files -->
     <script src="assets/js/sidebar.js"></script>

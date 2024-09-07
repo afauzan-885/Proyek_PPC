@@ -41,15 +41,7 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
 
             <div class="d-none flex-sm-fill d-sm-flex align-items-sm-center justify-content-sm-between">
                 <div>
-                    <p class="small text-muted m-1">
-                        {!! __('Menampilkan') !!}
-                        <span class="fw-semibold">{{ $paginator->firstItem() }}</span>
-                        {!! __('-') !!}
-                        <span class="fw-semibold">{{ $paginator->lastItem() }}</span>
-                        {!! __('dari total') !!}
-                        <span class="fw-semibold">{{ $paginator->total() }}</span>
-                        {!! __('') !!}
-                    </p>
+                   
                 </div>
 
                 <div>

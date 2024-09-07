@@ -1,8 +1,19 @@
 <div>
-    @props(['produkWIP'])
+    @props(['wip'])
     <div class="d-flex bd-highlight mb-1">
         <div class="bd-highlight p-1">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#inputwip_product">
+            <button type="button" class="btn btn-success" data-bs-target="#inputformwip" x-data="{ openModal: false }"
+                @click="
+            if (confirm('Yakin ingin membuat data secara manual?')) {
+                openModal = true 
+            }"
+                x-init="$watch('openModal', value => {
+                    if (value) {
+                        $('#inputformwip').modal('show')
+                    } else {
+                        $('#inputformwip').modal('hide')
+                    }
+                })">
                 <i class="bi bi-file-earmark-plus"></i>
                 Baru
             </button>
@@ -25,7 +36,7 @@
             <nav aria-label="Page navigation">
                 <ul wire:ignore class="pagination m-auto">
                     <span wire:loading>Memuat..</span>
-                    {{ $produkWIP->links() }}
+                    {{ $wip->links() }}
                 </ul>
             </nav>
         </div>
@@ -36,44 +47,44 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama Produk</th>
-                        <th>Tanggal Produksi</th>
-                        <th>Shift</th>
-                        <th>No. Mesin</th>
-                        <th>Proses Produksi</th>
-                        <th>Hasil OK/Baik (QTY)</th>
-                        <th>Hasil NG/Cacat (QTY)</th>
+                        <th>Kode & Nama barang</th>
+                        <th>Jenis Proses</th>
+                        <th>Stok Barang</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-
-                    @forelse ($produkWIP as $produkwip)
+                    @forelse ($wip as $wip)
                         <tr>
-                            <td>{{ $loop->iteration }}
-                            <td>{{ $produkwip['nama_produk'] }}</td>
-                            <td
-                                x-text="(() => {
-                        const [year, month, day] = '{{ $produkwip['tanggal_produksi'] }}'.split('-');
-                        return `${day}-${month}-${year}`;})()">
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $wip->kode_barang }} - {{ $wip->nama_barang }}</td>
+                            <td>{{ $wip->jenis_proses }}</td>
+                            <td>{{ $wip->stok_barang }}</td>
+                            <td>
+                                @if ($wip->stok_barang > 0)
+                                    <span class="text-success">Tersedia</span>
+                                @else
+                                    <span class="text-danger">Belum Tersedia</span>
+                                @endif
                             </td>
-                            <td>{{ $produkwip['shift'] }}</td>
-                            <td>{{ $produkwip['no_mesin'] }}</td>
-                            <td>{{ $produkwip['proses_produksi'] }}</td>
-                            <td>{{ $produkwip['hasil_ok'] }}</td>
-                            <td>{{ $produkwip['hasil_ng'] }}</td>
                             <td>
                                 <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editwip_product" wire:click="showData({{ $produkwip->id }})">
+                                    data-bs-target="#editformwip" wire:click="showData({{ $wip->id }})">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
-
-                                <button type="button" wire:click="delete({{ $produkwip->id }})"
-                                    class="btn btn-outline-danger btn-sm" data-bs-placement="top"
-                                    data-bs-custom-class="custom-tooltip-danger"
-                                    wire:confirm="Yakin ingin menghapus {{ $produkwip->nama_material }}?">
+                                <button type="button" wire:click="delete({{ $wip->id }})"
+                                    class="btn btn-outline-danger btn-sm" data-bs-custom-class="custom-tooltip-danger"
+                                    wire:confirm="Yakin ingin menghapus {{ $wip->nama_barang }} dengan kode {{ $wip->kode_barang }}?">
                                     <i class="bi bi-trash3"></i>
                                 </button>
+
+                                {{-- Status --}}
+                                @if ($wip->status == 'belum tersedia')
+                                    <button type="button" class="btn btn-outline-warning btn-sm">
+                                        Pesan
+                                    </button>
+                                @endif
                             </td>
                         </tr>
                     @empty
@@ -85,5 +96,5 @@
             </table>
         </div>
     </div>
-    <x-po_costumer.modal.modal-proses_material.wip_product />
+    <x-persediaan_barang.modal.modal_tabel-wip wip />
 </div>

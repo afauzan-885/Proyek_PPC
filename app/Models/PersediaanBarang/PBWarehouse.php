@@ -14,6 +14,7 @@ class PBWarehouse extends Model
         'nama_material',
         'ukuran_material',
         'stok_material',
+        'satuan',
         'harga_material',
         'deskripsi',
         'status'

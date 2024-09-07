@@ -21,6 +21,6 @@ class POKedatanganMaterial extends Model
   ];
   public function warehouse()
   {
-      return $this->belongsTo(PBWarehouse::class, 'kode_material', 'kode_material'); // Hubungkan berdasarkan kode_material
+      return $this->belongsTo(PBWarehouse::class); // Hubungkan berdasarkan kode_material
   }
 }

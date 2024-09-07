@@ -1,4 +1,5 @@
 {{-- Input Barang WH --}}
+@props(['whdata'])
 <div class="modal fade" wire:ignore.self id="inputformwh" tabindex="-1" aria-labelledby="inputformwhlabel"
     aria-hidden="true">
     <div class="modal-dialog">
@@ -95,6 +96,10 @@
                                 <div class="text-success">
                                     <small>{{ session('suksesinput') }}</small>
                                 </div>
+                            @elseif (session('error'))
+                                <div class="text-danger">
+                                    <small>{{ session('error') }}</small>
+                                </div>
                             @endif
                         </div>
                         <div class="col-auto">
@@ -111,7 +116,7 @@
 </div>
 
 {{-- Edit Barang WH --}}
-<div wire:ignore.self class="modal fade" id="editformwh" data-bs-backdrop="static" tabindex="-1"
+<div class="modal fade" id="editformwh" wire:ignore.self data-bs-backdrop="static" tabindex="-1"
     aria-labelledby="editformwhlabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -170,6 +175,14 @@
                                         <label for="deskripsi" class="form-label">Deskripsi Material</label>
                                         <input type="text" class="form-control" id="deskripsi"
                                             wire:model="deskripsi" placeholder="Masukkan Deskripsi Material" />
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <!-- Form Field Start -->
+                                    <div class="mb-3">
+                                        <label for="deskripsi" class="form-label">Stok Material</label>
+                                        <input type="number" class="form-control" id="stok_material"
+                                            wire:model="stok_material" placeholder="" />
                                     </div>
                                 </div>
                             </div>

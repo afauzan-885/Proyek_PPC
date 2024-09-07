@@ -30,6 +30,18 @@
                                 <div class="col-6">
                                     <!-- Form Field Start -->
                                     <div class="mb-3">
+                                        <label for="kode_barang" class="form-label">Kode Produk</label>
+                                        <input type="text" wire:model='kode_barang' class="form-control"
+                                            id="kode_barang" placeholder="Masukkan Nama Material" />
+                                        @error('kode_barang')
+                                            <small class="d-block mt-1 text-danger"
+                                                role="alert">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <!-- Form Field Start -->
+                                    <div class="mb-3">
                                         <label for="tanggal_produksi" class="form-label">Tanggal Produksi</label>
                                         <div class="input-group">
                                             <div class="input-group">
@@ -98,8 +110,8 @@
                                     <!-- Form Field Start -->
                                     <div class="mb-3">
                                         <label for="hasil_ng" class="form-label">Hasil NG</label>
-                                        <input type="text" wire:model='hasil_ng' class="form-control" id="hasil_ng"
-                                            placeholder="Masukkan Hasil NG (QTY)" />
+                                        <input type="text" wire:model='hasil_ng' class="form-control"
+                                            id="hasil_ng" placeholder="Masukkan Hasil NG (QTY)" />
                                         @error('hasil_ng')
                                             <small class="d-block mt-1 text-danger"
                                                 role="alert">{{ $message }}</small>
