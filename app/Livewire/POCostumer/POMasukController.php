@@ -14,6 +14,7 @@ class POMasukController extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
+    protected $listeners = ['poMasukUpdated']; 
 
     public $nama_customer, $tanggal_po, $term_of_payment, $qty, $no_po, $tanggal_pengiriman, $kode_barang, $total_amount, $harga;
     public $PM_id, $costumersupplier, $lastPage, $searchTerm='', $page, $query;
@@ -51,6 +52,7 @@ class POMasukController extends Component
 
         PMModel::create($validatedData);
         sleep(1);
+
         $namaCustomer = $validatedData['nama_customer'];
         $this->reset();
         session()->flash('suksesinput',   $namaCustomer . ' berhasil ditambahkan.');

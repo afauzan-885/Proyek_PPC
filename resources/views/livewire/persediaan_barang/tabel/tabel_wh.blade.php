@@ -47,8 +47,10 @@
                 </thead>
                 <tbody>
                     @forelse ($Warehouse as $warehouse)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
+                        <tr wire:key="{{ $warehouse->id }}">
+                            <td class="text-nowrap">
+                                {{ ($Warehouse->currentpage() - 1) * $Warehouse->perpage() + $loop->index + 1 }}.
+                            </td>
                             <td>{{ $warehouse->kode_material }} - {{ $warehouse->nama_material }}</td>
                             <td>{{ $warehouse->ukuran_material }}</td>
                             <td>{{ $warehouse->stok_material }} {{ $warehouse->satuan }}</td>
@@ -61,16 +63,27 @@
                                     <span class="text-danger">Belum Tersedia</span>
                                 @endif
                             </td>
-                            <td>
-                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editformwh" wire:click="showData({{ $warehouse->id }})">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-                                <button type="submit" wire:click="delete({{ $warehouse->id }})"
-                                    class="btn btn-outline-danger btn-sm" data-bs-custom-class="custom-tooltip-danger"
-                                    wire:confirm="Yakin ingin menghapus {{ $warehouse->nama_material }} dengan kode {{ $warehouse->kode_material }}?">
-                                    <i class="bi bi-trash3"></i>
-                                </button>
+                            <td class='text-nowrap'>
+                                <div class="btn-group dropstart">
+                                    <button type="button" class="btn btn-hijau-asin dropdown-toggle"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    </button>
+                                    <div class="dropdown-menu p-1">
+                                        <div class="d-flex flex-column">
+                                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                                data-bs-toggle="modal" data-bs-target="#editformwh"
+                                                wire:click="showData({{ $warehouse->id }})">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </button>
+                                            <button type="button" class="btn btn-outline-danger btn-sm mt-1"
+                                                wire:click="delete({{ $warehouse->id }})"
+                                                data-bs-custom-class="custom-tooltip-danger"
+                                                wire:confirm="Yakin ingin menghapus {{ $warehouse->nama_material }} dengan kode {{ $warehouse->kode_material }}?">
+                                                <i class="bi bi-trash3"></i> Hapus
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     @empty

@@ -1,5 +1,5 @@
 <div>
-    @props(['wip'])
+    @props(['Wip'])
     <div class="d-flex bd-highlight mb-1">
         <div class="bd-highlight p-1">
             <button type="button" class="btn btn-success" data-bs-target="#inputformwip" x-data="{ openModal: false }"
@@ -36,7 +36,7 @@
             <nav aria-label="Page navigation">
                 <ul wire:ignore class="pagination m-auto">
                     <span wire:loading>Memuat..</span>
-                    {{ $wip->links() }}
+                    {{ $Wip->links() }}
                 </ul>
             </nav>
         </div>
@@ -55,9 +55,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($wip as $wip)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
+                    @forelse ($Wip as $wip)
+                        <tr wire:key="{{ $wip->id }}"> {{-- Tambahkan wire:key di sini --}}
+                            <td class="text-nowrap">
+                                {{ ($Wip->currentpage() - 1) * $Wip->perpage() + $loop->index + 1 }}.
+                            </td>
                             <td>{{ $wip->kode_barang }} - {{ $wip->nama_barang }}</td>
                             <td>{{ $wip->jenis_proses }}</td>
                             <td>{{ $wip->stok_barang }}</td>
@@ -68,23 +70,27 @@
                                     <span class="text-danger">Belum Tersedia</span>
                                 @endif
                             </td>
-                            <td>
-                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editformwip" wire:click="showData({{ $wip->id }})">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-                                <button type="button" wire:click="delete({{ $wip->id }})"
-                                    class="btn btn-outline-danger btn-sm" data-bs-custom-class="custom-tooltip-danger"
-                                    wire:confirm="Yakin ingin menghapus {{ $wip->nama_barang }} dengan kode {{ $wip->kode_barang }}?">
-                                    <i class="bi bi-trash3"></i>
-                                </button>
-
-                                {{-- Status --}}
-                                @if ($wip->status == 'belum tersedia')
-                                    <button type="button" class="btn btn-outline-warning btn-sm">
-                                        Pesan
+                            <td class='text-nowrap'>
+                                <div class="btn-group dropstart">
+                                    <button type="button" class="btn btn-hijau-asin dropdown-toggle"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
                                     </button>
-                                @endif
+                                    <div class="dropdown-menu p-1">
+                                        <div class="d-flex flex-column">
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#editformwip"
+                                                wire:click="showData({{ $wip->id }})"
+                                                class="btn btn-outline-primary btn-sm">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </button>
+                                            <button type="button" wire:click="delete({{ $wip->id }})"
+                                                class="btn btn-outline-danger btn-sm mt-1" data-bs-placement="top"
+                                                data-bs-custom-class="custom-tooltip-danger"
+                                                wire:confirm="Yakin ingin menghapus {{ $wip->nama_barang }} dengan kode {{ $wip->kode_barang }}?">
+                                                <i class="bi bi-trash3"></i> Hapus
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     @empty
@@ -96,5 +102,5 @@
             </table>
         </div>
     </div>
-    <x-persediaan_barang.modal.modal_tabel-wip wip />
+    <x-persediaan_barang.modal.modal_tabel-wip Wip />
 </div>

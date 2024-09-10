@@ -31,12 +31,18 @@
                                     <!-- Form Field Start -->
                                     <div class="mb-3">
                                         <label for="kode_barang" class="form-label">Kode Produk</label>
-                                        <input type="text" wire:model='kode_barang' class="form-control"
-                                            id="kode_barang" placeholder="Masukkan Nama Material" />
+                                        <input type="text" wire:model.debounce.500ms='kode_barang'
+                                            class="form-control" id="kode_barang"
+                                            placeholder="Masukkan Nama Material" />
                                         @error('kode_barang')
                                             <small class="d-block mt-1 text-danger"
                                                 role="alert">{{ $message }}</small>
                                         @enderror
+                                        @if (session('warning'))
+                                            <div class="text-success word-break">
+                                                <small>{{ session('warning') }}</small>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -98,7 +104,7 @@
                                     <!-- Form Field Start -->
                                     <div class="mb-3">
                                         <label for="hasil_ok" class="form-label">Hasil OK</label>
-                                        <input type="text" wire:model='hasil_ok' class="form-control" id="hasil_ok"
+                                        <input type="number" wire:model='hasil_ok' class="form-control" id="hasil_ok"
                                             placeholder="Masukkan Hasil OK (QTY)" />
                                         @error('hasil_ok')
                                             <small class="d-block mt-1 text-danger"
@@ -110,7 +116,7 @@
                                     <!-- Form Field Start -->
                                     <div class="mb-3">
                                         <label for="hasil_ng" class="form-label">Hasil NG</label>
-                                        <input type="text" wire:model='hasil_ng' class="form-control"
+                                        <input type="number" wire:model='hasil_ng' class="form-control"
                                             id="hasil_ng" placeholder="Masukkan Hasil NG (QTY)" />
                                         @error('hasil_ng')
                                             <small class="d-block mt-1 text-danger"
@@ -173,6 +179,24 @@
                                 <div class="col-6">
                                     <!-- Form Field Start -->
                                     <div class="mb-3">
+                                        <label for="kode_barang" class="form-label">Kode Produk</label>
+                                        <input type="text" wire:model.debounce.500ms='kode_barang'
+                                            class="form-control" id="kode_barang"
+                                            placeholder="Masukkan Nama Material" />
+                                        @error('kode_barang')
+                                            <small class="d-block mt-1 text-danger"
+                                                role="alert">{{ $message }}</small>
+                                        @enderror
+                                        @if (session('warning'))
+                                            <div class="text-success word-break">
+                                                <small>{{ session('warning') }}</small>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <!-- Form Field Start -->
+                                    <div class="mb-3">
                                         <label for="tanggal_produksi" class="form-label">Tanggal Produksi</label>
                                         <div class="input-group">
                                             <div class="input-group">
@@ -203,27 +227,33 @@
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <div class="mb-3">
-                                        <label for="proses_produksi" class="form-label">Proses</label>
-                                        <select class="form-select" id="proses_produksi"
-                                            wire:model='proses_produksi'>
-                                            <option value="" selected hidden>Silahkan pilih...
-                                            </option>
-                                            <option value="shearing">Shearing</option>
-                                            <option value="blank">Blank</option>
-                                            <option value="bending">bending</option>
-                                        </select>
-                                        @error('proses_produksi')
-                                            <small class="d-block mt-1 text-danger"
-                                                role="alert">{{ $message }}</small>
-                                        @enderror
+                                    <div class="row g-1">
+                                        <div class="col-8">
+                                            <label for="proses_produksi" class="form-label">Proses</label>
+                                            <select class="form-select" id="proses_produksi"
+                                                wire:model='proses_produksi'>
+                                                <option value="" selected hidden>Silahkan pilih...
+                                                </option>
+                                                <option value="Shearing">Shearing</option>
+                                                <option value="Blank">Blank</option>
+                                                <option value="Bending">Bending</option>
+                                            </select>
+                                            @error('proses_produksi')
+                                                <small class="d-block mt-1 text-danger"
+                                                    role="alert">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                        <div class="col-4">
+                                            <label for="no_mesin" class="form-label">No. Mesin</label>
+                                            <input type="text" wire:model="no_mesin" class="form-control">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <!-- Form Field Start -->
                                     <div class="mb-3">
                                         <label for="hasil_ok" class="form-label">Hasil OK</label>
-                                        <input type="text" wire:model='hasil_ok' class="form-control"
+                                        <input type="number" wire:model='hasil_ok' class="form-control"
                                             id="hasil_ok" placeholder="Masukkan Hasil OK (QTY)" />
                                         @error('hasil_ok')
                                             <small class="d-block mt-1 text-danger"
@@ -235,7 +265,7 @@
                                     <!-- Form Field Start -->
                                     <div class="mb-3">
                                         <label for="hasil_ng" class="form-label">Hasil NG</label>
-                                        <input type="text" wire:model='hasil_ng' class="form-control"
+                                        <input type="number" wire:model='hasil_ng' class="form-control"
                                             id="hasil_ng" placeholder="Masukkan Hasil NG (QTY)" />
                                         @error('hasil_ng')
                                             <small class="d-block mt-1 text-danger"
@@ -252,6 +282,10 @@
                         @if (session('suksesupdate'))
                             <div class="text-success word-break">
                                 <small>{{ session('suksesupdate') }}</small>
+                            </div>
+                        @elseif (session('error'))
+                            <div class="text-danger word-break">
+                                <small>{{ session('error') }}</small>
                             </div>
                         @endif
                     </div>

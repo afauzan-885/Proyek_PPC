@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Str;
+use Livewire\Attributes\Lazy;
 
+// #[Lazy(isolate:false)]
 class WarehouseController extends Component
 {
     use WithPagination;
@@ -16,6 +18,7 @@ class WarehouseController extends Component
     public $kode_material, $status, $nama_material, $ukuran_material, $jumlah_material, $berat, $harga_material, $wh_id, $deskripsi, $stok_material;
 
     public $lastPage, $searchTerm='', $page, $query;
+    // protected $listeners = ['refreshComponent' => '$refresh'];
     protected $rules = [
         'kode_material' => 'required|unique:pb__warehouses,kode_material',
         'nama_material' => 'required',
@@ -33,6 +36,11 @@ class WarehouseController extends Component
              'kode_material.unique' => 'Kode yang sama telah ada'
         ];
     }
+
+    // public function refreshComponent()
+    // {
+    //     $this->dispatch('refreshComponent'); // Memicu event custom
+    // }
 
     public function storeData()
     {
@@ -111,6 +119,12 @@ class WarehouseController extends Component
         $this->reset();
         $this->resetErrorBag();
         $this->resetValidation();
+    }
+
+    public function placeholder(array $params = [])
+    {
+        
+        return view('livewire.placeholder.tabel_placeholder', $params);
     }
 
     public function updatedSearchTerm()

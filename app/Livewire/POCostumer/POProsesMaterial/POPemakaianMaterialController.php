@@ -66,7 +66,7 @@ class POPemakaianMaterialController extends Component
             }
 
             if (!$warehouse || $this->jumlah_pengeluaran_material > $warehouse->stok_material) {
-                $this->addError('jumlah_pengeluaran_material', 'Stok tidak mencukupi, saat ini tersisa ' . $warehouse->stok_material . ' ' . $warehouse->satuan); 
+                $this->addError('stok', 'Stok tidak mencukupi, saat ini tersisa ' . $warehouse->stok_material . ' ' . $warehouse->satuan); 
             } else {
                 $this->resetErrorBag('jumlah_pengeluaran_material');
                 $this->satuan = $warehouse->satuan; 
@@ -133,36 +133,45 @@ class POPemakaianMaterialController extends Component
     {
         try {
             $validatedData = $this->validate();
-
+    
             $poPM = PoPM::findOrFail($this->PoPM_id);
-            $originalJumlahPengeluaranMaterial = $poPM->jumlah_pengeluaran_material; 
-
+            $original_stok = $poPM->jumlah_pengeluaran_material; 
+    
             // Ambil data warehouse
             $warehouse = WHModel::where('kode_material', $validatedData['kode_material'])->first();
-
+    
             if ($warehouse) {
-                // Periksa apakah stok mencukupi SEBELUM update
-                if ($warehouse->stok_material < $validatedData['jumlah_pengeluaran_material']) {
-                    // Jika stok tidak mencukupi, tampilkan pesan error dan hentikan proses update
-                    session()->flash('error', 'Stok tidak mencukupi');
+                // Kembalikan stok ke kondisi semula
+                $warehouse->stok_material += $original_stok;
+    
+                // Validasi langsung pada input user
+                if ($validatedData['jumlah_pengeluaran_material'] > $warehouse->stok_material) {
+                    // Jika input melebihi stok, tampilkan pesan error dan hentikan proses update
+                    session()->flash('error', 'Jumlah pengeluaran material tidak boleh melebihi stok yang tersedia (' . $original_stok . ').');
                     return redirect()->back()->withInput();
                 }
-
-                // Lanjutkan dengan logika update jika stok mencukupi
-                // ... (kode update yang sudah ada sebelumnya) ...
-
-                $namaMaterial = $validatedData['kode_material'];
-                session()->flash('suksesupdate', 'Material ' . $namaMaterial . ' berhasil diupdate.');
+    
+                // Lanjutkan update jika input valid
+                $warehouse->stok_material -= $validatedData['jumlah_pengeluaran_material'];
+                $warehouse->save();
+    
+                // Periksa apakah ada perubahan data sebelum melakukan update
+                if ($poPM->fill($validatedData)->isDirty()) {
+                    PoPM::findOrFail($this->PoPM_id)->update($validatedData);
+                    $namaMaterial = $validatedData['kode_material'];
+                    session()->flash('suksesupdate', 'Material ' . $namaMaterial . ' berhasil diupdate.');
+                } else {
+                    session()->flash('suksesupdate', 'Update berhasil, data tidak ada yang berubah.');
+                }
             }
-
+    
         } catch (ModelNotFoundException $e) {
             session()->flash('error', 'Data kedatangan material tidak ditemukan.');
         } catch (\Exception $e) {
             Log::error($e);
             session()->flash('error', 'Terjadi kesalahan saat mengupdate data.');
         }
-
-        // Jika tidak ada error, redirect kembali ke halaman sebelumnya (atau halaman yang sesuai)
+    
         return redirect()->back(); 
     }
 

@@ -40,7 +40,7 @@
                         <th>Shift Produksi</th>
                         <th>QTY- Awal</th>
                         <th>QTY- Masuk</th>
-                        <th>Total Stok</th>
+                        {{-- <th>Total Stok</th> --}}
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -52,13 +52,13 @@
                             <td>{{ $produkfg['shift_produksi'] }}</td>
                             <td>{{ $produkfg['qty_awal'] }}</td>
                             <td>{{ $produkfg['qty_in'] }}</td>
-                            <td>
+                            {{-- <td>
                                 <span x-data="{
                                     qty_awal: {{ optional($produkfg)['qty_awal'] ?? 0 }},
                                     qty_in: {{ optional($produkfg)['qty_in'] ?? 0 }},
                                 }" x-text="qty_awal + qty_in">
                                 </span>
-                            </td>
+                            </td> --}}
                             <td>
                                 <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#editfg_product" wire:click="showData({{ $produkfg->id }})">

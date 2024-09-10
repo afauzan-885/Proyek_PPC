@@ -5,6 +5,7 @@ namespace App\Livewire\POCostumer\POProsesMaterial;
 use App\Models\POCostumer\PO_PM_FgProduct as PoFG;
 use App\Models\PersediaanBarang\PBFinishGood as FGModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -18,13 +19,13 @@ class POProdukFGController extends Component
     $nama_produk,
     $shift_produksi,
     $qty_awal,
-    $qty_in,
-    $qty_out;
+    $qty_in;
 
     public $PoFG_id, $lastPage, $searchTerm='', $page, $query, $kode_barang;
 
     protected $rules = [
-        'kode_produk' =>'required|unique:po__pm__produk_fg,kode_produk',
+        // 'kode_produk' =>'required|unique:po__pm__produk_fg,kode_produk',
+        'kode_produk' =>'required',
         'nama_produk' => 'required',
         'shift_produksi' => 'required',
         'qty_awal' => 'required',
@@ -50,8 +51,8 @@ class POProdukFGController extends Component
         $finishgood = FGModel::where('kode_barang', $this->kode_produk)->first();
     
         if ($finishgood) {
-            $this->nama_produk = $finishgood->nama_barang; // Update nama_produk
-            $this->qty_awal = $finishgood->stok_material;  // Update qty_awal
+            $this->nama_produk = $finishgood->nama_barang;
+            $this->qty_awal = $finishgood->stok_material; 
             $this->resetErrorBag('kode_produk'); 
         } else {
             $this->addError('kode_produk', 'Kode tidak ditemukan');
@@ -77,7 +78,11 @@ class POProdukFGController extends Component
         sleep(1);
         
         $namaproduk = $validatedData['nama_produk'];
-        $this->reset('nama_produk','shift_produksi','qty_awal','qty_in','qty_out');
+        $this->reset( 'kode_produk',
+        'nama_produk',
+        'shift_produksi',
+        'qty_awal',
+        'qty_in');
         session()->flash('suksesinput', 'Material ' . $namaproduk . ' berhasil ditambahkan.');
     }
     
@@ -85,21 +90,80 @@ class POProdukFGController extends Component
     {
         $validatedData = PoFG::find($id);
         $this->fill($validatedData->toArray());
+        $this->PoFG_id = $id;
     }
+
+    // public function updateData()
+    // {
+    //     try {
+    //         $validatedData = $this->validate();
+
+    //         PoFG::findOrFail($this->PoFG_id)->update($validatedData);
+    //     } catch (ModelNotFoundException $e) {
+    //         session()->flash('error', 'Produk tidak ditemukan.');   
+    //     }
+
+    //     $namaproduk = $validatedData['nama_produk'];
+    //     session()->flash('suksesupdate', 'Material ' . $namaproduk . ' berhasil diupdate.');
+    // }
 
     public function updateData()
     {
         try {
             $validatedData = $this->validate();
+            $PoFG = PoFG::findOrFail($this->PoFG_id);
 
-            PoFG::findOrFail($this->PoFG_id)->update($validatedData);
+            $original_stok = $PoFG->qty_in;
+
+            // Dapatkan data WIP saat ini
+            $fg = FGModel::where('kode_barang', $validatedData['kode_produk'])->first();
+
+            if ($fg) {
+                // Kembalikan stok ke kondisi semula (sebelum update PoFG ini)
+                $fg->stok_material -= $original_stok; 
+
+                // Hitung stok baru setelah update PoFG
+                $new_stok = $fg->stok_material + $validatedData['qty_in']; 
+
+                // Memastikan stok tidak negatif
+                if ($new_stok < 0) {
+                    session()->flash('error', 'Jumlah FG tidak boleh membuat stok menjadi negatif.');
+                    return redirect()->back()->withInput();
+                }
+
+                // Periksa apakah ada perubahan data sebelum melakukan update
+                if ($fg->fill($validatedData)->isDirty()) {
+                    $fg->update([
+                        'stok_material' => $new_stok,
+                        // '?????' => $validatedData['?????'],
+                    ]);
+
+                    $namaProduk = $validatedData['nama_produk'];
+                    session()->flash('suksesupdate', 'Produk ' . $namaProduk . ' berhasil diupdate.');
+                } else {
+                    session()->flash('suksesupdate', 'Update berhasil, data tidak ada yang berubah.');
+                }
+            } else {
+                // Tangani kasus di mana WIP tidak ditemukan
+                session()->flash('error', 'Data FG tidak ditemukan untuk kode barang ini.');
+            }
+
+            // Periksa apakah ada perubahan data sebelum melakukan update pada PoFG
+            if ($PoFG->fill($validatedData)->isDirty()) {
+                PoFG::findOrFail($this->PoFG_id)->update($validatedData);
+            }
+
         } catch (ModelNotFoundException $e) {
-            session()->flash('error', 'Produk tidak ditemukan.');   
+            session()->flash('error', 'Produk tidak ditemukan.'); 
+        } catch (\Exception $e) {
+            Log::error($e);
+            session()->flash('error', 'Terjadi kesalahan saat mengupdate data.');
         }
 
-        $namaproduk = $validatedData['nama_produk'];
-        session()->flash('suksesupdate', 'Material ' . $namaproduk . ' berhasil diupdate.');
+        return redirect()->back(); 
     }
+
+    
 
 
     public function delete($id)

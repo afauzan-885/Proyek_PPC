@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Str;
+use Livewire\Attributes\Lazy;
 
 class FinishGoodController extends Component
 {
@@ -19,6 +20,7 @@ class FinishGoodController extends Component
     public $kode_barang, $nama_barang, $no_part, $harga, $tipe_barang, $deskripsi;
 
     public $fg_id,  $searchTerm='', $lastPage, $page;
+    // protected $listeners = ['refreshComponent' => '$refresh'];
 
     protected $rules = [
         'kode_barang' => 'required|unique:pb__finish_goods,kode_barang',
@@ -37,6 +39,11 @@ class FinishGoodController extends Component
              '*' => 'Form ini tidak boleh kosong'
         ];
     }
+
+    // public function refreshComponent()
+    // {
+    //     $this->dispatch('refreshComponent'); // Memicu event custom
+    // }
 
     public function storeData()
     {
@@ -111,6 +118,12 @@ class FinishGoodController extends Component
         $this->reset();
         $this->resetErrorBag();
         $this->resetValidation();
+    }
+
+    public function placeholder(array $params = [])
+    {
+        
+        return view('livewire.placeholder.tabel_placeholder', $params);
     }
 
     public function updatedSearchTerm()

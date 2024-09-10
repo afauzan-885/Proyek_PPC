@@ -50,9 +50,10 @@
                 </thead>
                 <tbody>
                     @forelse ($finishGoods as $finishgood)
-                        <tr>
-                            <td>{{ $loop->iteration }}
-                                {{-- <td>{{ $finishgood['kode_costumer'] }}</td> --}}
+                        <tr wire:key="{{ $finishgood->id }}">
+                            <td class="text-nowrap">
+                                {{ ($finishGoods->currentpage() - 1) * $finishGoods->perpage() + $loop->index + 1 }}.
+                            </td>
                             <td>{{ $finishgood['kode_barang'] }} - {{ $finishgood['nama_barang'] }}</td>
                             <td>{{ $finishgood['no_part'] }}</td>
                             <td>{{ $finishgood['stok_material'] }}</td>
@@ -66,17 +67,25 @@
                                 @endif
                             </td>
                             <td>
-                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editformfg" wire:click="showData({{ $finishgood->id }})">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-
-                                <button type="button" wire:click="delete({{ $finishgood->id }})"
-                                    class="btn btn-outline-danger btn-sm" data-bs-placement="top"
-                                    data-bs-custom-class="custom-tooltip-danger"
-                                    wire:confirm="Yakin ingin menghapus {{ $finishgood->nama_barang }} dengan kode {{ $finishgood->kode_costumer }}?">
-                                    <i class="bi bi-trash3"></i>
-                                </button>
+                                <div class="btn-group dropstart">
+                                    <button type="button" class="btn btn-hijau-asin dropdown-toggle"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    </button>
+                                    <div class="dropdown-menu p-1">
+                                        <div class="d-flex flex-column">
+                                            <button class="btn btn-outline-primary btn-sm"data-bs-toggle="modal"
+                                                data-bs-target="#editformfg"
+                                                wire:click="showData({{ $finishgood->id }})">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </button>
+                                            <button class="btn btn-outline-danger btn-sm mt-1" type="button"
+                                                data-bs-placement="top" wire:click="delete({{ $finishgood->id }})"
+                                                wire:confirm="Yakin ingin menghapus {{ $finishgood->nama_barang }} dengan kode {{ $finishgood->kode_costumer }}?">
+                                                <i class="bi bi-trash3"></i> Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     @empty
@@ -89,5 +98,5 @@
         </div>
     </div>
     {{-- Modal Input --}}
-    <x-persediaan_barang.modal.modal_tabel-fg :csdata="$costumerSuppliers" />
+    <x-persediaan_barang.modal.modal_tabel-fg :finishGoodsdata="$costumerSuppliers" />
 </div>

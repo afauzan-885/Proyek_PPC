@@ -73,18 +73,29 @@
                                                 {{ $CostumerSupplier['kontak_costumer'] }}</td>
                                             <td>{{ $CostumerSupplier['email_costumer'] }}</td>
                                             <td class='text-nowrap'>
-                                                <button type="button" data-bs-toggle="modal"
-                                                    data-bs-target="#editformcs"
-                                                    wire:click="showData({{ $CostumerSupplier->id }})"
-                                                    class="btn btn-outline-primary btn-sm">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </button>
-                                                <button type="button" wire:click="delete({{ $CostumerSupplier->id }})"
-                                                    class="btn btn-outline-danger btn-sm" data-bs-placement="top"
-                                                    data-bs-custom-class="custom-tooltip-danger"
-                                                    wire:confirm="Anda yakin ingin menghapus Customer {{ $CostumerSupplier->nama_costumer }}?">
-                                                    <i class="bi bi-trash3"></i>
-                                                </button>
+                                                <div class="btn-group dropstart">
+                                                    <button type="button" class="btn btn-hijau-asin dropdown-toggle"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                    </button>
+                                                    <div class="dropdown-menu p-1">
+                                                        <div class="d-flex flex-column">
+                                                            <button type="button" data-bs-toggle="modal"
+                                                                data-bs-target="#editformcs"
+                                                                wire:click="showData({{ $CostumerSupplier->id }})"
+                                                                class="btn btn-outline-primary btn-sm">
+                                                                <i class="bi bi-pencil-square"></i> Edit
+                                                            </button>
+                                                            <button type="button"
+                                                                wire:click="delete({{ $CostumerSupplier->id }})"
+                                                                class="btn btn-outline-danger btn-sm mt-1"
+                                                                data-bs-placement="top"
+                                                                data-bs-custom-class="custom-tooltip-danger"
+                                                                wire:confirm="Anda yakin ingin menghapus Customer {{ $CostumerSupplier->nama_costumer }}?">
+                                                                <i class="bi bi-trash3"></i> Hapus
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     @empty

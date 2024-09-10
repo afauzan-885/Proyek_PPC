@@ -24,6 +24,8 @@ class WIPController extends Component
 
     public $lastPage, $searchTerm='', $page, $query;
 
+    // protected $listeners = ['refreshComponent' => '$refresh'];
+
     protected $rules = [
         'kode_barang' => 'required|unique:pb__wip,kode_barang',
         'nama_barang' => 'required',
@@ -40,6 +42,10 @@ class WIPController extends Component
         ];
     }
 
+    // public function refreshComponent()
+    // {
+    //     $this->dispatch('refreshComponent'); // Memicu event custom
+    // }
     
     public function storeData()
     {
@@ -113,7 +119,7 @@ class WIPController extends Component
         ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
         ->paginate(9);
         return view('livewire.persediaan_barang.tabel.tabel_wip', [
-            'wip' => $wips,
+            'Wip' => $wips,
         ]);
     }
 }

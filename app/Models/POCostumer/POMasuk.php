@@ -32,4 +32,9 @@ class POMasuk extends Model
     {
         return $this->belongsTo(CostumerSupplier::class, 'kode_customer', 'kode_customer');
     }
+
+    public function jadwalpengiriman()
+    {
+        return $this->belongsTo(POJadwalPengiriman::class, 'no_po', 'no_po');
+    }
 }

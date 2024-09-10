@@ -41,6 +41,11 @@
                                                 Pengeluaran</label>
                                             <input type="text" wire:model="jumlah_pengeluaran_material"
                                                 wire:blur='cari' class="form-control" placeholder="Qty">
+                                            @error('stok')
+                                                <small class="d-block mt-1 text-danger"
+                                                    role="alert">{{ $message }}</small>
+                                            @enderror
+
                                             @error('jumlah_pengeluaran_material')
                                                 <small class="d-block mt-1 text-danger"
                                                     role="alert">{{ $message }}</small>
@@ -112,7 +117,7 @@
 </div>
 
 {{-- Edit Form Modal --}}
-<div class="modal fade" wire:ignore.self id="editpemakaian_material" tabindex="-1"
+<div class="modal fade" wire:ignore.self id="editpemakaian_material" tabindex="-1" data-bs-backdrop="static"
     aria-labelledby="editpemakaian_material" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

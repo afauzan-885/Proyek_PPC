@@ -63,17 +63,25 @@
                             <td>{{ $produkwip['hasil_ok'] }}</td>
                             <td>{{ $produkwip['hasil_ng'] }}</td>
                             <td>
-                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editwip_product" wire:click="showData({{ $produkwip->id }})">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-
-                                <button type="button" wire:click="delete({{ $produkwip->id }})"
-                                    class="btn btn-outline-danger btn-sm" data-bs-placement="top"
-                                    data-bs-custom-class="custom-tooltip-danger"
-                                    wire:confirm="Yakin ingin menghapus {{ $produkwip->nama_material }}?">
-                                    <i class="bi bi-trash3"></i>
-                                </button>
+                                <div class="btn-group dropstart">
+                                    <button type="button" class="btn btn-hijau-asin dropdown-toggle"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    </button>
+                                    <div class="dropdown-menu p-1">
+                                        <div class="d-flex flex-column">
+                                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#editwip_product"
+                                                wire:click="showData({{ $produkwip->id }})">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </button>
+                                            <button class="btn btn-outline-danger btn-sm mt-1" type="button"
+                                                wire:click="delete({{ $produkwip->id }})"
+                                                wire:confirm="Yakin ingin menghapus {{ $produkwip->nama_material }}?">
+                                                <i class="bi bi-trash3"></i> Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     @empty

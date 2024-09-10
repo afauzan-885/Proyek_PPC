@@ -30,18 +30,22 @@
                                         class="bi bi-box2"></i>
                                     Kedatangan Material</button>
 
-                                <button class="nav-link " id="pills-proses_material-tab" data-bs-toggle="tab"
-                                    data-bs-target="#nav-proses_material" type="button" role="tab"
-                                    aria-controls="nav-proses_material" aria-selected="false"><i class="bi bi-gear"></i>
+                                <button class="nav-link @if ($activeTab == 'PoPM') active @endif"
+                                    wire:click="setActiveTab('PoPM')" id="pills-proses_material-tab"
+                                    data-bs-toggle="tab" data-bs-target="#nav-proses_material" type="button"
+                                    role="tab" aria-controls="nav-proses_material" aria-selected="false"><i
+                                        class="bi bi-gear"></i>
                                     Proses Material</button>
 
-                                <button class="nav-link " id="pills-jadwal_pengiriman-tab" data-bs-toggle="tab"
-                                    data-bs-target="#nav-jadwal_pengiriman" type="button" role="tab"
-                                    aria-controls="nav-jadwal_pengiriman" aria-selected="true"><i
+                                <button class="nav-link @if ($activeTab == 'PJP') active @endif"
+                                    wire:click="setActiveTab('PJP')" id="pills-jadwal_pengiriman-tab"
+                                    data-bs-toggle="tab" data-bs-target="#nav-jadwal_pengiriman" type="button"
+                                    role="tab" aria-controls="nav-jadwal_pengiriman" aria-selected="true"><i
                                         class="bi bi-truck"></i>
                                     Jadwal Pengiriman</button>
 
-                                <button class="nav-link" id="pills-laporan-tab" data-bs-toggle="tab"
+                                <button class="nav-link @if ($activeTab == 'PoL') active @endif"
+                                    wire:click="setActiveTab('PoL')" id="pills-laporan-tab" data-bs-toggle="tab"
                                     data-bs-target="#nav-laporan" type="button" role="tab"
                                     aria-controls="nav-laporan" aria-selected="false"><i
                                         class="bi bi-envelope-paper"></i>
@@ -73,17 +77,17 @@
                         role="tabpanel" aria-labelledby="nav-proses_material-tab" tabindex="0">
                         <livewire:Po_Costumer.Po_Proses_Material_Controller />
                     </div>
-                    <div class="tab-pane fade" id="nav-jadwal_pengiriman" role="tabpanel"
-                        aria-labelledby="nav-jadwal_pengiriman-tab" tabindex="0">
+                    <div class="tab-pane fade {{ $activeTab == 'PJP' ? 'show active' : '' }}" id="nav-jadwal_pengiriman"
+                        role="tabpanel" aria-labelledby="nav-jadwal_pengiriman-tab" tabindex="0">
                         <livewire:Po_Costumer.Po_Jadwal_Pengiriman_Controller :poJadwalPengiriman />
                     </div>
-                    <div class="tab-pane fade" id="nav-laporan" role="tabpanel" aria-labelledby="nav-laporan-tab"
-                        tabindex="0">
-                        {{-- <x-po_costumer.tabel.tabel-laporan /> --}}
+                    <div class="tab-pane fade {{ $activeTab == 'PoL' ? 'show active' : '' }}" id="nav-laporan"
+                        role="tabpanel" aria-labelledby="nav-laporan-tab" tabindex="0">
+                        <livewire:Po_Costumer.Po_Laporan_Controller />
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>

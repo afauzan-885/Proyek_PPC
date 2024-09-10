@@ -5,6 +5,7 @@ namespace App\Livewire\POCostumer\POProsesMaterial;
 use App\Models\POCostumer\PO_PM_WipProduct as PoWIP;
 use App\Models\PersediaanBarang\PBWIP as WIPModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -49,26 +50,23 @@ class POProdukWIPController extends Component
     public function storeData()
     {
         $validatedData = $this->validate();
-
         $uuid = Str::uuid();
-         
+
         // Cari data di WIPModel berdasarkan nama_produk
         $wip = WIPModel::where('kode_barang', $validatedData['kode_barang'])->first();
-        
-        // 1. Cari atau buat data di pb__wip berdasarkan kode_barang
-        if ($wip) {
 
-            // Jika data sudah ada, perbarui
+        if ($wip) {
+            // Jika data sudah ada, perbarui stok dengan menambahkan stok yang sudah ada
             $wip->update([
-                'stok_barang' => $validatedData['hasil_ok'],
+                'stok_barang' => $wip->stok_barang + $validatedData['hasil_ok'], // Tambahkan stok yang sudah ada
                 'jenis_proses' => $validatedData['proses_produksi'],
             ]);
-        } else {
 
+            // Tambahkan pesan peringatan
+            session()->flash('warning', 'Kode ini telah ada di database. Stok ditambahkan.'); 
+        } else {
             // Jika data belum ada, buat baru
             WIPModel::create([
-
-                // Kiri untuk database  WIP dari database Produk WIP
                 'uuid' => $uuid, 
                 'kode_barang' => $validatedData['kode_barang'],
                 'nama_barang' => $validatedData['nama_produk'],
@@ -76,43 +74,80 @@ class POProdukWIPController extends Component
                 'jenis_proses' => $validatedData['proses_produksi'],
             ]);
         }
-        
+
         PoWIP::create($validatedData);
         sleep(1);
         $namaproduk = $validatedData['nama_produk'];
 
-
-
-        $this->reset('nama_produk',
-'kode_barang',
-'tanggal_produksi',
-'shift',
-'no_mesin',
-'proses_produksi',
-'hasil_ok',
-'hasil_ng');
+        $this->reset('nama_produk', 'kode_barang', 'tanggal_produksi', 'shift', 'no_mesin', 'proses_produksi', 'hasil_ok', 'hasil_ng');
         session()->flash('suksesinput', 'Material ' . $namaproduk . ' berhasil ditambahkan.');
     }
     
-    public function showData(int $id)
-    {
-        $validatedData = PoWIP::find($id);
-        $this->fill($validatedData->toArray());
-    }
 
     public function updateData()
     {
         try {
             $validatedData = $this->validate();
+            $poWIP = PoWIP::findOrFail($this->PoWIP_id);
 
-            PoWIP::findOrFail($this->PoWIP_id)->update($validatedData);
+            $original_stok = $poWIP->hasil_ok;
+
+            // Cari data WIP saat ini
+            $wip = WIPModel::where('kode_barang', $validatedData['kode_barang'])->first();
+
+            if ($wip) {
+                // Kembalikan stok ke kondisi semula (sebelum update PoWIP ini)
+                $wip->stok_barang -= $original_stok; 
+
+                // Hitung stok baru setelah update PoWIP
+                $new_stok = $wip->stok_barang + $validatedData['hasil_ok']; 
+
+                // Memastikan stok tidak negatif
+                if ($new_stok < 0) {
+                    session()->flash('error', 'Hasil OK tidak boleh membuat stok menjadi negatif.');
+                    return redirect()->back()->withInput();
+                }
+
+                // Periksa apakah ada perubahan data sebelum melakukan update
+                if ($wip->fill($validatedData)->isDirty()) {
+                    $wip->update([
+                        'stok_barang' => $new_stok,
+                        'jenis_proses' => $validatedData['proses_produksi'],
+                    ]);
+
+                    $namaProduk = $validatedData['nama_produk'];
+                    session()->flash('suksesupdate', 'Produk ' . $namaProduk . ' berhasil diupdate.');
+                } else {
+                    session()->flash('suksesupdate', 'Update berhasil, data tidak ada yang berubah.');
+                }
+            } else {
+                // Tangani kasus di mana WIP tidak ditemukan
+                session()->flash('error', 'Data WIP tidak ditemukan untuk kode barang ini.');
+            }
+
+            // Periksa apakah ada perubahan data sebelum melakukan update pada PoWIP
+            if ($poWIP->fill($validatedData)->isDirty()) {
+                PoWIP::findOrFail($this->PoWIP_id)->update($validatedData);
+            }
+
         } catch (ModelNotFoundException $e) {
-            session()->flash('error', 'Produk tidak ditemukan.');   
+            session()->flash('error', 'Produk tidak ditemukan.'); 
+        } catch (\Exception $e) {
+            Log::error($e);
+            session()->flash('error', 'Terjadi kesalahan saat mengupdate data.');
         }
 
-        $namaproduk = $validatedData['nama_produk'];
-        session()->flash('suksesupdate', 'Material ' . $namaproduk . ' berhasil diupdate.');
+        return redirect()->back(); 
     }
+
+    public function showData(int $id)
+    {
+        $validatedData = PoWIP::find($id);
+        $this->fill($validatedData->toArray());
+        $this->PoWIP_id = $id;
+    }
+
+    
 
 
     public function delete($id)

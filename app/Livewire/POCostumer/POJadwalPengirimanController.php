@@ -5,6 +5,7 @@ namespace App\Livewire\POCostumer;
 use App\Models\POCostumer\POJadwalPengiriman as PJPModel;
 use App\Models\POCostumer\POMasuk as PMModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -21,7 +22,7 @@ class POJadwalPengirimanController extends Component
     $tanggal_keluar_pt,
     $surat_jalan;
 
-    public $PKM_id, $lastPage, $searchTerm='', $page, $query;
+    public $PJP_id, $lastPage, $searchTerm='', $page, $query;
 
     protected $rules = [
         'nama_customer' => 'required',
@@ -52,63 +53,123 @@ class POJadwalPengirimanController extends Component
     }
 
     public function storeData()
-{
-    $validatedData = $this->validate();
+    {
+        $validatedData = $this->validate();
 
-    $pomasuk = PMModel::firstOrCreate(
-        ['no_po' => $validatedData['no_po']], 
-        [
-            'nama_customer' => $validatedData['nama_customer'],
-            // ... (field lainnya jika ada)
-        ]
-    );
-
-    // Pastikan $pomasuk berhasil ditemukan/dibuat
-    if ($pomasuk) {
-        // Update stok_material dengan menambahkan qty_in setelah disimpan
-        $pomasuk->qty -= $validatedData['pengeluaran_barang'];
-        $pomasuk->save(); 
-
-        PJPModel::create($validatedData);
-
-        $this->reset(
-            'nama_customer',
-            'no_po',
-            'permintaan_po',
-            'pengeluaran_barang',
-            'tanggal_keluar_pt',
-            'surat_jalan'
+        $pomasuk = PMModel::firstOrCreate(
+            ['no_po' => $validatedData['no_po']], 
+            [
+                'nama_customer' => $validatedData['nama_customer'],
+            ]
         );
-        session()->flash('suksesinput', 'Jadwal berhasil dibuat.');
-    } else {
-        // Tangani kasus jika $pomasuk tidak ditemukan/dibuat
-        session()->flash('error', 'Terjadi kesalahan dalam memproses data PO Masuk.'); 
+
+        if ($pomasuk) {
+            $pomasuk->qty -= $validatedData['pengeluaran_barang'];
+            $pomasuk->save(); 
+
+            PJPModel::create($validatedData);
+            
+            $this->dispatch('poMasukUpdated'); 
+            $this->reset(
+                'nama_customer',
+                'no_po',
+                'permintaan_po',
+                'pengeluaran_barang',
+                'tanggal_keluar_pt',
+                'surat_jalan'
+            );
+            session()->flash('suksesinput', 'Jadwal berhasil dibuat.');
+        } else {
+            // Tangani kasus jika $pomasuk tidak ditemukan/dibuat
+            session()->flash('error', 'Terjadi kesalahan dalam memproses data PO Masuk.'); 
+        }
     }
-}
+    
     public function showData(int $id)
     {
         $validatedData = PJPModel::find($id);
         $this->fill($validatedData->toArray());
+        $this->PJP_id = $id;
     }
+
+    // public function updateData()
+    // {
+    //     try {
+    //         $validatedData = $this->validate();
+
+    //         PJPModel::findOrFail($this->PJP_id)->update($validatedData);
+           
+    //     } catch (ModelNotFoundException $e) {
+    //         session()->flash('error', 'Data tidak ditemukan.');
+    //     }
+    //     $namacustomer = $validatedData['nama_customer'];
+    //         session()->flash('suksesupdate', 'Jadwal ' . $namacustomer . ' berhasil diupdate.');
+    // }
 
     public function updateData()
     {
         try {
             $validatedData = $this->validate();
+            $poPJP = PJPModel::findOrFail($this->PJP_id);
 
-            PJPModel::findOrFail($this->PKM_id)->update($validatedData);
+            $original_stok = $poPJP->pengeluaran_barang;
+
+            // Cari data WIP saat ini
+            $poMasuk = PMModel::where('no_po', $validatedData['no_po'])->first();
+
+            if ($poMasuk) {
+                // Kembalikan stok ke kondisi semula (sebelum update PoWIP ini)
+                $poMasuk->qty += $original_stok; 
+
+                // Hitung stok baru setelah update PoWIP
+                $new_stok = $poMasuk->qty - $validatedData['pengeluaran_barang']; 
+
+                // Memastikan stok tidak negatif
+                if ($new_stok < 0) {
+                    session()->flash('error', 'Pengiriman PO tidak boleh membuat PO Awal menjadi negatif.');
+                    return redirect()->back()->withInput();
+                }
+
+                // Periksa apakah ada perubahan data sebelum melakukan update
+                if ($poMasuk->fill($validatedData)->isDirty()) {
+                    $poMasuk->update([
+                        'qty' => $new_stok,
+                    ]);
+
+                    $namaCustomer = $validatedData['nama_customer'];
+                    session()->flash('suksesupdate', 'Jadwal ' . $namaCustomer . ' berhasil diupdate.');
+                } else {
+                    session()->flash('suksesupdate', 'Update berhasil, data tidak ada yang berubah.');
+                }
+            } else {
+                // Tangani kasus di mana WIP tidak ditemukan
+                session()->flash('error', 'Data WIP tidak ditemukan untuk kode barang ini.');
+            }
+
+            // Periksa apakah ada perubahan data sebelum melakukan update pada PoWIP
+            if ($poPJP->fill($validatedData)->isDirty()) {
+                PJPModel::findOrFail($this->PJP_id)->update($validatedData);
+            }
+
         } catch (ModelNotFoundException $e) {
-            session()->flash('error', 'Data tidak ditemukan.');
+            session()->flash('error', 'PO tidak ditemukan.'); 
+        } catch (\Exception $e) {
+            Log::error($e);
+            session()->flash('error', 'Terjadi kesalahan saat mengupdate data.');
         }
-        $namacustomer = $validatedData['nama_customer'];
-        session()->flash('suksesupdate', 'Dadwal ' . $namacustomer . ' berhasil diupdate.');
-    }
 
+        $this->dispatch('poMasukUpdated');
+        return redirect()->back(); 
+    }
 
     public function delete($id)
     {
-        PJPModel::findOrFail($id)->delete();
-        session()->flash('sukseshapus', 'Data berhasil dihapus.');
+        $customer = PJPModel::find($id);
+        $namaCustomer = $customer->nama_customer;
+        $noPo = $customer->no_po;
+        $customer->delete();
+        $this->dispatch('toastify',  $namaCustomer .' (No.PO: '. $noPo. ') berhasil dihapus.');
+
     }
     
     public function closeModal()
@@ -116,6 +177,21 @@ class POJadwalPengirimanController extends Component
         $this->resetExcept('activeTab');
         $this->resetErrorBag();
         $this->resetValidation(); 
+    }
+
+        public function updatedSearchTerm()
+    {
+        if ($this->searchTerm) { // Jika ada input pencarian
+            if (empty($this->lastPage)) { 
+                $this->lastPage = $this->page; // Simpan halaman saat ini jika pencarian baru dimulai
+            }
+            $this->resetPage(); // Reset ke halaman 1 saat pencarian berlangsung
+        } else {
+            if ($this->lastPage) {
+                $this->setPage($this->lastPage);
+                $this->lastPage = null; // Reset lastPage setelah digunakan
+            }
+        }
     }
 
     public function render()
@@ -130,9 +206,8 @@ class POJadwalPengirimanController extends Component
         ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(nama_customer, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
         ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(no_po, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
         ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(surat_jalan, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
-        ->paginate(9);
+        ->orderBy('no_po')->paginate(9);
 
-        $poJadwalPengiriman = PJPModel::paginate(9);
         $poMasuk = PMModel::all();
         
         return view('livewire.po_costumer.tabel.tabel-jadwal_pengiriman', [

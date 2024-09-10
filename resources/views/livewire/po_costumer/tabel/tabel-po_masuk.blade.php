@@ -70,15 +70,25 @@
                             <td>{{ $pomasuk['kode_barang'] }}</td>
                             <td>Rp. {{ number_format($pomasuk['total_amount'], 0, ',', '.') }}</td>
                             <td>
-                                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editpo_masuk" wire:click="showData({{ $pomasuk->id }})">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-                                <button type="button" wire:click="delete({{ $pomasuk->id }})"
-                                    class="btn btn-outline-danger btn-sm" data-bs-title="Delete"
-                                    wire:confirm="Yakin menghapus {{ $pomasuk->nama_customer }} (PO: {{ $pomasuk->no_po }})">
-                                    <i class="bi bi-trash3"></i>
-                                </button>
+                                <div class="btn-group dropstart">
+                                    <button type="button" class="btn btn-hijau-asin dropdown-toggle"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    </button>
+                                    <div class="dropdown-menu p-1">
+                                        <div class="d-flex flex-column">
+                                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#editpo_masuk"
+                                                wire:click="showData({{ $pomasuk->id }})">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </button>
+                                            <button class="btn btn-outline-danger btn-sm mt-1" type="button"
+                                                wire:click="delete({{ $pomasuk->id }})" data-bs-title="Delete"
+                                                wire:confirm="Yakin menghapus {{ $pomasuk->nama_customer }} (PO: {{ $pomasuk->no_po }})">
+                                                <i class="bi bi-trash3"></i> Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     @empty
