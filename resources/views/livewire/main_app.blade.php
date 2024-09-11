@@ -15,7 +15,8 @@
 
                 <!-- Menu Sidebar starts -->
                 <div class="sidebarMenuScroll">
-                    <x-sidebar />
+                    {{-- <x-sidebar /> --}}
+                    <livewire:sidebar-controller />
                 </div>
                 <!-- Menu Sidebar ends -->
 
@@ -91,6 +92,8 @@
                             <livewire:pb_controller lazy />
                         @elseif (Route::is('po_costumer'))
                             <livewire:po-controller lazy />
+                        @elseif (Route::is('panel_admin'))
+                            <livewire:Panel-Admin-Controller lazy />
                         @endif
 
                     </div>

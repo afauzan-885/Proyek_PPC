@@ -11,18 +11,6 @@
                         </a>
                         <h5 class=" fw-bold mb-5 text-center">Buat Akun Anda</h5>
 
-                        {{-- Tampilkan pesan error jika ada --}}
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
-                        {{-- Tampilkan pesan sukses jika ada --}}
                         @if (session()->has('message'))
                             <div class="alert alert-success">
                                 {{ session('message') }}
@@ -34,19 +22,34 @@
                             <label for="nama" class="form-label">Nama</label>
                             <input type="text" class="form-control" id="nama" wire:model="name"
                                 placeholder="Masukkan Nama" />
+                            @error('name')
+                                <small class="d-block mt-1 text-danger" role="alert">
+                                    {{ $message }}
+                                </small>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" class="form-control" placeholder="Masukkan Email" id="email"
                                 wire:model="email" />
+                            @error('email')
+                                <small class="d-block mt-1 text-danger" role="alert">
+                                    {{ $message }}
+                                </small>
+                            @enderror
 
                         </div>
                         <div class="mb-3">
                             <label for="role" class="form-label">Role</label>
                             <select class="form-select" id="role" wire:model="role">
-                                <option value="admin">Admin</option>
-                                <option value="member">Member</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Member">Member</option>
                             </select>
+                            @error('role')
+                                <small class="d-block mt-1 text-danger" role="alert">
+                                    {{ $message }}
+                                </small>
+                            @enderror
                         </div>
                         {{-- <div class="mb-3">
                             <label for="kata_sandi" class="form-label">Kata Sandi</label>
@@ -77,6 +80,11 @@
                                 </div>
                                 <input type="password" wire:model="password" class="form-control" id="kata_sandi"
                                     x-model="password" @input="checkPasswordStrength" placeholder="Masukkan Kata Sandi">
+                                @error('password')
+                                    <small class="d-block mt-1 text-danger" role="alert">
+                                        {{ $message }}
+                                    </small>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="konfirmasi_sandi" class="form-label">Konfirmasi Sandi</label>

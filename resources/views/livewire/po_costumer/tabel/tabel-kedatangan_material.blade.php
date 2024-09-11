@@ -42,7 +42,9 @@
                         <th>Nama Supplier</th>
                         <th>QTY(Sheet/Lyr/Kg)</th>
                         <th>Surat Jalan</th>
-                        <th>Aksi</th>
+                        @if ($user->role === 'admin')
+                            <th>Aksi</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -59,29 +61,32 @@
                             <td>{{ $kedatanganmaterial['nama_supplier'] }}</td>
                             <td>{{ $kedatanganmaterial['qty'] }} {{ $kedatanganmaterial['satuan'] }}</td>
                             <td>{{ $kedatanganmaterial['surat_jalan'] }}</td>
-                            <td class='text-nowrap'>
-                                <div class="btn-group dropstart">
-                                    <button type="button" class="btn btn-hijau-asin dropdown-toggle"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                    </button>
-                                    <div class="dropdown-menu p-1">
-                                        <div class="d-flex flex-column">
-                                            <button type="button" data-bs-toggle="modal"
-                                                data-bs-target="#editkedatangan_material"
-                                                wire:click="showData({{ $kedatanganmaterial->id }})"
-                                                class="btn btn-outline-primary btn-sm">
-                                                <i class="bi bi-pencil-square"></i> Edit
-                                            </button>
-                                            <button type="button"wire:click="delete({{ $kedatanganmaterial->id }})"
-                                                class="btn btn-outline-danger btn-sm mt-1" data-bs-placement="top"
-                                                data-bs-custom-class="custom-tooltip-danger"
-                                                wire:confirm="Yakin menghapus {{ $kedatanganmaterial->nama_material }} ?">
-                                                <i class="bi bi-trash3"></i> Hapus
-                                            </button>
+                            @if ($user->role === 'admin')
+                                <td class='text-nowrap'>
+                                    <div class="btn-group dropstart">
+                                        <button type="button" class="btn btn-hijau-asin dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        </button>
+                                        <div class="dropdown-menu p-1">
+                                            <div class="d-flex flex-column">
+                                                <button type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#editkedatangan_material"
+                                                    wire:click="showData({{ $kedatanganmaterial->id }})"
+                                                    class="btn btn-outline-primary btn-sm">
+                                                    <i class="bi bi-pencil-square"></i> Edit
+                                                </button>
+                                                <button
+                                                    type="button"wire:click="delete({{ $kedatanganmaterial->id }})"
+                                                    class="btn btn-outline-danger btn-sm mt-1" data-bs-placement="top"
+                                                    data-bs-custom-class="custom-tooltip-danger"
+                                                    wire:confirm="Yakin menghapus {{ $kedatanganmaterial->nama_material }} ?">
+                                                    <i class="bi bi-trash3"></i> Hapus
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
+                                </td>
+                            @endif
                         </tr>
                     @empty
                         <tr>

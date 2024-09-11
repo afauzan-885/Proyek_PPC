@@ -5,6 +5,7 @@ namespace App\Livewire\POCostumer\POProsesMaterial;
 use App\Models\POCostumer\PO_PM_WipProduct as PoWIP;
 use App\Models\PersediaanBarang\PBWIP as WIPModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -197,6 +198,7 @@ class POProdukWIPController extends Component
         
         return view('livewire.po_costumer.tabel.tabel-proses_material.tabel-produk_wip', [
             'produkWIP' => $produkWIP,
+            'user' => Auth::user(), // Pass the authenticated user
         ]);
     }
 }

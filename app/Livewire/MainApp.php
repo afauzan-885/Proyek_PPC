@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class MainApp extends Component
@@ -10,11 +11,12 @@ class MainApp extends Component
 
     public function mount()
     {
-        $this->user = auth()->user(); // Mengambil data pengguna dari sesi
+        $this->user = Auth::user();
     }
 
     public function render()
     {
-        return view('livewire.main_app');
+        return view('livewire.main_app', [
+        ]);
     }
 }

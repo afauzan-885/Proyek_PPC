@@ -5,6 +5,7 @@ namespace App\Livewire\POCostumer;
 use App\Models\POCostumer\POKedatanganMaterial as PKMModel;
 use App\Models\PersediaanBarang\PBWarehouse as WHModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -186,6 +187,7 @@ class POKedatanganMaterialController extends Component
         return view('livewire.po_costumer.tabel.tabel-kedatangan_material', [
             'poKedatanganMaterial' => $poKedatanganMaterial,
             'warehouse' => $warehouse,
+            'user' => Auth::user(), // Pass the authenticated user
         ]);
     }
 }

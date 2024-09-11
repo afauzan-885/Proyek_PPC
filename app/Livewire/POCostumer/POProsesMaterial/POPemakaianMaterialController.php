@@ -5,6 +5,7 @@ namespace App\Livewire\POCostumer\POProsesMaterial;
 use App\Models\POCostumer\PO_PM_Pemakaian_Material as PoPM;
 use App\Models\PersediaanBarang\PBWarehouse as WHModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -227,6 +228,7 @@ class POPemakaianMaterialController extends Component
         return view('livewire.po_costumer.tabel.tabel-proses_material.tabel-pemakaian_material', [
             'pemakaianMaterial' => $pemakaianMaterial,
              'warehouse' => $warehouse,
+             'user' => Auth::user(), // Pass the authenticated user
         ]);
     }
 }

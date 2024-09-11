@@ -4,6 +4,7 @@ namespace App\Livewire\PersediaanBarang;
 
 use App\Models\PersediaanBarang\PBWarehouse as WHModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Str;
@@ -156,6 +157,7 @@ class WarehouseController extends Component
 
         return view('livewire.persediaan_barang.tabel.tabel_wh', [
             'Warehouse' => $warehouses,
+            'user' => Auth::user(), // Pass the authenticated user
         ]);
     }
 }

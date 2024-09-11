@@ -21,7 +21,9 @@
                         <th>Nama Material</th>
                         <th>Sisa Material</th>
                         <th>Hasil Produksi</th>
-                        <th>Aksi</th>
+                        @if ($user->role === 'admin')
+                            <th>Aksi</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>

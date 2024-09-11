@@ -10,24 +10,25 @@ use Livewire\Component;
 #[Title('Daftar')]
 class Daftar extends Component
 {
-    public $name;
+    public $name, $email, $role = 'Member', $password;
 
-    public $email;
-
-    public $role = 'member'; // Default role adalah member
-
-    public $password;
-     public $isSubmitting = false;
-
-    public $password_confirmation;
+    public $isSubmitting = false, $password_confirmation;
 
     protected $rules = [
         'name' => '|string|max:255',
         'email' => '|string|email|max:255|unique:users',
-        'role' => '|in:admin,member',
+        'role' => '|in:Admin,Member',
         'password' => '|string|min:8|confirmed',
     ];
 
+    public function messages()
+    {
+        return [
+            'email.unique' => 'Email yang sama telah ada',
+            'password.confirmed' => 'Password tidak sama', // Perbaiki pesan kesalahan untuk konfirmasi password
+            '*' => 'Form ini tidak boleh kosong'
+        ];
+    }
     public function updated($propertyName)
     {
         
@@ -43,12 +44,13 @@ class Daftar extends Component
             'email' => $this->email,
             'role' => $this->role,
             'password' => Hash::make($this->password),
+            'is_active' => false,
         ]);
 
         // Tambahkan jeda waktu 3 detik
         sleep(3);
 
-        session()->flash('message', 'Registrasi berhasil! Silahkan login.');
+        session()->flash('message', 'Registrasi berhasil! Silahkan hubungi admin untuk melakukan aktivasi.');
     }
 
     

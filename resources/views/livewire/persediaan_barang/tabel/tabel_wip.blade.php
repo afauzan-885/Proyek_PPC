@@ -51,7 +51,9 @@
                         <th>Jenis Proses</th>
                         <th>Stok Barang</th>
                         <th>Status</th>
-                        <th>Aksi</th>
+                        @if ($user->role === 'admin')
+                            <th>Aksi</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -65,33 +67,40 @@
                             <td>{{ $wip->stok_barang }}</td>
                             <td>
                                 @if ($wip->stok_barang > 0)
-                                    <span class="text-success">Tersedia</span>
+                                    <h5 class="mt-2">
+                                        <span class="badge  border border-success text-success">Tersedia</span>
+                                    </h5>
                                 @else
-                                    <span class="text-danger">Belum Tersedia</span>
+                                    <h5 class="mt-2">
+                                        <span class="badge border border-danger text-danger">Belum Tersedia</span>
+                                    </h5>
                                 @endif
                             </td>
-                            <td class='text-nowrap'>
-                                <div class="btn-group dropstart">
-                                    <button type="button" class="btn btn-hijau-asin dropdown-toggle"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                    </button>
-                                    <div class="dropdown-menu p-1">
-                                        <div class="d-flex flex-column">
-                                            <button type="button" data-bs-toggle="modal" data-bs-target="#editformwip"
-                                                wire:click="showData({{ $wip->id }})"
-                                                class="btn btn-outline-primary btn-sm">
-                                                <i class="bi bi-pencil-square"></i> Edit
-                                            </button>
-                                            <button type="button" wire:click="delete({{ $wip->id }})"
-                                                class="btn btn-outline-danger btn-sm mt-1" data-bs-placement="top"
-                                                data-bs-custom-class="custom-tooltip-danger"
-                                                wire:confirm="Yakin ingin menghapus {{ $wip->nama_barang }} dengan kode {{ $wip->kode_barang }}?">
-                                                <i class="bi bi-trash3"></i> Hapus
-                                            </button>
+                            @if ($user->role === 'admin')
+                                <td class='text-nowrap'>
+                                    <div class="btn-group dropstart">
+                                        <button type="button" class="btn btn-hijau-asin dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        </button>
+                                        <div class="dropdown-menu p-1">
+                                            <div class="d-flex flex-column">
+                                                <button type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#editformwip"
+                                                    wire:click="showData({{ $wip->id }})"
+                                                    class="btn btn-outline-primary btn-sm">
+                                                    <i class="bi bi-pencil-square"></i> Edit
+                                                </button>
+                                                <button type="button" wire:click="delete({{ $wip->id }})"
+                                                    class="btn btn-outline-danger btn-sm mt-1" data-bs-placement="top"
+                                                    data-bs-custom-class="custom-tooltip-danger"
+                                                    wire:confirm="Yakin ingin menghapus {{ $wip->nama_barang }} dengan kode {{ $wip->kode_barang }}?">
+                                                    <i class="bi bi-trash3"></i> Hapus
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
+                                </td>
+                            @endif
                         </tr>
                     @empty
                         <tr>

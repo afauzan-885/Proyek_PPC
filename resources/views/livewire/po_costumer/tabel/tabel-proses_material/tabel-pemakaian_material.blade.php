@@ -41,7 +41,9 @@
                         <th>Jumlah Pengeluaran Material</th>
                         <th>Tanggal Pemakaian Material</th>
                         <th>No. PO</th>
-                        <th>Aksi</th>
+                        @if ($user->role === 'admin')
+                            <th>Aksi</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -61,29 +63,31 @@
                             return `${day}-${month}-${year}`;})()">
                             </td>
                             <td>{{ $pemakaianmaterial['no_po'] }}</td>
-                            <td class='text-nowrap'>
-                                <div class="btn-group dropstart">
-                                    <button type="button" class="btn btn-hijau-asin dropdown-toggle"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                    </button>
-                                    <div class="dropdown-menu p-1">
-                                        <div class="d-flex flex-column">
-                                            <button type="button" data-bs-toggle="modal"
-                                                data-bs-target="#editpemakaian_material"
-                                                wire:click="showData({{ $pemakaianmaterial->id }})"
-                                                class="btn btn-outline-primary btn-sm">
-                                                <i class="bi bi-pencil-square"></i> Edit
-                                            </button>
-                                            <button type="button" wire:click="delete({{ $pemakaianmaterial->id }})"
-                                                class="btn btn-outline-danger btn-sm mt-1" data-bs-placement="top"
-                                                data-bs-custom-class="custom-tooltip-danger"
-                                                wire:confirm="Yakin menghapus {{ $pemakaianmaterial->nama_customer }} (PO: {{ $pemakaianmaterial->no_po }})">
-                                                <i class="bi bi-trash3"></i> Hapus
-                                            </button>
+                            @if ($user->role === 'admin')
+                                <td class='text-nowrap'>
+                                    <div class="btn-group dropstart">
+                                        <button type="button" class="btn btn-hijau-asin dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        </button>
+                                        <div class="dropdown-menu p-1">
+                                            <div class="d-flex flex-column">
+                                                <button type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#editpemakaian_material"
+                                                    wire:click="showData({{ $pemakaianmaterial->id }})"
+                                                    class="btn btn-outline-primary btn-sm">
+                                                    <i class="bi bi-pencil-square"></i> Edit
+                                                </button>
+                                                <button type="button" wire:click="delete({{ $pemakaianmaterial->id }})"
+                                                    class="btn btn-outline-danger btn-sm mt-1" data-bs-placement="top"
+                                                    data-bs-custom-class="custom-tooltip-danger"
+                                                    wire:confirm="Yakin menghapus {{ $pemakaianmaterial->nama_customer }} (PO: {{ $pemakaianmaterial->no_po }})">
+                                                    <i class="bi bi-trash3"></i> Hapus
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
+                                </td>
+                            @endif
                         </tr>
                     @empty
                         <tr>

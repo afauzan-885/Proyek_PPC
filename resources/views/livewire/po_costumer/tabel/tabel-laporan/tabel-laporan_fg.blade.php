@@ -26,7 +26,9 @@
                         <th>Jumlah Pengeluaran Material</th>
                         <th>Tanggal Keluar PO</th>
                         <th>Tanggal Keluar PT</th>
-                        <th>Aksi</th>
+                        @if ($user->role === 'admin')
+                            <th>Aksi</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>

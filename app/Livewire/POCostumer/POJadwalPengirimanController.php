@@ -5,6 +5,7 @@ namespace App\Livewire\POCostumer;
 use App\Models\POCostumer\POJadwalPengiriman as PJPModel;
 use App\Models\POCostumer\POMasuk as PMModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -213,6 +214,7 @@ class POJadwalPengirimanController extends Component
         return view('livewire.po_costumer.tabel.tabel-jadwal_pengiriman', [
             'poJadwalPengiriman' => $poJadwalPengiriman,
             'pomasuk' => $poMasuk,
+            'user' => Auth::user(), // Pass the authenticated user
         ]);
     }
 }

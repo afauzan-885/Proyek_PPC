@@ -45,7 +45,9 @@
                         <th>Harga</th>
                         <th>Tipe Barang</th>
                         <th>Status</th>
-                        <th>Aksi</th>
+                        @if ($user->role === 'admin')
+                            <th>Aksi</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -61,32 +63,38 @@
                             <td>{{ $finishgood['tipe_barang'] }}</td>
                             <td>
                                 @if ($finishgood->stok_material > 0)
-                                    <span class="text-success">Tersedia</span>
+                                    <h5 class="mt-2">
+                                        <span class="badge  border border-success text-success">Tersedia</span>
+                                    </h5>
                                 @else
-                                    <span class="text-danger">Belum Tersedia</span>
+                                    <h5 class="mt-2">
+                                        <span class="badge border border-danger text-danger">Belum Tersedia</span>
+                                    </h5>
                                 @endif
                             </td>
-                            <td>
-                                <div class="btn-group dropstart">
-                                    <button type="button" class="btn btn-hijau-asin dropdown-toggle"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                    </button>
-                                    <div class="dropdown-menu p-1">
-                                        <div class="d-flex flex-column">
-                                            <button class="btn btn-outline-primary btn-sm"data-bs-toggle="modal"
-                                                data-bs-target="#editformfg"
-                                                wire:click="showData({{ $finishgood->id }})">
-                                                <i class="bi bi-pencil-square"></i> Edit
-                                            </button>
-                                            <button class="btn btn-outline-danger btn-sm mt-1" type="button"
-                                                data-bs-placement="top" wire:click="delete({{ $finishgood->id }})"
-                                                wire:confirm="Yakin ingin menghapus {{ $finishgood->nama_barang }} dengan kode {{ $finishgood->kode_costumer }}?">
-                                                <i class="bi bi-trash3"></i> Delete
-                                            </button>
+                            @if ($user->role === 'admin')
+                                <td>
+                                    <div class="btn-group dropstart">
+                                        <button type="button" class="btn btn-hijau-asin dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        </button>
+                                        <div class="dropdown-menu p-1">
+                                            <div class="d-flex flex-column">
+                                                <button class="btn btn-outline-primary btn-sm"data-bs-toggle="modal"
+                                                    data-bs-target="#editformfg"
+                                                    wire:click="showData({{ $finishgood->id }})">
+                                                    <i class="bi bi-pencil-square"></i> Edit
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm mt-1" type="button"
+                                                    data-bs-placement="top" wire:click="delete({{ $finishgood->id }})"
+                                                    wire:confirm="Yakin ingin menghapus {{ $finishgood->nama_barang }} dengan kode {{ $finishgood->kode_costumer }}?">
+                                                    <i class="bi bi-trash3"></i> Delete
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
+                                </td>
+                            @endif
                         </tr>
                     @empty
                         <tr>

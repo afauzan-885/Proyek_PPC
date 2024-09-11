@@ -5,6 +5,7 @@ use App\Models\POCostumer\POMasuk as PMModel;
 use App\Models\CostumerSupplier as CSModel;
 use App\Models\PersediaanBarang\PBfinishGood as FGModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use NumberFormatter;
 use Illuminate\Support\Str;
@@ -228,6 +229,7 @@ class POMasukController extends Component
         return view('livewire.po_costumer.tabel.tabel-po_masuk', [
             'poMasuk' => $poMasuk,
             'finishgoods' => $finishgoods,
+            'user' => Auth::user(),
             // 'costumersupplier' => $this->costumersupplier,
         ]);
     }

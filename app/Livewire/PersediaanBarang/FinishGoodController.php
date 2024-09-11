@@ -9,6 +9,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Lazy;
+use Illuminate\Support\Facades\Auth; // Import the Auth facade
 
 class FinishGoodController extends Component
 {
@@ -157,6 +158,7 @@ class FinishGoodController extends Component
         $costumerSuppliers = CostumerSupplier::all(); // Ambil data dari model CostumerSupplier
         return view('livewire.persediaan_barang.tabel.tabel_fg', [
             'finishGoods' => $finishGoods,
+            'user' => Auth::user(), // Pass the authenticated user
         ])
             ->with('costumerSuppliers', $costumerSuppliers); // Pass data ke view
     }

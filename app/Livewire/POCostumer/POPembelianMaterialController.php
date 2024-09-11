@@ -5,6 +5,7 @@ namespace App\Livewire\POCostumer;
 use App\Models\POCostumer\POPembelianMaterial as PPMModel;
 use App\Models\PersediaanBarang\PBWarehouse as WHModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use NumberFormatter;
 use Illuminate\Support\Str;
@@ -199,6 +200,7 @@ class POPembelianMaterialController extends Component
         
         return view('livewire.po_costumer.tabel.tabel-pembelian_material', [
             'poPembelianMaterial' => $poPembelianMaterial,
+            'user' => Auth::user(), // Pass the authenticated user
         ])->with('warehouses', $warehouses);
     }
 }

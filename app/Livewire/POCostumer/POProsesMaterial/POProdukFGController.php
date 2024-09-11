@@ -5,6 +5,7 @@ namespace App\Livewire\POCostumer\POProsesMaterial;
 use App\Models\POCostumer\PO_PM_FgProduct as PoFG;
 use App\Models\PersediaanBarang\PBFinishGood as FGModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -199,6 +200,7 @@ class POProdukFGController extends Component
         return view('livewire.po_costumer.tabel.tabel-proses_material.tabel-produk_fg', [
             'produkFG' => $produkFG,
             'finishgood' => $finishgoods,
+            'user' => Auth::user(), // Pass the authenticated user
         ]);
     }
 }

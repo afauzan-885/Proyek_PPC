@@ -41,7 +41,9 @@
                         <th>QTY- Awal</th>
                         <th>QTY- Masuk</th>
                         {{-- <th>Total Stok</th> --}}
-                        <th>Aksi</th>
+                        @if ($user->role === 'admin')
+                            <th>Aksi</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -59,17 +61,29 @@
                                 }" x-text="qty_awal + qty_in">
                                 </span>
                             </td> --}}
-                            <td>
-                                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editfg_product" wire:click="showData({{ $produkfg->id }})">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-                                <button type="button" wire:click="delete({{ $produkfg->id }})"
-                                    class="btn btn-outline-danger btn-sm"
-                                    wire:confirm="Yakin menghapus {{ $produkfg->nama_produk }} (Shift: {{ $produkfg->shift_produksi }})">
-                                    <i class="bi bi-trash3"></i>
-                                </button>
-                            </td>
+                            @if ($user->role === 'admin')
+                                <td>
+                                    <div class="btn-group dropstart">
+                                        <button type="button" class="btn btn-hijau-asin dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        </button>
+                                        <div class="dropdown-menu p-1">
+                                            <div class="d-flex flex-column">
+                                                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target="#editfg_product"
+                                                    wire:click="showData({{ $produkfg->id }})">
+                                                    <i class="bi bi-pencil-square"></i> Edit
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm mt-1" type="button"
+                                                    wire:click="delete({{ $produkfg->id }})"
+                                                    wire:confirm="Yakin menghapus {{ $produkfg->nama_produk }} (Shift: {{ $produkfg->shift_produksi }})">
+                                                    <i class="bi bi-trash3"></i> Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            @endif
                         </tr>
                     @empty
                         <tr>

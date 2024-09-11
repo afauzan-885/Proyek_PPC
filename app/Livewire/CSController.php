@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth; // Import the Auth facade
 
 #[Computed]
 class CSController extends Component
@@ -122,6 +123,8 @@ class CSController extends Component
         // $CostumerSuppliers = CSModel::paginate(9);
         
         return view('livewire.costumer-supplier', [
-            'cs'=>$CostumerSuppliers]);
+            'cs'=>$CostumerSuppliers,
+            'user' => Auth::user(), // Pass the authenticated user
+        ]);
     }
 }

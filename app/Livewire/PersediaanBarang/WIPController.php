@@ -4,6 +4,7 @@ namespace App\Livewire\PersediaanBarang;
 
 use App\Models\PersediaanBarang\PBWIP as WIPModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Str;
@@ -120,6 +121,7 @@ class WIPController extends Component
         ->paginate(9);
         return view('livewire.persediaan_barang.tabel.tabel_wip', [
             'Wip' => $wips,
+            'user' => Auth::user(), // Pass the authenticated user
         ]);
     }
 }

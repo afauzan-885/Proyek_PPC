@@ -43,11 +43,12 @@
                         <th>Proses Produksi</th>
                         <th>Hasil OK/Baik (QTY)</th>
                         <th>Hasil NG/Cacat (QTY)</th>
-                        <th>Aksi</th>
+                        @if ($user->role === 'admin')
+                            <th>Aksi</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
-
                     @forelse ($produkWIP as $produkwip)
                         <tr>
                             <td>{{ $loop->iteration }}
@@ -62,27 +63,29 @@
                             <td>{{ $produkwip['proses_produksi'] }}</td>
                             <td>{{ $produkwip['hasil_ok'] }}</td>
                             <td>{{ $produkwip['hasil_ng'] }}</td>
-                            <td>
-                                <div class="btn-group dropstart">
-                                    <button type="button" class="btn btn-hijau-asin dropdown-toggle"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                    </button>
-                                    <div class="dropdown-menu p-1">
-                                        <div class="d-flex flex-column">
-                                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#editwip_product"
-                                                wire:click="showData({{ $produkwip->id }})">
-                                                <i class="bi bi-pencil-square"></i> Edit
-                                            </button>
-                                            <button class="btn btn-outline-danger btn-sm mt-1" type="button"
-                                                wire:click="delete({{ $produkwip->id }})"
-                                                wire:confirm="Yakin ingin menghapus {{ $produkwip->nama_material }}?">
-                                                <i class="bi bi-trash3"></i> Delete
-                                            </button>
+                            @if ($user->role === 'admin')
+                                <td>
+                                    <div class="btn-group dropstart">
+                                        <button type="button" class="btn btn-hijau-asin dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        </button>
+                                        <div class="dropdown-menu p-1">
+                                            <div class="d-flex flex-column">
+                                                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target="#editwip_product"
+                                                    wire:click="showData({{ $produkwip->id }})">
+                                                    <i class="bi bi-pencil-square"></i> Edit
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm mt-1" type="button"
+                                                    wire:click="delete({{ $produkwip->id }})"
+                                                    wire:confirm="Yakin ingin menghapus {{ $produkwip->nama_material }}?">
+                                                    <i class="bi bi-trash3"></i> Delete
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
+                                </td>
+                            @endif
                         </tr>
                     @empty
                         <tr>
