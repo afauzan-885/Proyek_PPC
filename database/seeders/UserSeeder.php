@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
             'name' => 'Tester Admin',
             'email' => 'testeradmin@tester.com',
             'password' => Hash::make('123456789'), // Hash password untuk keamanan
-            'role' => 'admin',
+            'role' => 'Admin',
             'is_active' => true, // Akun admin langsung aktif
         ]);
 
@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
             'name' => 'Tester',
             'email' => 'tester@tester.com',
             'password' => Hash::make('123456789'),
-            'role' => 'member',
+            'role' => 'Member',
             'is_active' => false, // Akun member menunggu aktivasi
         ]);
 
@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
             'name' => 'Manager',
             'email' => 'manager@tester.com',
             'password' => Hash::make('manager123'),
-            'role' => 'member',
+            'role' => 'Member',
             'is_active' => true, 
         ]);
     }

@@ -22,7 +22,7 @@
                         <th>Nama Produk</th>
                         <th>Tanggal Keluar PT</th>
                         <th>Surat Jalan</th>
-                        @if ($user->role === 'admin')
+                        @if ($user->role === 'Admin')
                             <th>Aksi</th>
                         @endif
                     </tr>

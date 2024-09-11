@@ -42,7 +42,7 @@
                         <th>Nama Supplier</th>
                         <th>QTY(Sheet/Lyr/Kg)</th>
                         <th>Surat Jalan</th>
-                        @if ($user->role === 'admin')
+                        @if ($user->role === 'Admin')
                             <th>Aksi</th>
                         @endif
                     </tr>
@@ -61,7 +61,7 @@
                             <td>{{ $kedatanganmaterial['nama_supplier'] }}</td>
                             <td>{{ $kedatanganmaterial['qty'] }} {{ $kedatanganmaterial['satuan'] }}</td>
                             <td>{{ $kedatanganmaterial['surat_jalan'] }}</td>
-                            @if ($user->role === 'admin')
+                            @if ($user->role === 'Admin')
                                 <td class='text-nowrap'>
                                     <div class="btn-group dropstart">
                                         <button type="button" class="btn btn-hijau-asin dropdown-toggle"

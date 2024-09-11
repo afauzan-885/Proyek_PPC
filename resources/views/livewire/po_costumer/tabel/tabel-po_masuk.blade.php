@@ -44,7 +44,7 @@
                         <th>Tanggal Pengiriman</th>
                         <th>Kode Barang</th>
                         <th>Total Harga</th>
-                        @if ($user->role === 'admin')
+                        @if ($user->role === 'Admin')
                             <th>Aksi</th>
                         @endif
                     </tr>
@@ -71,7 +71,7 @@
                             </td>
                             <td>{{ $pomasuk['kode_barang'] }}</td>
                             <td>Rp. {{ number_format($pomasuk['total_amount'], 0, ',', '.') }}</td>
-                            @if ($user->role === 'admin')
+                            @if ($user->role === 'Admin')
                                 <td>
                                     <div class="btn-group dropstart">
                                         <button type="button" class="btn btn-hijau-asin dropdown-toggle"

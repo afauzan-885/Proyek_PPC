@@ -23,7 +23,7 @@
             <span class="menu-text">PO Costumer</span>
         </a>
     </li>
-    @if ($user->role === 'admin')
+    @if ($user->role === 'Admin')
         <li class="{{ request()->is('panel-admin') ? 'active btn-warning' : '' }}">
             <a href="{{ route('panel_admin') }}" wire:navigate>
                 <i class="bi bi-shield-lock"></i>

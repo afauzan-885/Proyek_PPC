@@ -15,6 +15,7 @@
                                     <th>Nama</th>
                                     <th>Email</th>
                                     <th>Role</th>
+                                    <th>Waktu Bergabung</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -27,6 +28,11 @@
                                         <td>{{ $user->email }}</td>
 
                                         <td>{{ $user->role }}</td>
+                                        <td
+                                            x-text="new Date('{{ $user->created_at }}').toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' }) +
+                                             ' ' + new Intl.DateTimeFormat('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false }).
+                                             format(new Date('{{ $user->created_at }}'))">
+                                        </td>
                                         <td>
                                             <span
                                                 class="badge border border-primary text-{{ $user->is_active ? 'success border border-success' : 'danger border border-danger' }}">
@@ -39,16 +45,24 @@
                                                     data-bs-toggle="dropdown" aria-expanded="false"></button>
                                                 <div class="dropdown-menu p-1">
                                                     <div class="d-flex flex-column">
-                                                        <button type="button" data-bs-toggle="modal"
-                                                            data-bs-target="#aktivasi"
-                                                            class="btn btn-outline-primary btn-sm">
-                                                            <i class="bi bi-pencil-square"></i> Aktivasi
-                                                        </button>
+                                                        @if (!$user->is_active)
+                                                            <button type="button" data-bs-toggle="modal"
+                                                                data-bs-target="#aktivasi"
+                                                                class="btn btn-outline-primary btn-sm">
+                                                                <i class="bi bi-pencil-square"></i> Aktivasi
+                                                            </button>
+                                                        @else
+                                                            <button type="button"
+                                                                wire:click="deactivateUser({{ $user->id }})"
+                                                                class="btn btn-outline-secondary btn-sm">
+                                                                <i class="bi bi-x-circle"></i> Nonaktifkan
+                                                            </button>
+                                                        @endif
                                                         <button type="button" wire:click="delete({{ $user->id }})"
                                                             class="btn btn-outline-danger btn-sm mt-1"
                                                             data-bs-placement="top"
                                                             data-bs-custom-class="custom-tooltip-danger"
-                                                            wire:confirm="Anda yakin ingin menghapus Customer?">
+                                                            wire:confirm="Yakin ingin menghapus Akun -{{ $user->name }}-?">
                                                             <i class="bi bi-trash3"></i> Hapus
                                                         </button>
                                                     </div>
@@ -79,7 +93,7 @@
                                 Tidak, Nanti saja
                             </button>
                             <button wire:click="approveUser({{ $user->id }})" type="button"
-                                class="btn text-primary fs-6 col-6 m-0 border-end">
+                                class="btn text-primary fs-6 col-6 m-0 border-end" data-bs-dismiss="modal">
                                 <strong>Ya, Aktifkan</strong>
                             </button>
                         </div>

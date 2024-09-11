@@ -43,7 +43,7 @@
                         <th>Harga</th>
                         <th>Kode Material</th>
                         <th>Total Harga</th>
-                        @if ($user->role === 'admin')
+                        @if ($user->role === 'Admin')
                             <th>Aksi</th>
                         @endif
                     </tr>
@@ -59,7 +59,7 @@
                             <td>{{ $pembelianmaterialdata['harga_material'] }}</td>
                             <td>{{ $pembelianmaterialdata['kode_material'] }}</td>
                             <td>Rp. {{ number_format($pembelianmaterialdata['total_amount'], 0, ',', '.') }}</td>
-                            @if ($user->role === 'admin')
+                            @if ($user->role === 'Admin')
                                 <td>
                                     <div class="btn-group dropstart">
                                         <button type="button" class="btn btn-hijau-asin dropdown-toggle"

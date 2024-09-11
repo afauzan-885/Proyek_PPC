@@ -42,7 +42,7 @@
                         <th>PO yang Dikirim</th>
                         <th>Tanggal Pengiriman</th>
                         <th>Surat Jalan</th>
-                        @if ($user->role === 'admin')
+                        @if ($user->role === 'Admin')
                             <th>Aksi</th>
                         @endif
                     </tr>

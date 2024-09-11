@@ -43,7 +43,7 @@
                         <th>Proses Produksi</th>
                         <th>Hasil OK/Baik (QTY)</th>
                         <th>Hasil NG/Cacat (QTY)</th>
-                        @if ($user->role === 'admin')
+                        @if ($user->role === 'Admin')
                             <th>Aksi</th>
                         @endif
                     </tr>
@@ -63,7 +63,7 @@
                             <td>{{ $produkwip['proses_produksi'] }}</td>
                             <td>{{ $produkwip['hasil_ok'] }}</td>
                             <td>{{ $produkwip['hasil_ng'] }}</td>
-                            @if ($user->role === 'admin')
+                            @if ($user->role === 'Admin')
                                 <td>
                                     <div class="btn-group dropstart">
                                         <button type="button" class="btn btn-hijau-asin dropdown-toggle"

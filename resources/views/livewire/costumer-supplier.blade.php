@@ -54,7 +54,7 @@
                                         <th>Alamat Costumer</th>
                                         <th>Kontak Costumer</th>
                                         <th>Email Costumer</th>
-                                        @if ($user->role === 'admin')
+                                        @if ($user->role === 'Admin')
                                             <th>Aksi</th>
                                         @endif
                                     </tr>
@@ -74,7 +74,7 @@
                                             <td class="text-warp" style="max-width: 160px;">
                                                 {{ $CostumerSupplier['kontak_costumer'] }}</td>
                                             <td>{{ $CostumerSupplier['email_costumer'] }}</td>
-                                            @if ($user->role === 'admin')
+                                            @if ($user->role === 'Admin')
                                                 <td class='text-nowrap'>
                                                     <div class="btn-group dropstart">
                                                         <button type="button"

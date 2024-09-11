@@ -45,7 +45,7 @@
                         <th>Harga</th>
                         <th>Tipe Barang</th>
                         <th>Status</th>
-                        @if ($user->role === 'admin')
+                        @if ($user->role === 'Admin')
                             <th>Aksi</th>
                         @endif
                     </tr>
@@ -72,7 +72,7 @@
                                     </h5>
                                 @endif
                             </td>
-                            @if ($user->role === 'admin')
+                            @if ($user->role === 'Admin')
                                 <td>
                                     <div class="btn-group dropstart">
                                         <button type="button" class="btn btn-hijau-asin dropdown-toggle"

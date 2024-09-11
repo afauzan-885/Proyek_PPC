@@ -41,7 +41,7 @@
                         <th>Jumlah Pengeluaran Material</th>
                         <th>Tanggal Pemakaian Material</th>
                         <th>No. PO</th>
-                        @if ($user->role === 'admin')
+                        @if ($user->role === 'Admin')
                             <th>Aksi</th>
                         @endif
                     </tr>
@@ -63,7 +63,7 @@
                             return `${day}-${month}-${year}`;})()">
                             </td>
                             <td>{{ $pemakaianmaterial['no_po'] }}</td>
-                            @if ($user->role === 'admin')
+                            @if ($user->role === 'Admin')
                                 <td class='text-nowrap'>
                                     <div class="btn-group dropstart">
                                         <button type="button" class="btn btn-hijau-asin dropdown-toggle"

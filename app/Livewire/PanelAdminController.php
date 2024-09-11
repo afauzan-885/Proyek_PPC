@@ -9,6 +9,14 @@ use Livewire\Component;
 class PanelAdminController extends Component
 {
     public $totalAccounts;
+    public $userIdToActivate;
+
+    protected $listeners = ['showModal'];
+
+    public function showModal($userId)
+    {
+        $this->userIdToActivate = $userId;
+    }
 
     public function mount() 
     {
@@ -23,6 +31,18 @@ class PanelAdminController extends Component
             $user->save();
             // Opsional kirim notifikasi ke pengguna
             $this->dispatch('toastify',  'User Berhasil Diaktifkan.');
+        } else {
+            session()->flash('error', 'Pengguna tidak ditemukan.');
+        }
+    }
+
+    public function deactivateUser($userId)
+    {
+        $user = User::find($userId);
+        if ($user) {
+            $user->is_active = false;
+            $user->save();
+            $this->dispatch('toastify', 'User Berhasil Dinonaktifkan.');
         } else {
             session()->flash('error', 'Pengguna tidak ditemukan.');
         }

@@ -26,7 +26,7 @@
                         <th>Jumlah Pengeluaran Material</th>
                         <th>Tanggal Keluar PO</th>
                         <th>Tanggal Keluar PT</th>
-                        @if ($user->role === 'admin')
+                        @if ($user->role === 'Admin')
                             <th>Aksi</th>
                         @endif
                     </tr>

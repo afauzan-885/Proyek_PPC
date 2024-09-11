@@ -41,7 +41,7 @@
                         <th>QTY- Awal</th>
                         <th>QTY- Masuk</th>
                         {{-- <th>Total Stok</th> --}}
-                        @if ($user->role === 'admin')
+                        @if ($user->role === 'Admin')
                             <th>Aksi</th>
                         @endif
                     </tr>
@@ -61,7 +61,7 @@
                                 }" x-text="qty_awal + qty_in">
                                 </span>
                             </td> --}}
-                            @if ($user->role === 'admin')
+                            @if ($user->role === 'Admin')
                                 <td>
                                     <div class="btn-group dropstart">
                                         <button type="button" class="btn btn-hijau-asin dropdown-toggle"
