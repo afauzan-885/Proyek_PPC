@@ -90,4 +90,29 @@
             </div>
         </div>
     </div>
+    @script
+        <script>
+            document.addEventListener('livewire:navigated', function() {
+                function initializeChoices(elementId) {
+                    const element = document.getElementById(elementId);
+                    if (element) {
+                        const choicesInstance = new Choices(element);
+                        choicesInstance.passedElement.element.addEventListener('change', function(event) {
+                            choicesInstance.setChoiceByValue(event.detail.value);
+                        });
+                    }
+                }
+
+                // Inisialisasi Choices.js untuk setiap elemen saat halaman dimuat
+                initializeChoices("po-masuk-input_1");
+                initializeChoices("po-masuk-input_2");
+                initializeChoices("po-masuk-edit_1");
+                initializeChoices("po-masuk-edit_2");
+                initializeChoices("pembelian_material-input");
+                initializeChoices("pembelian_material-edit");
+                initializeChoices("kedatangan-material_input");
+                initializeChoices("kedatangan-material_edit");
+            });
+        </script>
+    @endscript
 </div>

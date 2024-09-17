@@ -18,7 +18,7 @@ class WarehouseController extends Component
 
     public $kode_material, $status, $nama_material, $ukuran_material, $jumlah_material, $berat, $harga_material, $wh_id, $deskripsi, $stok_material;
 
-    public $lastPage, $searchTerm='', $page, $query;
+    public $lastPage, $searchTerm = '', $page, $query;
     // protected $listeners = ['refreshComponent' => '$refresh'];
     protected $rules = [
         'kode_material' => 'required|unique:pb__warehouses,kode_material',
@@ -33,18 +33,23 @@ class WarehouseController extends Component
     public function messages()
     {
         return [
-             '*' => 'Form ini tidak boleh kosong',
-             'kode_material.unique' => 'Kode yang sama telah ada'
+            '*' => 'Form ini tidak boleh kosong',
+            'kode_material.unique' => 'Kode yang sama telah ada'
         ];
     }
 
-    // public function refreshComponent()
-    // {
-    //     $this->dispatch('refreshComponent'); // Memicu event custom
-    // }
+    private function checkUserActive()
+    {
+        if (!Auth::user()->is_active) {
+            Auth::logout();
+            session()->flash('error', 'Akun Anda dinonaktifkan. Silakan hubungi admin.');
+            return redirect()->route('login');
+        }
+    }
 
     public function storeData()
     {
+        $this->checkUserActive();
         $validatedData = $this->validate();
         $hargaKeys = ['harga_material'];
 
@@ -79,6 +84,7 @@ class WarehouseController extends Component
 
     public function updateData()
     {
+        $this->checkUserActive();
         try {
             $validatedData = $this->validate([
                 'kode_material' => 'required',
@@ -108,13 +114,14 @@ class WarehouseController extends Component
 
     public function delete($id)
     {
-        $warehouse=WHModel::find($id);
+        $this->checkUserActive();
+        $warehouse = WHModel::find($id);
         $namaMaterial = $warehouse->nama_material;
         $warehouse->delete();
 
-        $this->dispatch('toastify', 'Material '. $namaMaterial . ' berhasil dihapus.');
+        $this->dispatch('toastify', 'Material ' . $namaMaterial . ' berhasil dihapus.');
     }
-   
+
     public function closeModal()
     {
         $this->reset();
@@ -124,14 +131,14 @@ class WarehouseController extends Component
 
     public function placeholder(array $params = [])
     {
-        
+
         return view('livewire.placeholder.tabel_placeholder', $params);
     }
 
     public function updatedSearchTerm()
     {
         if ($this->searchTerm) { // Jika ada input pencarian
-            if (empty($this->lastPage)) { 
+            if (empty($this->lastPage)) {
                 $this->lastPage = $this->page; // Simpan halaman saat ini jika pencarian baru dimulai
             }
             $this->resetPage(); // Reset ke halaman 1 saat pencarian berlangsung
@@ -151,9 +158,9 @@ class WarehouseController extends Component
             $query->whereRaw('LOWER(REPLACE(REPLACE(nama_material, " ", ""), ".", "")) LIKE ?', [$searchTerm])
                 ->orWhereRaw('LOWER(REPLACE(REPLACE(kode_material, " ", ""), ".", "")) LIKE ?', [$searchTerm]);
         })
-        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(nama_material, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
-        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(kode_material, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
-        ->paginate(9);
+            ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(nama_material, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+            ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(kode_material, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+            ->paginate(9);
 
         return view('livewire.persediaan_barang.tabel.tabel_wh', [
             'Warehouse' => $warehouses,

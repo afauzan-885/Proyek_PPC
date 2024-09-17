@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('no_part', 50);
             $table->integer('stok_material')->default(0);
             $table->decimal('harga', 19);
-            $table->string('tipe_barang', 50);
+            $table->string('tipe_barang', 20);
             $table->timestamps();
         });
 

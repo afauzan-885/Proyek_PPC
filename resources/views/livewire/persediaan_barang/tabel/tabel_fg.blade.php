@@ -22,9 +22,14 @@
                 </button>
             </div>
         </div>
+        <div class="bd-highlight mt-2 ml-4">
+            <button class="border" style="max-width: 100px" wire:click="$refresh">
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
+        </div>
         <div class="p-1 ms-auto bd-highlight">
             <nav aria-label="Page navigation">
-                <ul wire:ignore class="pagination m-auto">
+                <ul class="pagination m-auto">
                     <span wire:loading>Memuat..</span>
                     {{ $finishGoods->links() }}
                 </ul>
@@ -34,7 +39,7 @@
 
     <div class="border border-dark rounded-3">
         <div class="table-responsive">
-            <table class="table align-middle text-nowrap text-center custom-table m-0">
+            <table class="table align-middle text-center custom-table m-0">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -56,7 +61,8 @@
                             <td class="text-nowrap">
                                 {{ ($finishGoods->currentpage() - 1) * $finishGoods->perpage() + $loop->index + 1 }}.
                             </td>
-                            <td>{{ $finishgood['kode_barang'] }} - {{ $finishgood['nama_barang'] }}</td>
+                            <td class="text-warp" style="max-width: 160px;">{{ $finishgood['kode_barang'] }} -
+                                {{ $finishgood['nama_barang'] }}</td>
                             <td>{{ $finishgood['no_part'] }}</td>
                             <td>{{ $finishgood['stok_material'] }}</td>
                             <td>Rp. {{ number_format($finishgood['harga'], 0, ',', '.') }}</td>

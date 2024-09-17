@@ -1,5 +1,5 @@
 <div>
-    @props(['datawarehouse'])
+    @props(['Datawarehouse'])
     <div class="modal fade" wire:ignore.self id="inputkedatangan_material" aria-labelledby="inputkedatangan_materiallabel"
         aria-hidden="true" tabindex="-1">
         <div class="modal-dialog">
@@ -32,6 +32,41 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3">
+                                            <div class="row g-1">
+                                                <div class="col-12" wire:ignore>
+                                                    <div class="d-flex bd-highlight">
+                                                        <div class="bd-highlight">
+                                                            <label for="kode_material" class="form-label">Kode
+                                                                Material</label>
+                                                        </div>
+                                                        <div x-data="{ tooltip: 'Fitur dalam pengembangan, jika ingin menginput massal dengan data yang sama, harap ganti ke data lain untuk memicu reset, setelah itu kembali ke data yang dituju' }">
+                                                            <span x-tooltip="tooltip"
+                                                                style="border: none ; outline: none;  background-color: transparent; width: 10px; margin-left: 3px">
+                                                                <i class="bi bi-question-circle help-icon"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <select class="choices-single" wire:model="kode_material"
+                                                        wire:change.debounce='cari' id="kedatangan-material_input">
+                                                        <option value="" selected hidden>Pilih Kode Barang...
+                                                        </option>
+                                                        @foreach ($Datawarehouse as $wh)
+                                                            <option value="{{ $wh->kode_material }}">
+                                                                {{ $wh->kode_material }} - {{ $wh->nama_material }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            @error('kode_barang')
+                                                <small class="d-block mt-1 text-danger" role="alert">
+                                                    {{ $message }}
+                                                </small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    {{-- <div class="col-6">
+                                        <div class="mb-3">
                                             <label for="kode_material" class="form-label">Kode Material</label>
                                             <div class="input-group" wire:change.debounce.500ms="validateKodeMaterial">
                                                 <select wire:model="kode_material" id="kode_material"
@@ -53,7 +88,7 @@
                                                     role="alert">{{ $message }}</small>
                                             @enderror
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="col-6">
                                         <!-- Form Field Start -->
@@ -178,9 +213,9 @@
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="kode_material" class="form-label">Kode Material</label>
-                                            <div class="input-group"
-                                                wire:change.debounce.500ms="validateKodeMaterial">
+                                            <div class="input-group">
                                                 <select wire:model="kode_material" id="kode_material"
+                                                    wire:change.debounce.500ms="cari" class="form-control">
                                                     class="form-select">
                                                     <option value="" selected hidden>Pilih Kode Barang...
                                                     </option>
@@ -190,10 +225,6 @@
                                                         </option>
                                                     @endforeach
                                                 </select>
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    wire:click="cari">
-                                                    <i class="bi bi-search"></i>
-                                                </button>
                                             </div>
                                             @error('kode_material')
                                                 <small class="d-block mt-1 text-danger"

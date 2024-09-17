@@ -14,25 +14,25 @@
                                     <div class="nav nav-pills bg-light text-dark border rounded" id="pills-tab"
                                         role="tablist">
                                         <button class="nav-link @if ($activeTab == 'fg') active @endif"
-                                            wire:click="('setActiveTab', 'fg'); ('refreshComponent')" id="pills-fg-tab"
-                                            data-bs-toggle="tab" data-bs-target="#nav-fg" type="button" role="tab"
+                                            wire:click="setActiveTab('fg')" id="pills-fg-tab" data-bs-toggle="tab"
+                                            data-bs-target="#nav-fg" type="button" role="tab"
                                             aria-controls="nav-fg" aria-selected="true">
                                             <i class="bi bi-ui-checks-grid"></i>
                                             Finish Good
                                         </button>
 
                                         <button class="nav-link @if ($activeTab == 'wh') active @endif"
-                                            wire:click="('setActiveTab', 'wh'); ('refreshComponent')" id="pills-wh-tab"
-                                            data-bs-toggle="tab" data-bs-target="#nav-wh" type="button" role="tab"
+                                            wire:click="setActiveTab('wh')" id="pills-wh-tab" data-bs-toggle="tab"
+                                            data-bs-target="#nav-wh" type="button" role="tab"
                                             aria-controls="nav-wh" aria-selected="false">
                                             <i class="bi bi-inboxes"></i>
                                             Warehouse
                                         </button>
 
                                         <button class="nav-link @if ($activeTab == 'wip') active @endif"
-                                            wire:click="('setActiveTab', 'wip'); ('refreshComponent')"
-                                            id="pills-wip-tab" data-bs-toggle="tab" data-bs-target="#nav-wip"
-                                            type="button" role="tab" aria-controls="nav-wip" aria-selected="false">
+                                            wire:click="setActiveTab('wip')" id="pills-wip-tab" data-bs-toggle="tab"
+                                            data-bs-target="#nav-wip" type="button" role="tab"
+                                            aria-controls="nav-wip" aria-selected="false">
                                             <i class="bi bi-house-gear"></i>
                                             Work In Production
                                         </button>

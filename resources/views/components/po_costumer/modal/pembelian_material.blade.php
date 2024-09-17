@@ -4,7 +4,7 @@
     <div class="modal fade" wire:ignore.self id="inputpembelian_barang" tabindex="-1"
         aria-labelledby="inputpembelian_baranglabel" aria-hidden="true" x-data="{
             qty: @entangle('qty'),
-            hargaMaterial: @entangle('harga_material'),
+            hargabarang: @entangle('harga_material'),
             total: @entangle('total_amount'), // Ikat total dengan total_amount di Livewire
         
             init() {
@@ -13,8 +13,8 @@
         
             hitungTotal() {
                 const qty = parseInt(this.qty) || 0;
-                const hargaMaterial = parseInt(this.hargaMaterial.replace(/\D/g, '')) || 0;
-                this.total = qty * hargaMaterial;
+                const hargabarang = parseInt(this.hargabarang.replace(/\D/g, '')) || 0;
+                this.total = qty * hargabarang;
         
                 // Format harga dengan pemisah ribuan dan mata uang IDR
                 this.total = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(this.total);
@@ -53,23 +53,33 @@
 
                                     <div class="col-6">
                                         <div class="mb-3">
-                                            <label for="nama_mtrial" class="form-label">Kode material</label>
-                                            <div class="input-group">
-                                                <select wire:ignore wire:model="kode_material" id="nama_mtrial"
-                                                    class="form-select">
-                                                    <option value="" selected hidden>Pilih Kode material...
-                                                    </option>
-                                                    @foreach ($pembelianmaterialdata as $pm)
-                                                        <option value="{{ $pm->kode_material }}">
-                                                            {{ $pm->kode_material }}
-                                                            -
-                                                            {{ $pm->nama_material }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    wire:click="cariMaterial">
-                                                    <i class="bi bi-search"></i>
-                                                </button>
+                                            <div class="row g-1">
+                                                <div class="col-12" wire:ignore>
+                                                    <div class="d-flex bd-highlight">
+                                                        <div class="bd-highlight">
+                                                            <label for="nama_mtrial" class="form-label">Kode
+                                                                material</label>
+                                                            </label>
+                                                        </div>
+                                                        <div x-data="{ tooltip: 'Fitur dalam pengembangan, jika ingin menginput massal dengan data yang sama, harap ganti ke data lain untuk memicu reset, setelah itu kembali ke data yang dituju' }">
+                                                            <span x-tooltip="tooltip"
+                                                                style="border: none ; outline: none;  background-color: transparent; width: 10px; margin-left: 3px">
+                                                                <i class="bi bi-question-circle help-icon"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <select class="choices-single" wire:model="kode_material"
+                                                        id="pembelian_material-input" wire:change.debounce='cari'>
+                                                        <option value="" selected hidden>Cari Kode...
+                                                        </option>
+                                                        @foreach ($pembelianmaterialdata as $pm)
+                                                            <option value="{{ $pm->kode_material }}">
+                                                                {{ $pm->kode_material }}
+                                                                -
+                                                                {{ $pm->nama_material }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             </div>
                                             @error('kode_material')
                                                 <small class="d-block mt-1 text-danger" role="alert">
@@ -157,10 +167,10 @@
 
 
     {{-- Edit Data Pembelian Material --}}
-    <div class="modal fade" wire:ignore.self id="editpembelian_barang" tabindex="-1"
+    <div class="modal fade" wire:ignore.self id="editpembelian_barang" tabindex="-1" data-bs-backdrop="static"
         aria-labelledby="editpembelian_baranglabel" aria-hidden="true" x-data="{
             qty: @entangle('qty'),
-            hargaMaterial: @entangle('harga_material'),
+            hargaBarang: @entangle('harga_material'),
             total: @entangle('total_amount'), // Ikat total dengan total_amount di Livewire
         
             init() {
@@ -169,8 +179,8 @@
         
             hitungTotal() {
                 const qty = parseInt(this.qty) || 0;
-                const hargaMaterial = parseInt(this.hargaMaterial.replace(/\D/g, '')) || 0;
-                this.total = qty * hargaMaterial;
+                const hargaBarang = parseInt(this.hargaBarang.replace(/\D/g, '')) || 0;
+                this.total = qty * hargaBarang;
         
                 // Format harga dengan pemisah ribuan dan mata uang IDR
                 this.total = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(this.total);
@@ -185,7 +195,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" wire:click='closeModal'
                         aria-label="Close"></button>
                 </div>
-
                 <form wire:submit="updateData">
                     @csrf
                     <div class="modal-body">
@@ -200,15 +209,12 @@
                                                 wire:model='nama_material' placeholder="Otomatis" readonly />
                                         </div>
                                     </div>
-
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <label for="nama_mtrial" class="form-label">Kode material</label>
                                             <div class="input-group">
-                                                <select wire:ignore wire:model="kode_material" id="nama_mtrial"
-                                                    class="form-select">
-                                                    <option value="" selected hidden>Pilih Kode material...
-                                                    </option>
+                                                <select class="form-control" wire:model="kode_material"
+                                                    wire:change.debounce='cari'>
                                                     @foreach ($pembelianmaterialdata as $pm)
                                                         <option value="{{ $pm->kode_material }}">
                                                             {{ $pm->kode_material }}
@@ -216,19 +222,13 @@
                                                             {{ $pm->nama_material }}</option>
                                                     @endforeach
                                                 </select>
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    wire:click="cariMaterial">
-                                                    <i class="bi bi-search"></i>
-                                                </button>
                                             </div>
-                                            @error('kode_material')
-                                                <small class="d-block mt-1 text-danger" role="alert">
-                                                    {{ $message }}
-                                                </small>
+                                            @error('kode_barang')
+                                                <small class="d-block mt-1 text-danger"
+                                                    role="alert">{{ $message }}</small>
                                             @enderror
                                         </div>
                                     </div>
-
                                     <div class="col-6">
                                         <!-- Form Field Start -->
                                         <div class="mb-3">
@@ -267,7 +267,6 @@
                                     </div>
 
                                     <div class="col-6">
-                                        <!-- Form Field Start -->
                                         <div class="mb-3">
                                             <label for="total_amount" class="form-label">Total Amount</label>
                                             <input type="text" class="form-control" x-model="total"
@@ -284,6 +283,10 @@
                                 <div class="text-success word-break">
                                     <small>{{ session('suksesupdate') }}</small>
                                 </div>
+                            @elseif (session('error'))
+                                <div class="text-danger word-break">
+                                    <small>{{ session('error') }}</small>
+                                </div>
                             @endif
                         </div>
                         <button type="submit" class="btn btn btn-primary">
@@ -295,5 +298,4 @@
             </div>
         </div>
     </div>
-
 </div>

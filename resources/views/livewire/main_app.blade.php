@@ -40,14 +40,15 @@
                     <!-- End Tombol ciutkan -->
 
                     <!-- Start Logo PT Mode Mobile -->
-                    <div class="app-brand-sm d-md-none d-sm-block">
+                    {{-- <div class="app-brand-sm d-md-none d-sm-block">
                         <a href="{{ route('main_app') }}" wire:navigate>
                             <img src="assets/images/Logo Persada.png" class="logo" alt="logo_pt">
                         </a>
-                    </div>
+                    </div> --}}
                     <!-- End Logo PT Mode Mobile -->
                     <x-toast />
 
+                    <livewire:server_status />
                     <!-- Profil -->
                     <div class="header-actions">
                         <div class="dropdown ms-2">
@@ -85,15 +86,15 @@
                     <div class="container-fluid">
 
                         @if (Route::is('main_app'))
-                            <livewire:dashboard lazy />
+                            <livewire:dashboard />
                         @elseif (Route::is('costumer_supplier'))
-                            <livewire:cs-controller lazy />
+                            <livewire:cs-controller />
                         @elseif (Route::is('persediaan_barang'))
-                            <livewire:pb_controller lazy />
+                            <livewire:pb_controller />
                         @elseif (Route::is('po_costumer'))
-                            <livewire:po-controller lazy />
+                            <livewire:po-controller />
                         @elseif (Route::is('panel_admin'))
-                            <livewire:Panel-Admin-Controller lazy />
+                            <livewire:Panel-Admin-Controller />
                         @endif
 
                     </div>
@@ -107,7 +108,7 @@
 
                 <!-- Versi Website start -->
                 <div class="app-footer">
-                    <span>PPC Beta v0.7.5</span>
+                    <span>PPC Beta v0.8.5</span>
                 </div>
                 <!-- Versi Website end -->
 
@@ -115,4 +116,42 @@
             <!-- App container ends -->
         </div>
         <!-- Main container end -->
+        @script
+            <script>
+                function checkUserStatus() {
+                    const lastFetched = sessionStorage.getItem('lastFetched');
+                    const currentTime = Date.now();
+
+                    // Selalu fetch jika cache baru dibuat (lastFetched === null)
+                    if (!lastFetched) {
+                        fetch('/check-status')
+                            .then(response => response.json())
+                            .then(data => {
+                                if (!data.is_active) {
+                                    alert('Akun dinonaktifkan, Coba hubungi admin, dan minta aktifkan kembali.');
+                                    window.location.href = '{{ route('login') }}';
+                                }
+
+                                // Simpan timestamp terakhir kali data diambil
+                                sessionStorage.setItem('lastFetched', currentTime);
+                            })
+                            .catch(error => console.error('Error:', error));
+                    } else if (currentTime - lastFetched > 60000) { // Jika sudah lebih dari 60 detik, fetch lagi
+                        fetch('/check-status')
+                            .then(response => response.json())
+                            .then(data => {
+                                if (!data.is_active) {
+                                    alert('Akun dinonaktifkan, Coba hubungi admin, dan minta aktifkan kembali.');
+                                    window.location.href = '{{ route('login') }}';
+                                }
+
+                                sessionStorage.setItem('lastFetched', currentTime);
+                            })
+                            .catch(error => console.error('Error:', error));
+                    }
+                }
+
+                setInterval(checkUserStatus, 10000);
+            </script>
+        @endscript
     </div>

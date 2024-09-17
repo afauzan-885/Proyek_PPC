@@ -16,17 +16,17 @@ class POProdukFGController extends Component
     protected $paginationTheme = 'bootstrap';
 
     public
-    $kode_produk,
-    $nama_produk,
-    $shift_produksi,
-    $qty_awal,
-    $qty_in;
+        $kode_produk,
+        $nama_produk,
+        $shift_produksi,
+        $qty_awal,
+        $qty_in;
 
-    public $PoFG_id, $lastPage, $searchTerm='', $page, $query, $kode_barang;
+    public $PoFG_id, $lastPage, $searchTerm = '', $page, $query, $kode_barang;
 
     protected $rules = [
         // 'kode_produk' =>'required|unique:po__pm__produk_fg,kode_produk',
-        'kode_produk' =>'required',
+        'kode_produk' => 'required',
         'nama_produk' => 'required',
         'shift_produksi' => 'required',
         'qty_awal' => 'required',
@@ -42,19 +42,28 @@ class POProdukFGController extends Component
     public function messages()
     {
         return [
-             'kode_produk.unique' => 'kode yang sama telah ada',
-             '*' => 'Form ini tidak boleh kosong'
+            'kode_produk.unique' => 'kode yang sama telah ada',
+            '*' => 'Form ini tidak boleh kosong'
         ];
     }
 
-    public function cari ()
+    private function checkUserActive()
+    {
+        if (!Auth::user()->is_active) {
+            Auth::logout();
+            session()->flash('error', 'Akun Anda dinonaktifkan. Silakan hubungi admin.');
+            return redirect()->route('login');
+        }
+    }
+
+    public function cari()
     {
         $finishgood = FGModel::where('kode_barang', $this->kode_produk)->first();
-    
+
         if ($finishgood) {
             $this->nama_produk = $finishgood->nama_barang;
-            $this->qty_awal = $finishgood->stok_material; 
-            $this->resetErrorBag('kode_produk'); 
+            $this->qty_awal = $finishgood->stok_material;
+            $this->resetErrorBag('kode_produk');
         } else {
             $this->addError('kode_produk', 'Kode tidak ditemukan');
         }
@@ -62,31 +71,34 @@ class POProdukFGController extends Component
 
     public function storeData()
     {
+        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
         $validatedData = $this->validate();
-    
+
         $finishgood = FGModel::firstOrCreate(
-            ['kode_barang' => $validatedData['kode_produk']], 
+            ['kode_barang' => $validatedData['kode_produk']],
             [
                 'nama_barang' => $validatedData['nama_produk'],
             ]
         );
-    
+
         // Update stok_material dengan menambahkan qty_in
-        $finishgood->stok_material += $validatedData['qty_in']; 
+        $finishgood->stok_material += $validatedData['qty_in'];
         $finishgood->save();
-    
+
         PoFG::create($validatedData);
         sleep(1);
-        
+
         $namaproduk = $validatedData['nama_produk'];
-        $this->reset( 'kode_produk',
-        'nama_produk',
-        'shift_produksi',
-        'qty_awal',
-        'qty_in');
+        $this->reset(
+            'kode_produk',
+            'nama_produk',
+            'shift_produksi',
+            'qty_awal',
+            'qty_in'
+        );
         session()->flash('suksesinput', 'Material ' . $namaproduk . ' berhasil ditambahkan.');
     }
-    
+
     public function showData(int $id)
     {
         $validatedData = PoFG::find($id);
@@ -94,22 +106,9 @@ class POProdukFGController extends Component
         $this->PoFG_id = $id;
     }
 
-    // public function updateData()
-    // {
-    //     try {
-    //         $validatedData = $this->validate();
-
-    //         PoFG::findOrFail($this->PoFG_id)->update($validatedData);
-    //     } catch (ModelNotFoundException $e) {
-    //         session()->flash('error', 'Produk tidak ditemukan.');   
-    //     }
-
-    //     $namaproduk = $validatedData['nama_produk'];
-    //     session()->flash('suksesupdate', 'Material ' . $namaproduk . ' berhasil diupdate.');
-    // }
-
     public function updateData()
     {
+        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
         try {
             $validatedData = $this->validate();
             $PoFG = PoFG::findOrFail($this->PoFG_id);
@@ -121,14 +120,14 @@ class POProdukFGController extends Component
 
             if ($fg) {
                 // Kembalikan stok ke kondisi semula (sebelum update PoFG ini)
-                $fg->stok_material -= $original_stok; 
+                $fg->stok_material -= $original_stok;
 
                 // Hitung stok baru setelah update PoFG
-                $new_stok = $fg->stok_material + $validatedData['qty_in']; 
+                $new_stok = $fg->stok_material + $validatedData['qty_in'];
 
                 // Memastikan stok tidak negatif
                 if ($new_stok < 0) {
-                    session()->flash('error', 'Jumlah FG tidak boleh membuat stok menjadi negatif.');
+                    session()->flash('error', 'Edit stok tidak boleh membuat stok gudang menjadi negatif.');
                     return redirect()->back()->withInput();
                 }
 
@@ -153,35 +152,35 @@ class POProdukFGController extends Component
             if ($PoFG->fill($validatedData)->isDirty()) {
                 PoFG::findOrFail($this->PoFG_id)->update($validatedData);
             }
-
         } catch (ModelNotFoundException $e) {
-            session()->flash('error', 'Produk tidak ditemukan.'); 
+            session()->flash('error', 'Produk tidak ditemukan.');
         } catch (\Exception $e) {
             Log::error($e);
             session()->flash('error', 'Terjadi kesalahan saat mengupdate data.');
         }
 
-        return redirect()->back(); 
+        return redirect()->back();
     }
 
-    
+
 
 
     public function delete($id)
     {
+        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
         $produkFG = PoFG::find($id);
         $namaproduk = $produkFG->nama_produk;
         $produkFG->delete();
 
-        $this->dispatch('toastify', 'Produk '. $namaproduk . ' berhasil dihapus.');
+        $this->dispatch('toastify', 'Produk ' . $namaproduk . ' berhasil dihapus.');
         // session()->flash('sukseshapus', 'Data berhasil dihapus.');
     }
-    
+
     public function closeModal()
     {
         $this->resetExcept('activeTab');
         $this->resetErrorBag();
-        $this->resetValidation(); 
+        $this->resetValidation();
     }
 
     public function render()
@@ -189,14 +188,14 @@ class POProdukFGController extends Component
         $searchTerm = '%' . strtolower(str_replace([' ', '.'], '', $this->searchTerm)) . '%';
 
         $produkFG = PoFG::where(function ($query) use ($searchTerm) {
-                $query->whereRaw('LOWER(REPLACE(REPLACE(nama_produk, " ", ""), ".", "")) LIKE ?', [$searchTerm]);
-                    // ->orWhereRaw('LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")) LIKE ?', [$searchTerm])
-            })
+            $query->whereRaw('LOWER(REPLACE(REPLACE(nama_produk, " ", ""), ".", "")) LIKE ?', [$searchTerm]);
+            // ->orWhereRaw('LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")) LIKE ?', [$searchTerm])
+        })
             ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(nama_produk, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
             ->paginate(9);
-       
-        $finishgoods= FGModel::all();
-        
+
+        $finishgoods = FGModel::all();
+
         return view('livewire.po_costumer.tabel.tabel-proses_material.tabel-produk_fg', [
             'produkFG' => $produkFG,
             'finishgood' => $finishgoods,

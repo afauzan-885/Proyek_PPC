@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\PersediaanBarang;
 
 use App\Models\POCostumer\POKedatanganMaterial;
@@ -24,5 +25,3 @@ class PBWarehouse extends Model
         return $this->hasMany(POKedatanganMaterial::class);
     }
 }
-
-

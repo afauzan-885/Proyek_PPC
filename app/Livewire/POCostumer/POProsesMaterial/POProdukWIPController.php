@@ -19,16 +19,16 @@ class POProdukWIPController extends Component
 
     // #[Locked]
     public
-    $nama_produk,
-    $kode_barang,
-    $tanggal_produksi,
-    $shift,
-    $no_mesin,
-    $proses_produksi,
-    $hasil_ok,
-    $hasil_ng;
+        $nama_produk,
+        $kode_barang,
+        $tanggal_produksi,
+        $shift,
+        $no_mesin,
+        $proses_produksi,
+        $hasil_ok,
+        $hasil_ng;
 
-    public $PoWIP_id, $lastPage, $searchTerm='', $page, $query;
+    public $PoWIP_id, $lastPage, $searchTerm = '', $page, $query;
 
     protected $rules = [
         'nama_produk' => 'required',
@@ -44,12 +44,22 @@ class POProdukWIPController extends Component
     public function messages()
     {
         return [
-             '*' => 'Form ini tidak boleh kosong'
+            '*' => 'Form ini tidak boleh kosong'
         ];
+    }
+
+    private function checkUserActive()
+    {
+        if (!Auth::user()->is_active) {
+            Auth::logout();
+            session()->flash('error', 'Akun Anda dinonaktifkan. Silakan hubungi admin.');
+            return redirect()->route('login');
+        }
     }
 
     public function storeData()
     {
+        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
         $validatedData = $this->validate();
         $uuid = Str::uuid();
 
@@ -64,11 +74,11 @@ class POProdukWIPController extends Component
             ]);
 
             // Tambahkan pesan peringatan
-            session()->flash('warning', 'Kode ini telah ada di database. Stok ditambahkan.'); 
+            session()->flash('warning', 'Kode ini telah ada di database. Stok ditambahkan.');
         } else {
             // Jika data belum ada, buat baru
             WIPModel::create([
-                'uuid' => $uuid, 
+                'uuid' => $uuid,
                 'kode_barang' => $validatedData['kode_barang'],
                 'nama_barang' => $validatedData['nama_produk'],
                 'stok_barang' => $validatedData['hasil_ok'],
@@ -83,10 +93,11 @@ class POProdukWIPController extends Component
         $this->reset('nama_produk', 'kode_barang', 'tanggal_produksi', 'shift', 'no_mesin', 'proses_produksi', 'hasil_ok', 'hasil_ng');
         session()->flash('suksesinput', 'Material ' . $namaproduk . ' berhasil ditambahkan.');
     }
-    
+
 
     public function updateData()
     {
+        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
         try {
             $validatedData = $this->validate();
             $poWIP = PoWIP::findOrFail($this->PoWIP_id);
@@ -98,10 +109,10 @@ class POProdukWIPController extends Component
 
             if ($wip) {
                 // Kembalikan stok ke kondisi semula (sebelum update PoWIP ini)
-                $wip->stok_barang -= $original_stok; 
+                $wip->stok_barang -= $original_stok;
 
                 // Hitung stok baru setelah update PoWIP
-                $new_stok = $wip->stok_barang + $validatedData['hasil_ok']; 
+                $new_stok = $wip->stok_barang + $validatedData['hasil_ok'];
 
                 // Memastikan stok tidak negatif
                 if ($new_stok < 0) {
@@ -130,15 +141,14 @@ class POProdukWIPController extends Component
             if ($poWIP->fill($validatedData)->isDirty()) {
                 PoWIP::findOrFail($this->PoWIP_id)->update($validatedData);
             }
-
         } catch (ModelNotFoundException $e) {
-            session()->flash('error', 'Produk tidak ditemukan.'); 
+            session()->flash('error', 'Produk tidak ditemukan.');
         } catch (\Exception $e) {
             Log::error($e);
             session()->flash('error', 'Terjadi kesalahan saat mengupdate data.');
         }
 
-        return redirect()->back(); 
+        return redirect()->back();
     }
 
     public function showData(int $id)
@@ -148,29 +158,30 @@ class POProdukWIPController extends Component
         $this->PoWIP_id = $id;
     }
 
-    
+
 
 
     public function delete($id)
     {
+        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
         $produkWIP = PoWIP::findOrFail($id);
         $namaproduk = $produkWIP->nama_produk;
         $produkWIP->delete();
 
-        $this->dispatch('toastify', 'Produk '. $namaproduk . ' berhasil dihapus.');
+        $this->dispatch('toastify', 'Produk ' . $namaproduk . ' berhasil dihapus.');
     }
-    
+
     public function closeModal()
     {
         $this->resetExcept('activeTab');
         $this->resetErrorBag();
-        $this->resetValidation(); 
+        $this->resetValidation();
     }
 
     public function updatedSearchTerm()
     {
         if ($this->searchTerm) { // Jika ada input pencarian
-            if (empty($this->lastPage)) { 
+            if (empty($this->lastPage)) {
                 $this->lastPage = $this->page; // Simpan halaman saat ini jika pencarian baru dimulai
             }
             $this->resetPage(); // Reset ke halaman 1 saat pencarian berlangsung
@@ -187,15 +198,15 @@ class POProdukWIPController extends Component
         $searchTerm = '%' . strtolower(str_replace([' ', '.'], '', $this->searchTerm)) . '%';
 
         $produkWIP = PoWIP::where(function ($query) use ($searchTerm) {
-                $query->whereRaw('LOWER(REPLACE(REPLACE(nama_produk, " ", ""), ".", "")) LIKE ?', [$searchTerm])
-                    ->orWhereRaw('LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")) LIKE ?', [$searchTerm])
-                    ->orWhereRaw('LOWER(REPLACE(REPLACE(tanggal_produksi, " ", ""), ".", "")) LIKE ?', [$searchTerm]);
-            })
+            $query->whereRaw('LOWER(REPLACE(REPLACE(nama_produk, " ", ""), ".", "")) LIKE ?', [$searchTerm])
+                ->orWhereRaw('LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")) LIKE ?', [$searchTerm])
+                ->orWhereRaw('LOWER(REPLACE(REPLACE(tanggal_produksi, " ", ""), ".", "")) LIKE ?', [$searchTerm]);
+        })
             ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(nama_produk, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
             ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
             ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(tanggal_produksi, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
             ->paginate(9);
-        
+
         return view('livewire.po_costumer.tabel.tabel-proses_material.tabel-produk_wip', [
             'produkWIP' => $produkWIP,
             'user' => Auth::user(), // Pass the authenticated user

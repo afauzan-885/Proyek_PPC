@@ -22,6 +22,11 @@
                 </button>
             </div>
         </div>
+        <div class="bd-highlight mt-2 ml-4">
+            <button class="border" style="max-width: 100px" wire:click="$refresh">
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
+        </div>
         <div class=" ms-auto bd-highlight">
             <nav aria-label="Page navigation">
                 <ul wire:ignore class="pagination m-auto">
@@ -49,8 +54,10 @@
                 </thead>
                 <tbody>
                     @forelse ($poKedatanganMaterial as $kedatanganmaterial)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
+                        <tr wire:key="{{ $kedatanganmaterial->id }}">
+                            <td class="text-nowrap">
+                                {{ ($poKedatanganMaterial->currentpage() - 1) * $poKedatanganMaterial->perpage() + $loop->index + 1 }}.
+                            </td>
                             <td>{{ $kedatanganmaterial['kode_material'] }} - {{ $kedatanganmaterial['nama_material'] }}
                             </td>
                             <td
@@ -97,5 +104,5 @@
             </table>
         </div>
     </div>
-    <x-po_costumer.modal.kedatangan_material :datawarehouse="$warehouse" />
+    <x-po_costumer.modal.kedatangan_material :datapoKedatanganMaterial="$poKedatanganMaterial" :Datawarehouse="$warehouse" />
 </div>

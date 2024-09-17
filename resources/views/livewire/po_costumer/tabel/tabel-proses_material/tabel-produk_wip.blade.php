@@ -21,6 +21,11 @@
                 </button>
             </div>
         </div>
+        <div class="bd-highlight mt-2 ml-4">
+            <button class="border" style="max-width: 100px" wire:click="$refresh">
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
+        </div>
         <div class=" ms-auto bd-highlight">
             <nav aria-label="Page navigation">
                 <ul wire:ignore class="pagination m-auto">
@@ -50,8 +55,10 @@
                 </thead>
                 <tbody>
                     @forelse ($produkWIP as $produkwip)
-                        <tr>
-                            <td>{{ $loop->iteration }}
+                        <tr wire:key="{{ $produkwip->id }}">
+                            <td class="text-nowrap">
+                                {{ ($produkWIP->currentpage() - 1) * $produkWIP->perpage() + $loop->index + 1 }}.
+                            </td>
                             <td>{{ $produkwip['nama_produk'] }}</td>
                             <td
                                 x-text="(() => {

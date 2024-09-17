@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Livewire\POCostumer;
 
 use App\Models\POCostumer\POMasuk as PMModel;
@@ -9,16 +10,19 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use NumberFormatter;
 use Illuminate\Support\Str;
+use Livewire\Attributes\Lazy;
+use Livewire\Livewire;
 use Livewire\WithPagination;
 
 class POMasukController extends Component
 {
+
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    protected $listeners = ['poMasukUpdated']; 
+    protected $listeners = ['poMasukUpdated'];
 
     public $nama_customer, $tanggal_po, $term_of_payment, $qty, $no_po, $tanggal_pengiriman, $kode_barang, $total_amount, $harga;
-    public $PM_id, $costumersupplier, $lastPage, $searchTerm='', $page, $query;
+    public $PM_id, $costumersupplier, $lastPage, $searchTerm = '', $page, $query;
     protected $rules = [
         'nama_customer' => 'required',
         'tanggal_po' => 'required',
@@ -30,32 +34,48 @@ class POMasukController extends Component
         'kode_barang' => 'required',
         'total_amount' => 'required',
     ];
+
+
     public function messages()
     {
         return [
-             '*' => 'Form ini tidak boleh kosong'
+            '*' => 'Form ini tidak boleh kosong'
         ];
+    }
+
+    private function checkUserActive()
+    {
+        if (!Auth::user()->is_active) {
+            Auth::logout();
+            session()->flash('error', 'Akun Anda dinonaktifkan. Silakan hubungi admin.');
+            return redirect()->route('login');
+        }
     }
 
     public function storeData()
     {
-        $validatedData = $this->validate();
+        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
 
-        function toFloat($value) {
+        $validatedData = $this->validate();
+        function toFloat($value)
+        {
             return (float) Str::of($value)
                 ->replaceMatches('/[^0-9,]/', '')
                 ->replace(',', '.')
                 ->__toString();
         }
-        
+
         $validatedData['total_amount'] = toFloat($validatedData['total_amount']);
         $validatedData['harga'] = toFloat($validatedData['harga']);
+
+        $validatedData['kode_barang'] = $validatedData['kode_barang']['value'];
+        $validatedData['nama_customer'] = $validatedData['nama_customer']['value'];
 
         PMModel::create($validatedData);
         sleep(1);
 
         $namaCustomer = $validatedData['nama_customer'];
-        $this->reset();
+        $this->resetExcept('kode_barang', 'nama_customer');
         session()->flash('suksesinput',   $namaCustomer . ' berhasil ditambahkan.');
     }
 
@@ -83,20 +103,34 @@ class POMasukController extends Component
     public function cari()
     {
         $finishGood = FGModel::where('kode_barang', $this->kode_barang)->first();
+        $customer = CSModel::where('nama_costumer', $this->nama_customer)->first();
+
         sleep(1);
-        if ($finishGood) {
+
+        if ($finishGood && $customer) {
             $this->harga = $finishGood->harga;
-            
+
             $formatter = new NumberFormatter('id_ID', NumberFormatter::DECIMAL);
             $this->harga = $formatter->formatCurrency($finishGood->harga, 'IDR');
-            $this->resetErrorBag('kode_barang'); // Reset error jika data ditemukan
+            $this->resetErrorBag(['kode_barang', 'nama_customer']);
         } else {
-            $this->addError('kode_barang', 'Kode barang tidak ditemukan.');
+            $errorMessages = []; // Array untuk mengumpulkan pesan error
+
+            if (!$finishGood) {
+                $errorMessages[] = 'Kode barang tidak ditemukan.';
+            }
+            if (!$customer) {
+                $errorMessages[] = 'Nama customer tidak ditemukan.';
+            }
+
+            // Gabungkan pesan error dan tambahkan ke 'errorBag'
+            $this->addError('search', implode(' ', $errorMessages));
         }
     }
 
     public function updateData()
     {
+        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
         try {
 
             $validatedData = $this->validate([
@@ -110,20 +144,37 @@ class POMasukController extends Component
                 'total_amount' => 'required',
             ]);
             sleep(1);
-       
-        //Logika Untuk menghilangkan pembatas ribuan
-        $validatedData['total_amount'] = preg_replace('/[^0-9]/', '', $validatedData['total_amount']);
-        $validatedData['total_amount'] = (float) $validatedData['total_amount'];
-        $hargaPerQty = (float) str_replace(['.', ','], ['', '.'], $this->harga);
-        $validatedData['total_amount'] = $validatedData['qty'] * $hargaPerQty;
 
-        PMModel::findOrFail($this->PM_id)->update($validatedData);
+            //Logika Untuk menghilangkan pembatas ribuan
+            $validatedData['total_amount'] = preg_replace('/[^0-9]/', '', $validatedData['total_amount']);
+            $validatedData['total_amount'] = (float) $validatedData['total_amount'];
+            $hargaPerQty = (float) str_replace(['.', ','], ['', '.'], $this->harga);
+            $validatedData['total_amount'] = $validatedData['qty'] * $hargaPerQty;
+
+            // Ekstrak nilai 'value' dari 'kode_barang' hanya jika 'kode_barang' adalah array
+            if (is_array($validatedData['kode_barang'])) {
+                $validatedData['kode_barang'] = $validatedData['kode_barang']['value'];
+            }
+
+            PMModel::findOrFail($this->PM_id)->update($validatedData);
         } catch (ModelNotFoundException $e) {
             session()->flash('error', 'Data tidak ditemukan.');
         }
 
         $namaCustomer = $validatedData['nama_customer'];
-        session()->flash('suksesupdate', 'Data ' .$namaCustomer. ' berhasil diupdate.');
+        session()->flash('suksesupdate', 'Data ' . $namaCustomer . ' berhasil diupdate.');
+    }
+
+    private function hitungTotalAmount()
+    {
+        //Membersihkan angka sebelum melakukan operasi perhitungan
+        $harga_input = (float) str_replace(['.', ','], ['', '.'], $this->harga);
+
+        $this->total_amount = $harga_input * $this->qty;
+
+        //Format Kembali untuk ditampilkan pada total amount
+        $formatter = new NumberFormatter('id_ID', NumberFormatter::DECIMAL);
+        $this->total_amount = $formatter->formatCurrency($this->total_amount, 'IDR');
     }
 
     public function updated($propertyName)
@@ -136,12 +187,12 @@ class POMasukController extends Component
             case 'kode_barang':
                 $finishGood = FGModel::where('kode_barang', $this->kode_barang)->first();
                 if ($finishGood) {
-                    $this->hitungTotalAmount(); 
+                    $this->hitungTotalAmount();
                     $this->harga = $finishGood->harga;
                     $formatter = new NumberFormatter('id_ID', NumberFormatter::DECIMAL);
                     $this->harga = $formatter->formatCurrency($finishGood->harga, 'IDR');
                     $this->total_amount = $finishGood->total_amount;
-                    $this->hitungTotalAmount(); 
+                    $this->hitungTotalAmount();
                 } else {
                     $this->reset(['nama_customer', 'harga', 'total_harga']);
                     session()->flash('message', 'Kode barang tidak valid.');
@@ -150,25 +201,16 @@ class POMasukController extends Component
         }
     }
 
-    private function hitungTotalAmount()
-    {
-        //Membersihkan angka sebelum melakukan operasi perhitungan
-        $harga_input = (float) str_replace(['.', ','], ['', '.'], $this->harga); 
 
-        $this->total_amount = $harga_input * $this->qty;
-
-        //Format Kembali untuk ditampilkan pada total amount
-        $formatter = new NumberFormatter('id_ID', NumberFormatter::DECIMAL);
-        $this->total_amount = $formatter->formatCurrency($this->total_amount, 'IDR');
-    }
 
     public function delete($id)
     {
+        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
         $pomasuk = PMModel::find($id);
         $namaCustomer = $pomasuk->nama_customer;
         $pomasuk->delete();
 
-        $this->dispatch('toastify', 'Customer '. $namaCustomer . ' berhasil dihapus.');
+        $this->dispatch('toastify', 'Customer ' . $namaCustomer . ' berhasil dihapus.');
         // session()->flash('sukseshapus', 'Data PO Masuk berhasil dihapus.');
     }
 
@@ -176,13 +218,13 @@ class POMasukController extends Component
     {
         $this->resetExcept('activeTab');
         $this->resetErrorBag();
-        $this->resetValidation(); 
+        $this->resetValidation();
     }
 
     public function updatedSearchTerm()
     {
         if ($this->searchTerm) { // Jika ada input pencarian
-            if (empty($this->lastPage)) { 
+            if (empty($this->lastPage)) {
                 $this->lastPage = $this->page; // Simpan halaman saat ini jika pencarian baru dimulai
             }
             $this->resetPage(); // Reset ke halaman 1 saat pencarian berlangsung
@@ -194,20 +236,10 @@ class POMasukController extends Component
         }
     }
 
-    // public function searchCustomers()
-    // {
-    //     if (strlen($this->searchCustomer) >= 1) {
-    //         $this->costumersupplier = CSModel::where('nama_costumer', 'like', '%' . $this->searchCustomer . '%')->limit(7)->get();
-    //     } else {
-    //         $this->costumersupplier = [];
-    //     }
-    // }
-
-   
     public function render()
     {
         // $result = [];
-
+        Livewire::withoutLazyLoading();
         $searchTerm = '%' . strtolower(str_replace([' ', '.'], '', $this->searchTerm)) . '%';
 
         $poMasuk = PMModel::where(function ($query) use ($searchTerm) {
@@ -216,23 +248,23 @@ class POMasukController extends Component
                 ->orWhereRaw('LOWER(REPLACE(REPLACE(term_of_payment, " ", ""), ".", "")) LIKE ?', [$searchTerm])
                 ->orWhereRaw('LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")) LIKE ?', [$searchTerm]);
         })
-        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(nama_customer, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
-        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(no_po, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
-        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(term_of_payment, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
-        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
-        ->paginate(9);
+            ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(nama_customer, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+            ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(no_po, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+            ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(term_of_payment, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+            ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+            ->paginate(9);
 
         $finishgoods = FGModel::all();
+        $customer_supplier = CSModel::all();
 
         // $this->searchCustomers(); // Panggil fungsi searchCustomers
 
         return view('livewire.po_costumer.tabel.tabel-po_masuk', [
             'poMasuk' => $poMasuk,
             'finishgoods' => $finishgoods,
+            'customer_supplier' => $customer_supplier,
             'user' => Auth::user(),
             // 'costumersupplier' => $this->costumersupplier,
         ]);
     }
-        
-
 }

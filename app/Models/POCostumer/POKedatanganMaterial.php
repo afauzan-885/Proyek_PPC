@@ -8,19 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class POKedatanganMaterial extends Model
 {
-    use HasFactory;
-    protected $table = 'po__kedatangan_material';
-    protected $fillable = [
-      'kode_material',
-      'nama_material',
-      'tgl_msk_material',
-      'nama_supplier',
-      'qty',
-      'surat_jalan',
-      'satuan',
+  use HasFactory;
+  protected $table = 'po__kedatangan_material';
+  protected $fillable = [
+    'kode_material',
+    'nama_material',
+    'tgl_msk_material',
+    'nama_supplier',
+    'qty',
+    'surat_jalan',
+    'satuan',
   ];
   public function warehouse()
   {
-      return $this->belongsTo(PBWarehouse::class); // Hubungkan berdasarkan kode_material
+    return $this->belongsTo(PBWarehouse::class); // Hubungkan berdasarkan kode_material
   }
 }

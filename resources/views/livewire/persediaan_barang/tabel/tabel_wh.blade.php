@@ -21,9 +21,14 @@
                 </button>
             </div>
         </div>
+        <div class="bd-highlight mt-2 ml-4">
+            <button class="border" style="max-width: 100px" wire:click="$refresh">
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
+        </div>
         <div class="ms-auto bd-highlight">
             <nav aria-label="Page navigation">
-                <ul wire:ignore class="pagination m-auto">
+                <ul class="pagination m-auto">
                     <span wire:loading>Memuat..</span>
                     {{ $Warehouse->links() }}
                 </ul>
@@ -32,7 +37,7 @@
     </div>
     <div class="border border-dark rounded-3">
         <div class="table-responsive">
-            <table class="table align-middle text-nowrap text-center custom-table m-0">
+            <table class="table align-middle text-center custom-table m-0">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -57,7 +62,7 @@
                             <td>{{ $warehouse->ukuran_material }}</td>
                             <td>{{ $warehouse->stok_material }} {{ $warehouse->satuan }}</td>
                             <td>Rp {{ number_format($warehouse['harga_material'], 0, ',', '.') }}</td>
-                            <td>{{ $warehouse->deskripsi }}</td>
+                            <td class="text-warp" style="max-width: 160px;">{{ $warehouse->deskripsi }}</td>
                             <td>
                                 @if ($warehouse->stok_material > 0)
                                     <h5 class="mt-2">

@@ -22,6 +22,11 @@
                 </button>
             </div>
         </div>
+        <div class="bd-highlight mt-2 ml-4">
+            <button class="border" style="max-width: 100px" wire:click="$refresh">
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
+        </div>
         <div class=" ms-auto bd-highlight">
             <nav aria-label="Page navigation">
                 <ul wire:ignore class="pagination m-auto">
@@ -48,8 +53,10 @@
                 </thead>
                 <tbody>
                     @forelse ($pemakaianMaterial as $pemakaianmaterial)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
+                        <tr wire:key="{{ $pemakaianmaterial->id }}">
+                            <td class="text-nowrap">
+                                {{ ($pemakaianMaterial->currentpage() - 1) * $pemakaianMaterial->perpage() + $loop->index + 1 }}.
+                            </td>
                             <td>
                                 {{ $pemakaianmaterial->kode_material }} -
                                 {{ $pemakaianmaterial->warehouse->nama_material ?? 'N/A' }}
@@ -77,7 +84,8 @@
                                                     class="btn btn-outline-primary btn-sm">
                                                     <i class="bi bi-pencil-square"></i> Edit
                                                 </button>
-                                                <button type="button" wire:click="delete({{ $pemakaianmaterial->id }})"
+                                                <button type="button"
+                                                    wire:click="delete({{ $pemakaianmaterial->id }})"
                                                     class="btn btn-outline-danger btn-sm mt-1" data-bs-placement="top"
                                                     data-bs-custom-class="custom-tooltip-danger"
                                                     wire:confirm="Yakin menghapus {{ $pemakaianmaterial->nama_customer }} (PO: {{ $pemakaianmaterial->no_po }})">

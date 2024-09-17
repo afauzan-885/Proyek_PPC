@@ -18,9 +18,9 @@ class POPembelianMaterial extends Model
         'harga_material',
         'kode_material',
         'total_amount',
-      ];
+    ];
 
-      public function Warehouse()
+    public function Warehouse()
     {
         return $this->belongsTo(PBWarehouse::class);
     }

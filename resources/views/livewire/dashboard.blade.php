@@ -9,8 +9,8 @@
                                 <i class="fa-solid fa-envelope-open-text text-primary fs-2"></i>
                             </div>
                             <div class="ms-4">
-                                <h1 class="fw-bold mb-2">0</h1>
-                                <h5 class="m-0 fw-normal opacity-50">Costumer Supplier</h5>
+                                <h4 class="fw-bold mb-2 mt-2">{{ $totalcostumer }}</h4>
+                                <h5 class="m-0 fw-normal opacity-50">Custumer Supplier</h5>
                             </div>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                             </div>
                             <div class="ms-4">
                                 {{-- <h1 class="fw-bold mb-2">{{ $jumlahBarang }}</h1> --}}
-                                <h1 class="fw-bold mb-2">0</h1>
+                                <h4 class="fw-bold mb-2 mt-2">{{ $totalBarang }}</h4>
                                 <h5 class="m-0 fw-normal opacity-50">Persediaan Barang</h5>
                             </div>
                         </div>
@@ -47,7 +47,7 @@
                             </div>
                             <div class="ms-4">
                                 {{-- <h1 class="fw-bold mb-2">{{ $jumlahPO }}</h1> --}}
-                                <h1 class="fw-bold mb-2">0</h1>
+                                <h4 class="fw-bold mb-2 mt-2">{{ $totalpo }}</h4>
                                 <h5 class="m-0 fw-normal opacity-50">PO Costumer</h5>
                             </div>
                         </div>
@@ -57,24 +57,26 @@
         </div>
     </div>
     <!-- ========== Grafik Section ========== -->
-    {{-- <div class="card">
+    <div class="card">
         <div class="card-header text-center border-0">
             <h3 class="card-title">Grafik Kemajuan</h3>
         </div>
         <div class="row">
             <div class="col-xl-4 col-12">
-                Isi
-            </div>
-            <div class="col-xl-4 col-12">
-                <div class="card mb-2">
+                <div class="card p-2">
                     Isi
                 </div>
             </div>
             <div class="col-xl-4 col-12">
-                <div class="card mb-2">
+                <div class="card p-2">
+                    Isi
+                </div>
+            </div>
+            <div class="col-xl-4 col-12">
+                <div class="card p-2">
                     Isi
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
 </div>

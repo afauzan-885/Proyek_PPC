@@ -21,6 +21,11 @@
                 </button>
             </div>
         </div>
+        <div class="bd-highlight mt-2 ml-4">
+            <button class="border" style="max-width: 100px" wire:click="$refresh">
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
+        </div>
         <div class=" ms-auto bd-highlight">
             <nav aria-label="Page navigation">
                 <ul wire:ignore class="pagination m-auto">
@@ -32,11 +37,11 @@
     </div>
     <div class="border border-dark rounded-3">
         <div class="table-responsive">
-            <table class="table align-middle text-nowrap text-center custom-table m-0">
+            <table class="table align-middle text-center custom-table m-0">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama customer</th>
+                        <th>Nama Customer</th>
                         <th>Tanggal PO</th>
                         <th>Term Of Payment</th>
                         <th>Quantity</th>
@@ -51,16 +56,18 @@
                 </thead>
                 <tbody>
                     @forelse ($poMasuk as $pomasuk)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $pomasuk['nama_customer'] }}</td>
+                        <tr wire:key='{{ $pomasuk->id }}'>
+                            <td class="text-nowrap">
+                                {{ ($poMasuk->currentpage() - 1) * $poMasuk->perpage() + $loop->index + 1 }}.
+                            </td>
+                            <td class="text-warp" style="max-width: 160px;">{{ $pomasuk['nama_customer'] }}</td>
                             <td
                                 x-text="(() => {
                                 const [year, month, day] = '{{ $pomasuk['tanggal_po'] }}'.split('-');
                                 return `${day}-${month}-${year}`;
                             })()">
                             </td>
-                            <td>{{ $pomasuk['term_of_payment'] }}</td>
+                            <td class="text-warp" style="max-width: 160px;">{{ $pomasuk['term_of_payment'] }}</td>
                             <td>{{ $pomasuk['qty'] }}</td>
                             <td>{{ $pomasuk['no_po'] }}</td>
                             <td
@@ -72,7 +79,7 @@
                             <td>{{ $pomasuk['kode_barang'] }}</td>
                             <td>Rp. {{ number_format($pomasuk['total_amount'], 0, ',', '.') }}</td>
                             @if ($user->role === 'Admin')
-                                <td>
+                                <td class='text-nowrap'>
                                     <div class="btn-group dropstart">
                                         <button type="button" class="btn btn-hijau-asin dropdown-toggle"
                                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -106,5 +113,5 @@
             </table>
         </div>
     </div>
-    <x-po_costumer.modal.po_masuk :pomasukdata="$finishgoods" :costumersupplier="$costumersupplier" />
+    <x-po_costumer.modal.po_masuk :pomasukdata="$finishgoods" :customersupplier="$customer_supplier" />
 </div>

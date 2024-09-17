@@ -27,7 +27,7 @@
     </div>
     <div class="tab-content">
         <div class="tab-pane fade show active" id="laporan_pengiriman" role="tabpanel">
-            <livewire:Po_Costumer.Po_Laporan.PO_Laporan_PengirimanController poLaporan />
+            {{-- <livewire:Po_Costumer.Po_Laporan.PO_Laporan_PengirimanController poLaporan /> --}}
         </div>
         <div class="tab-pane fade" id="proses_material" role="tabpanel">
             {{-- <livewire:Po_Costumer.Po_Proses_Material.Po_Produk_WIP_Controller produkWIP /> --}}

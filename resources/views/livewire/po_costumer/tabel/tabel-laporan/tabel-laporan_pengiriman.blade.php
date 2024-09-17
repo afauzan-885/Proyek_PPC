@@ -29,30 +29,11 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>1</td>
-                        <td>Araceli Zhang</td>
-                        <td>info@example.com</td>
-                        <td>info@example.com</td>
-                        <td>20/10/2020</td>
-                        <td>
-                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip"
-                                data-bs-placement="top" data-bs-custom-class="custom-tooltip-primary"
-                                data-bs-title="Print">
-                                <i class="bi bi-printer"></i>
-                            </button>
-                            <button class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip"
-                                data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger"
-                                data-bs-title="Delete">
-                                <i class="bi bi-trash3"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Carmen Mccall</td>
-                        <td>info@example.com</td>
-                        <td>info@example.com</td>
-                        <td>20/10/2020</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td>
                             <button class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip"
                                 data-bs-placement="top" data-bs-custom-class="custom-tooltip-primary"

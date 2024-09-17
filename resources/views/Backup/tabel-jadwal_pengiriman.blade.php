@@ -52,28 +52,7 @@
 
                 <tbody>
                     @forelse ($poJadwalPengiriman as $jadwalpengiriman)
-                        @if ($currentCustomer != $jadwalpengiriman['nama_customer'])
-                            @php
-                                $currentCustomer = $jadwalpengiriman['nama_customer'];
-                            @endphp
-
-                            <tr>
-                                <td colspan="8">
-                                    <div class="customer-group">
-                                        <button class="customer-name btn btn-outline-secondary" data-bs-toggle="button"
-                                            aria-pressed="true"
-                                            @click="openGroups = openGroups.includes('{{ $jadwalpengiriman['nama_customer'] }}') 
-                                            ? openGroups.filter(group => group !== '{{ $jadwalpengiriman['nama_customer'] }}') 
-                                            : [...openGroups, '{{ $jadwalpengiriman['nama_customer'] }}']">
-                                            {{ $jadwalpengiriman['nama_customer'] }}
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endif
-
-                        <tr class="detail-row bg-body-secondary"
-                            x-show="openGroups.includes('{{ $jadwalpengiriman['nama_customer'] }}')">
+                        <tr wire:key="{{ $jadwalpengiriman->id }}">
                             <td class="text-nowrap">
                                 {{ ($poJadwalPengiriman->currentpage() - 1) * $poJadwalPengiriman->perpage() + $loop->index + 1 }}.
                             </td>

@@ -1,9 +1,9 @@
-@props(['pomasukdata'])
+@props(['pomasukdata', 'customersupplier'])
 {{-- Input PO Masuk --}}
 <div class="modal fade" wire:ignore.self id="inputpo_masuk" tabindex="-1" aria-labelledby="inputpo_masuklabel"
     aria-hidden="true" x-data="{
         qty: @entangle('qty'),
-        hargaMaterial: @entangle('harga'),
+        hargaBarang: @entangle('harga'),
         total: @entangle('total_amount'), // Ikat total dengan total_amount di Livewire
     
         init() {
@@ -12,8 +12,8 @@
     
         hitungTotal() {
             const qty = parseInt(this.qty) || 0;
-            const hargaMaterial = parseInt(this.hargaMaterial.replace(/\D/g, '')) || 0;
-            this.total = qty * hargaMaterial;
+            const hargaBarang = parseInt(this.hargaBarang.replace(/\D/g, '')) || 0;
+            this.total = qty * hargaBarang;
     
             // Format harga dengan pemisah ribuan dan mata uang IDR
             this.total = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(this.total);
@@ -35,63 +35,34 @@
                     <div class="row">
                         <div class="col-xl-12 col-12">
                             <div class="row">
-
                                 <div class="col-6">
-                                    <!-- Form Field Start -->
-
-                                    <!-- AutoComplete Project -->
-                                    {{-- <div class="mb-3">
-                                            <label for="namacs" class="form-label">Nama customer</label>
-                                            <input type="search" role="search" class="form-control me-2"
-                                                wire:model.live.debounce.400ms="searchCustomer" id="namacs"
-                                                placeholder="Masukkan Nama customer" aria-label="searchCustomer" />
-                                            @if (sizeof($costumersupplier) > 0)
-                                                <ul class="list-group absolute mt-1 shadow"
-                                                    style="position: absolute; display: grid; z-index: 1;">
-                                                    @foreach ($costumersupplier as $customer)
-                                                        <li wire:click="selectCustomer({{ $customer->id }})"
-                                                            class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <span> {{ $customer->nama_costumer }}</span>
-                                                        </li>
+                                    <div class="mb-3">
+                                        <div class="row g-1">
+                                            <div class="col-12" wire:ignore>
+                                                <div class="d-flex bd-highlight">
+                                                    <div class="bd-highlight">
+                                                        <label for="namacs" class="form-label">
+                                                            Nama customer
+                                                        </label>
+                                                    </div>
+                                                    <div x-data="{ tooltip: 'Fitur dalam pengembangan, jika ingin menginput massal dengan data yang sama, harap ganti ke data lain untuk memicu reset, setelah itu kembali ke data yang dituju' }">
+                                                        <span x-tooltip="tooltip"
+                                                            style="border: none ; outline: none;  background-color: transparent; width: 10px; margin-left: 3px">
+                                                            <i class="bi bi-question-circle help-icon"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <select class="choices-single" wire:model="nama_customer"
+                                                    wire:change.debounce='cari' id="po-masuk-input_1">
+                                                    <option value="" selected hidden>Pilih Customer...</option>
+                                                    @foreach ($customersupplier as $cs)
+                                                        <option value="{{ $cs->nama_costumer }}">
+                                                            {{ $cs->kode_costumer }}
+                                                            -
+                                                            {{ $cs->nama_costumer }}</option>
                                                     @endforeach
-                                                </ul>
-                                            @endif
-                                            @error('nama_costumer')
-                                                <small class="d-block mt-1 text-danger" role="alert">
-                                                    {{ $message }}
-                                                </small>
-                                            @enderror
-                                        </div> --}}
-
-
-                                    <div class="mb-3">
-                                        <label for="namacs" class="form-label">Nama customer</label>
-                                        <input type="text" class="form-control" wire:model="nama_customer"
-                                            id="namacs" placeholder="Masukkan Nama customer" />
-                                        @error('nama_customer')
-                                            <small class="d-block mt-1 text-danger" role="alert">
-                                                {{ $message }}
-                                            </small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="col-6">
-                                    <div class="mb-3">
-                                        <label for="nama_kodebrng" class="form-label">Kode Barang</label>
-                                        <div class="input-group">
-                                            <select wire:ignore wire:model="kode_barang" id="nama_kodebrng"
-                                                class="form-select">
-                                                <option value="" selected hidden>Pilih Kode Barang...</option>
-                                                @foreach ($pomasukdata as $pom)
-                                                    <option value="{{ $pom->kode_barang }}">{{ $pom->kode_barang }}
-                                                        -
-                                                        {{ $pom->nama_barang }}</option>
-                                                @endforeach
-                                            </select>
-                                            <button type="button" class="btn btn-outline-secondary" wire:click="cari">
-                                                <i class="bi bi-search"></i>
-                                            </button>
+                                                </select>
+                                            </div>
                                         </div>
                                         @error('kode_barang')
                                             <small class="d-block mt-1 text-danger" role="alert">
@@ -100,6 +71,52 @@
                                         @enderror
                                     </div>
                                 </div>
+
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <div class="row g-1">
+                                            <div class="col-12" wire:ignore>
+                                                <div class="d-flex bd-highlight">
+                                                    <div class="bd-highlight">
+                                                        <label for="nama_mtrial" class="form-label">
+                                                            Kode Barang
+                                                        </label>
+                                                    </div>
+                                                    <div x-data="{ tooltip: 'Fitur dalam pengembangan, jika ingin menginput massal dengan data yang sama, harap ganti ke data lain untuk memicu reset, setelah itu kembali ke data yang dituju' }">
+                                                        <span x-tooltip="tooltip"
+                                                            style="border: none ; outline: none;  background-color: transparent; width: 10px; margin-left: 3px">
+                                                            <i class="bi bi-question-circle help-icon"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <select class="choices-single" wire:model="kode_barang"
+                                                    wire:change.debounce='cari' id="po-masuk-input_2">
+                                                    <option value="" selected hidden>Pilih Kode Barang...</option>
+                                                    @foreach ($pomasukdata as $pom)
+                                                        <option value="{{ $pom->kode_barang }}">{{ $pom->kode_barang }}
+                                                            -
+                                                            {{ $pom->nama_barang }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            {{-- <div class="col-3">
+                                                <label for="quantity" class="form-label"
+                                                    style="visibility: hidden">cari</label>
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    wire:click="cari">
+                                                    <i class="bi bi-search"></i>
+                                                </button>
+                                            </div> --}}
+                                        </div>
+                                        @error('kode_barang')
+                                            <small class="d-block mt-1 text-danger" role="alert">
+                                                {{ $message }}
+                                            </small>
+                                        @enderror
+                                    </div>
+                                </div>
+
 
                                 <div class="col-6">
                                     <!-- Form Field Start -->
@@ -119,8 +136,7 @@
                                     <!-- Form Field Start -->
                                     <div class="mb-3">
                                         <label for="term_of_payment" class="form-label">Term Of Payment</label>
-                                        <input type="text" class="form-control" wire:model='term_of_payment'
-                                            id="term_of_payment" placeholder="Masukkan Term Of Payment" />
+                                        <textarea class="form-control" id="term_of_payment" wire:model="term_of_payment" placeholder="Masukkan Term Of Payment"></textarea>
                                         @error('term_of_payment')
                                             <small class="d-block mt-1 text-danger" role="alert">
                                                 {{ $message }}
@@ -165,7 +181,7 @@
                                         <label for="tgl_delivery" class="form-label">Tanggal Delivery</label>
                                         <div class="input-group">
                                             <input type="date" class="form-control"
-                                                wire:model='tanggal_pengiriman' id="tgl_msk_material" />
+                                                wire:model='tanggal_pengiriman' id="tgl_msk_Barang" />
                                         </div>
                                         @error('no_po')
                                             <small class="d-block mt-1 text-danger"
@@ -207,7 +223,7 @@
 <div class="modal fade" wire:ignore.self data-bs-backdrop="static" id="editpo_masuk" tabindex="-1"
     aria-labelledby="editpo_masuklabel" aria-hidden="true" x-data="{
         qty: @entangle('qty'),
-        hargaMaterial: @entangle('harga'),
+        hargaBarang: @entangle('harga'),
         total: @entangle('total_amount'), // Ikat total dengan total_amount di Livewire
     
         init() {
@@ -216,8 +232,8 @@
     
         hitungTotal() {
             const qty = parseInt(this.qty) || 0;
-            const hargaMaterial = parseInt(this.hargaMaterial.replace(/\D/g, '')) || 0;
-            this.total = qty * hargaMaterial;
+            const hargaBarang = parseInt(this.hargaBarang.replace(/\D/g, '')) || 0;
+            this.total = qty * hargaBarang;
     
             // Format harga dengan pemisah ribuan dan mata uang IDR
             this.total = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(this.total);
@@ -240,36 +256,40 @@
                     <div class="row">
                         <div class="col-xl-12 col-12">
                             <div class="row">
-
                                 <div class="col-6">
-                                    <!-- Form Field Start -->
                                     <div class="mb-3">
-                                        <label for="namacs" class="form-label">Nama customer</label>
-                                        <input type="text" class="form-control" wire:model="nama_customer"
-                                            id="namacs" placeholder="Masukkan Nama customer" />
-                                        @error('nama_customer')
-                                            <small class="d-block mt-1 text-danger" role="alert">
-                                                {{ $message }}
-                                            </small>
+                                        <label for="nama_customer" class="form-label">Nama Customer</label>
+                                        <div class="input-group">
+                                            <select class="form-control" wire:model="nama_customer"
+                                                wire:change.debounce='cari'>
+                                                @foreach ($customersupplier as $cs)
+                                                    <option value="{{ $cs->nama_costumer }}">
+                                                        {{ $cs->kode_costumer }}
+                                                        -
+                                                        {{ $cs->nama_costumer }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        @error('kode_barang')
+                                            <small class="d-block mt-1 text-danger"
+                                                role="alert">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="mb-3">
-                                        <label for="nama_kodebrng" class="form-label">Kode Barang</label>
+                                        <label for="kode_barang" class="form-label">Kode Barang</label>
                                         <div class="input-group">
-                                            <select wire:ignore wire:model="kode_barang" id="nama_kodebrng"
-                                                class="form-select">
-                                                <option value="" selected hidden>Pilih Kode Barang...</option>
+                                            <select class="form-control" wire:model="kode_barang"
+                                                wire:change.debounce='cari' id="po-masuk-input_2">
+                                                </option>
                                                 @foreach ($pomasukdata as $pom)
-                                                    <option value="{{ $pom->kode_barang }}">{{ $pom->kode_barang }} -
+                                                    <option value="{{ $pom->kode_barang }}">
+                                                        {{ $pom->kode_barang }}
+                                                        -
                                                         {{ $pom->nama_barang }}</option>
                                                 @endforeach
                                             </select>
-                                            <button type="button" class="btn btn-outline-secondary"
-                                                wire:click="cari">
-                                                <i class="bi bi-search"></i>
-                                            </button>
                                         </div>
                                         @error('kode_barang')
                                             <small class="d-block mt-1 text-danger"
@@ -296,8 +316,8 @@
                                     <!-- Form Field Start -->
                                     <div class="mb-3">
                                         <label for="term_of_payment" class="form-label">Term Of Payment</label>
-                                        <input type="text" class="form-control" wire:model='term_of_payment'
-                                            id="term_of_payment" placeholder="Masukkan Term Of Payment" />
+                                        <textarea class="form-control" id="term_of_payment" wire:model="term_of_payment"
+                                            placeholder="Masukkan Term Of Payment"></textarea>
                                         @error('term_of_payment')
                                             <small class="d-block mt-1 text-danger" role="alert">
                                                 {{ $message }}
@@ -342,7 +362,7 @@
                                         <label for="tgl_delivery" class="form-label">Tanggal Delivery</label>
                                         <div class="input-group">
                                             <input type="date" class="form-control"
-                                                wire:model='tanggal_pengiriman' id="tgl_msk_material" />
+                                                wire:model='tanggal_pengiriman' id="tgl_msk_Barang" />
                                         </div>
                                         @error('no_po')
                                             <small class="d-block mt-1 text-danger"

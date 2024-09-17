@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class PanelAdminController extends Component
@@ -18,7 +19,7 @@ class PanelAdminController extends Component
         $this->userIdToActivate = $userId;
     }
 
-    public function mount() 
+    public function mount()
     {
         $this->totalAccounts = User::count(); // Hitung total akun saat komponen dimuat
     }
@@ -29,12 +30,27 @@ class PanelAdminController extends Component
         if ($user) {
             $user->is_active = true;
             $user->save();
-            // Opsional kirim notifikasi ke pengguna
-            $this->dispatch('toastify',  'User Berhasil Diaktifkan.');
+
+            // Hapus cache sebelumnya
+            Cache::forget('user_status' . $userId);
+
+            // Buat cache baru selama 60 detik
+            Cache::remember('user_status' . $userId, 60, function () use ($user) {
+                return response()->json([
+                    'is_active' => $user->is_active
+                ]);
+            });
+
+            // Mengambil nama pengguna
+            $userName = $user->name;
+
+            // Mengirim notifikasi dengan nama pengguna
+            $this->dispatch('toastify', "$userName Berhasil Diaktifkan.");
         } else {
             session()->flash('error', 'Pengguna tidak ditemukan.');
         }
     }
+
 
     public function deactivateUser($userId)
     {
@@ -42,11 +58,23 @@ class PanelAdminController extends Component
         if ($user) {
             $user->is_active = false;
             $user->save();
+
+            // Hapus cache sebelumnya
+            Cache::forget('user_status' . $userId);
+
+            // Buat cache baru selama 60 detik
+            Cache::remember('user_status' . $userId, 60, function () use ($user) {
+                return response()->json([
+                    'is_active' => $user->is_active
+                ]);
+            });
+
             $this->dispatch('toastify', 'User Berhasil Dinonaktifkan.');
         } else {
             session()->flash('error', 'Pengguna tidak ditemukan.');
         }
     }
+
 
     public function delete($userId)
     {
@@ -69,8 +97,8 @@ class PanelAdminController extends Component
     {
         $user = User::all();
         return view('livewire.panel-admin', [
-            
-            'user'=>$user
+
+            'user' => $user
         ]);
     }
 }

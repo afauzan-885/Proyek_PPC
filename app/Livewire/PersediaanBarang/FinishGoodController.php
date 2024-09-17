@@ -20,7 +20,7 @@ class FinishGoodController extends Component
     //Public Finish Good
     public $kode_barang, $nama_barang, $no_part, $harga, $tipe_barang, $deskripsi;
 
-    public $fg_id,  $searchTerm='', $lastPage, $page;
+    public $fg_id,  $searchTerm = '', $lastPage, $page;
     // protected $listeners = ['refreshComponent' => '$refresh'];
 
     protected $rules = [
@@ -33,11 +33,20 @@ class FinishGoodController extends Component
         // 'status' => 'required',
     ];
 
+    private function checkUserActive()
+    {
+        if (!Auth::user()->is_active) {
+            Auth::logout();
+            session()->flash('error', 'Akun Anda dinonaktifkan. Silakan hubungi admin.');
+            return redirect()->route('login');
+        }
+    }
+
     public function messages()
     {
         return [
             'kode_barang.unique' => 'kode barang yang sama telah ada',
-             '*' => 'Form ini tidak boleh kosong'
+            '*' => 'Form ini tidak boleh kosong'
         ];
     }
 
@@ -48,6 +57,7 @@ class FinishGoodController extends Component
 
     public function storeData()
     {
+        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
         $validatedData = $this->validate();
 
         $hargaKeys = ['harga'];
@@ -82,6 +92,7 @@ class FinishGoodController extends Component
 
     public function updateData()
     {
+        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
         try {
             $validatedData = $this->validate([
                 'kode_barang' => 'required',
@@ -107,6 +118,8 @@ class FinishGoodController extends Component
 
     public function delete($id)
     {
+        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
+
         $finishgood = FGModel::find($id);
         $namaBarang = $finishgood->nama_barang;
         $finishgood->delete();
@@ -123,14 +136,14 @@ class FinishGoodController extends Component
 
     public function placeholder(array $params = [])
     {
-        
+
         return view('livewire.placeholder.tabel_placeholder', $params);
     }
 
     public function updatedSearchTerm()
     {
         if ($this->searchTerm) { // Jika ada input pencarian
-            if (empty($this->lastPage)) { 
+            if (empty($this->lastPage)) {
                 $this->lastPage = $this->page; // Simpan halaman saat ini jika pencarian baru dimulai
             }
             $this->resetPage(); // Reset ke halaman 1 saat pencarian berlangsung
@@ -150,9 +163,9 @@ class FinishGoodController extends Component
             $query->whereRaw('LOWER(REPLACE(REPLACE(nama_barang, " ", ""), ".", "")) LIKE ?', [$searchTerm])
                 ->orWhereRaw('LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")) LIKE ?', [$searchTerm]);
         })
-        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(nama_barang, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
-        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
-        ->paginate(9);
+            ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(nama_barang, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+            ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+            ->paginate(9);
 
 
         $costumerSuppliers = CostumerSupplier::all(); // Ambil data dari model CostumerSupplier

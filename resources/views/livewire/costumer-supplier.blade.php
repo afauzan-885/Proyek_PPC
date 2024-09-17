@@ -31,6 +31,11 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="bd-highlight mt-2 ml-4">
+                            <button class="border" style="max-width: 100px" wire:click="$refresh">
+                                <i class="bi bi-arrow-clockwise"></i>
+                            </button>
+                        </div>
                         <div class="ms-auto bd-highlight">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination m-auto">

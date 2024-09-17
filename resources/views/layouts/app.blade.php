@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="assets/css/main.min.css" />
 
     <!--  Vendor CSS -->
+    <link rel="stylesheet" href="assets/css/choices.css">
+
     <link rel="stylesheet" href="assets/css/tippy.css" />
     <link rel="stylesheet" href="assets/css/hierarchy-select.min.css" />
     <link rel="stylesheet" href="assets/vendor/overlay-scroll/OverlayScrollbars.min.css" />
@@ -18,6 +20,7 @@
     <!-- Toastify CSS -->
     <link rel="stylesheet" href="assets/vendor/toastify/toastify.css" />
     <title>{{ $title ?? 'PPC' }}</title>
+    {{-- @vite(['resource/css/app.css', 'resources/js/app.js']) --}}
 </head>
 
 <body>
@@ -27,11 +30,15 @@
     <!--  jQuery first, then Bootstrap Bundle JS -->
     <script data-navigate-once src="assets/js/jquery.min.js"></script>
     <script data-navigate-once src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/tooltip_alpinejs.js" defer></script>
+    <link rel="stylesheet" href="resources/js/app.js" />
+    <script src="assets/js/fuses.js"></script>
 
+    <script src="assets/js/choices.js"></script>
+    <script src="assets/js/custom-choices.js"></script>
+    <script src="assets/js/tooltip_alpinejs.js"></script>
     <script src="assets/js/toast-notifikasi.js"></script>
-    @stack('scripts')
 
+    @stack('scripts')
     <!-- Toastify JS -->
     <script data-navigate-once src="assets/vendor/toastify/toastify.js"></script>
     <!-- Overlay Scroll JS -->

@@ -21,6 +21,11 @@
                 </button>
             </div>
         </div>
+        <div class="bd-highlight mt-2 ml-4">
+            <button class="border" style="max-width: 100px" wire:click="$refresh">
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
+        </div>
         <div class=" ms-auto bd-highlight">
             <nav aria-label="Page navigation">
                 <ul wire:ignore class="pagination m-auto">
@@ -48,8 +53,10 @@
                 </thead>
                 <tbody>
                     @forelse ($produkFG as $produkfg)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
+                        <tr wire:key="{{ $produkfg->id }}">
+                            <td class="text-nowrap">
+                                {{ ($produkFG->currentpage() - 1) * $produkFG->perpage() + $loop->index + 1 }}.
+                            </td>
                             <td>{{ $produkfg['nama_produk'] }}</td>
                             <td>{{ $produkfg['shift_produksi'] }}</td>
                             <td>{{ $produkfg['qty_awal'] }}</td>

@@ -21,6 +21,11 @@
                 </button>
             </div>
         </div>
+        <div class="bd-highlight mt-2 ml-4">
+            <button class="border" style="max-width: 100px" wire:click="$refresh">
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
+        </div>
         <div class=" ms-auto bd-highlight">
             <nav aria-label="Page navigation">
                 <ul wire:ignore class="pagination m-auto">
@@ -50,8 +55,10 @@
                 </thead>
                 <tbody>
                     @forelse ($poPembelianMaterial as $pembelianmaterialdata)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
+                        <tr wire:key='{{ $pembelianmaterialdata->id }}'>
+                            <td class="text-nowrap">
+                                {{ ($poPembelianMaterial->currentpage() - 1) * $poPembelianMaterial->perpage() + $loop->index + 1 }}.
+                            </td>
                             <td>{{ $pembelianmaterialdata['nama_material'] }}</td>
                             <td>{{ $pembelianmaterialdata['ukuran'] }}</td>
                             <td>{{ $pembelianmaterialdata['qty'] }}</td>
@@ -89,6 +96,7 @@
                             <td colspan="8">Tidak ada data :(</td>
                         </tr>
                     @endforelse
+
                 </tbody>
             </table>
         </div>

@@ -16,14 +16,14 @@ class WIPController extends Component
 
     //Public wip
     public
-    $kode_barang,
-    $nama_barang,
-    $jenis_proses,
-    $stok_barang,
-    $status,
-    $wip_id;
+        $kode_barang,
+        $nama_barang,
+        $jenis_proses,
+        $stok_barang,
+        $status,
+        $wip_id;
 
-    public $lastPage, $searchTerm='', $page, $query;
+    public $lastPage, $searchTerm = '', $page, $query;
 
     // protected $listeners = ['refreshComponent' => '$refresh'];
 
@@ -38,20 +38,25 @@ class WIPController extends Component
     public function messages()
     {
         return [
-             '*' => 'Form ini tidak boleh kosong',
-             'kode_barang.unique' => 'Kode yang sama telah ada'
+            '*' => 'Form ini tidak boleh kosong',
+            'kode_barang.unique' => 'Kode yang sama telah ada'
         ];
     }
 
-    // public function refreshComponent()
-    // {
-    //     $this->dispatch('refreshComponent'); // Memicu event custom
-    // }
-    
+    private function checkUserActive()
+    {
+        if (!Auth::user()->is_active) {
+            Auth::logout();
+            session()->flash('error', 'Akun Anda dinonaktifkan. Silakan hubungi admin.');
+            return redirect()->route('login');
+        }
+    }
+
     public function storeData()
     {
+        $this->checkUserActive();
         $validatedData = $this->validate();
-       
+
         sleep(1);
         WIPModel::create($validatedData);
 
@@ -73,13 +78,14 @@ class WIPController extends Component
 
     public function updateData()
     {
+        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
         try {
             $validatedData = $this->validate([
-               'kode_barang' => 'required',
-               'nama_barang' => 'required',
-               'jenis_proses' => 'required',
-               'stok_barang' => 'required',
-               'status' => 'required',
+                'kode_barang' => 'required',
+                'nama_barang' => 'required',
+                'jenis_proses' => 'required',
+                'stok_barang' => 'required',
+                'status' => 'required',
             ]);
 
             $wip = WIPModel::findOrFail($this->wip_id);
@@ -94,13 +100,14 @@ class WIPController extends Component
 
     public function delete($id)
     {
-        $wip=WIPModel::find($id);
+        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
+        $wip = WIPModel::find($id);
         $namaBarang = $wip->nama_barang;
         $wip->delete();
 
-        $this->dispatch('toastify', 'Barang '. $namaBarang . ' berhasil dihapus.');
+        $this->dispatch('toastify', 'Barang ' . $namaBarang . ' berhasil dihapus.');
     }
-   
+
     public function closeModal()
     {
         $this->reset();
@@ -116,9 +123,9 @@ class WIPController extends Component
             $query->whereRaw('LOWER(REPLACE(REPLACE(nama_barang, " ", ""), ".", "")) LIKE ?', [$searchTerm])
                 ->orWhereRaw('LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")) LIKE ?', [$searchTerm]);
         })
-        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(nama_barang, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
-        ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
-        ->paginate(9);
+            ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(nama_barang, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+            ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(kode_barang, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+            ->paginate(9);
         return view('livewire.persediaan_barang.tabel.tabel_wip', [
             'Wip' => $wips,
             'user' => Auth::user(), // Pass the authenticated user

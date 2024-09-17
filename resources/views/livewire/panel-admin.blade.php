@@ -8,7 +8,7 @@
             <div class="card-body">
                 <div class="border border-dark rounded-3">
                     <div class="table-responsive">
-                        <table class="table align-middle table-hover m-0">
+                        <table class="table align-middle text-center custom-table-hover m-0">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -29,9 +29,7 @@
 
                                         <td>{{ $user->role }}</td>
                                         <td
-                                            x-text="new Date('{{ $user->created_at }}').toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' }) +
-                                             ' ' + new Intl.DateTimeFormat('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false }).
-                                             format(new Date('{{ $user->created_at }}'))">
+                                            x-text="new Date('{{ $user->created_at }}').toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' })">
                                         </td>
                                         <td>
                                             <span
@@ -83,7 +81,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-body p-4 text-center">
-                            <h5 class="text-primary">Aktifkan akun ini?</h5>
+                            <h5 class="text-primary">Aktifkan akun {{ $user->name }}?</h5>
                             <p class="mb-0">
                                 Harap periksa akun ini sebelum kamu menyetujuinya.
                             </p>
