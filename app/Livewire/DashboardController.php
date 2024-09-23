@@ -7,9 +7,10 @@ use App\Models\PersediaanBarang\PBWarehouse;
 use App\Models\PersediaanBarang\PBWIP;
 use App\Models\POCostumer\POMasuk;
 use Livewire\Component;
-use App\Models\CostumerSupplier;
+use App\Models\PelangganPemasok\Customer;
+use App\Models\PelangganPemasok\Supplier;
 
-class Dashboard extends Component
+class DashboardController extends Component
 {
     public $totalcostumer, $totalBarang, $totalpo;
 
@@ -20,8 +21,8 @@ class Dashboard extends Component
         $this->totalBarang = "Total: " . $totalBarang;
 
         // Hitung costumer supplier
-        $totalcostumer = CostumerSupplier::count();
-        $this->totalcostumer = $totalcostumer . " Customer";
+        $totalcostumer = Customer::count() + Supplier::count();
+        $this->totalcostumer = "Total: " . $totalcostumer;
 
         // Hitung costumer supplier
         $totalpo = POMasuk::count();

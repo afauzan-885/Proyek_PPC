@@ -31,7 +31,7 @@
                                     <!-- Form Field Start -->
                                     <div class="mb-3">
                                         <label for="kode_barang" class="form-label">Kode Produk</label>
-                                        <input type="text" wire:model.debounce.500ms='kode_barang'
+                                        <input type="text" wire:change.debounce.500ms='cari' wire:model='kode_barang'
                                             class="form-control" id="kode_barang"
                                             placeholder="Masukkan Nama Material" />
                                         @error('kode_barang')

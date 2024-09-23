@@ -61,10 +61,13 @@
                             <td class="text-nowrap">
                                 {{ ($finishGoods->currentpage() - 1) * $finishGoods->perpage() + $loop->index + 1 }}.
                             </td>
-                            <td class="text-warp" style="max-width: 160px;">{{ $finishgood['kode_barang'] }} -
-                                {{ $finishgood['nama_barang'] }}</td>
+                            <td class="text-warp" style="max-width: 160px;">
+                                {{ $finishgood['kode_barang'] }}
+                                <hr class="my-1">
+                                {{ $finishgood['nama_barang'] }}
+                            </td>
                             <td>{{ $finishgood['no_part'] }}</td>
-                            <td>{{ $finishgood['stok_material'] }}</td>
+                            <td>{{ number_format($finishgood['stok_material'], 0, ',', '.') }}</td>
                             <td>Rp. {{ number_format($finishgood['harga'], 0, ',', '.') }}</td>
                             <td>{{ $finishgood['tipe_barang'] }}</td>
                             <td>
@@ -79,7 +82,7 @@
                                 @endif
                             </td>
                             @if ($user->role === 'Admin')
-                                <td>
+                                <td class="text-nowrap">
                                     <div class="btn-group dropstart">
                                         <button type="button" class="btn btn-hijau-asin dropdown-toggle"
                                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -111,6 +114,5 @@
             </table>
         </div>
     </div>
-    {{-- Modal Input --}}
     <x-persediaan_barang.modal.modal_tabel-fg :finishGoodsdata="$costumerSuppliers" />
 </div>

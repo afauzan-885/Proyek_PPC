@@ -20,7 +20,9 @@
     <!-- Toastify CSS -->
     <link rel="stylesheet" href="assets/vendor/toastify/toastify.css" />
     <title>{{ $title ?? 'PPC' }}</title>
-    {{-- @vite(['resource/css/app.css', 'resources/js/app.js']) --}}
+    {{-- @vite(['resources/js/app.js']) --}}
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
 </head>
 
 <body>

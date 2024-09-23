@@ -84,6 +84,7 @@ class POProdukFGController extends Component
         // Update stok_material dengan menambahkan qty_in
         $finishgood->stok_material += $validatedData['qty_in'];
         $finishgood->save();
+        $validatedData['kode_produk'] = $validatedData['kode_produk']['value'];
 
         PoFG::create($validatedData);
         sleep(1);

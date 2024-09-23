@@ -38,11 +38,11 @@ class ServerStatus extends Component
 
                 // Konversi ke MB/s atau GB/s jika diperlukan
                 if ($downloadSpeed > 1024 * 1024) { // 1024 MB = 1 GB
-                    $downloadSpeed = round($downloadSpeed / 1024 / 1024, 2) . ' GB/s';
+                    $downloadSpeed = round($downloadSpeed / 1024 / 1024, 2) . ' Gb/s';
                 } elseif ($downloadSpeed > 1024) {
-                    $downloadSpeed = round($downloadSpeed / 1024, 2) . ' MB/s';
+                    $downloadSpeed = round($downloadSpeed / 1024, 2) . ' Mb/s';
                 } else {
-                    $downloadSpeed = $downloadSpeed . ' KB/s';
+                    $downloadSpeed = $downloadSpeed . ' Kb/s';
                 }
 
                 $this->downloadSpeed = $downloadSpeed;

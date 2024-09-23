@@ -93,25 +93,44 @@
     @script
         <script>
             document.addEventListener('livewire:navigated', function() {
-                function initializeChoices(elementId) {
-                    const element = document.getElementById(elementId);
-                    if (element) {
-                        const choicesInstance = new Choices(element);
-                        choicesInstance.passedElement.element.addEventListener('change', function(event) {
-                            choicesInstance.setChoiceByValue(event.detail.value);
-                        });
-                    }
+                function initializeChoices(selector) {
+                    const elements = document.querySelectorAll(selector);
+                    elements.forEach(element => {
+                        if (element) {
+                            const choicesInstance = new Choices(element);
+                            element.choicesInstance = choicesInstance;
+
+                            choicesInstance.passedElement.element.addEventListener('change', function(event) {
+                                choicesInstance.setChoiceByValue(event.detail.value);
+                            });
+
+                            // Temukan tombol "Close" di dalam modal yang sama dengan dropdown
+                            const modal = element.closest('.modal');
+                            if (modal) {
+                                const closeButton = modal.querySelector('.btn-close');
+                                if (closeButton) {
+                                    closeButton.addEventListener('click', function() {
+                                        // Reset dropdown Choices.js saat tombol "Close" diklik
+                                        if (element.choicesInstance) {
+                                            element.choicesInstance.removeActiveItems();
+                                            element.choicesInstance.setChoiceByValue('');
+                                            const event = new Event('change');
+                                            element.dispatchEvent(event);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
                 }
 
-                // Inisialisasi Choices.js untuk setiap elemen saat halaman dimuat
-                initializeChoices("po-masuk-input_1");
-                initializeChoices("po-masuk-input_2");
-                initializeChoices("po-masuk-edit_1");
-                initializeChoices("po-masuk-edit_2");
-                initializeChoices("pembelian_material-input");
-                initializeChoices("pembelian_material-edit");
-                initializeChoices("kedatangan-material_input");
-                initializeChoices("kedatangan-material_edit");
+                // Inisialisasi Choices.js untuk semua elemen dengan class 'choices-dropdown'
+                initializeChoices(".choices-dropdown");
+
+                // Tangkap event 'dataStored' dari Livewire (jika masih diperlukan)
+                window.addEventListener('dataStored', event => {
+                    // ... (kode untuk mereset dropdown setelah data disimpan) ...
+                });
             });
         </script>
     @endscript

@@ -38,7 +38,7 @@
     </div>
     <div class="border border-dark rounded-3">
         <div class="table-responsive">
-            <table class="table align-middle text-nowrap text-center custom-table m-0">
+            <table class="table align-middle text-center custom-table m-0">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -57,12 +57,13 @@
                             <td class="text-nowrap">
                                 {{ ($pemakaianMaterial->currentpage() - 1) * $pemakaianMaterial->perpage() + $loop->index + 1 }}.
                             </td>
-                            <td>
-                                {{ $pemakaianmaterial->kode_material }} -
+                            <td class="text-warp" style="max-width: 130px;">
+                                {{ $pemakaianmaterial->kode_material }}
+                                <hr class="my-1">
                                 {{ $pemakaianmaterial->warehouse->nama_material ?? 'N/A' }}
                             </td>
                             </td>
-                            <td>{{ $pemakaianmaterial['jumlah_pengeluaran_material'] }}
+                            <td>{{ number_format($pemakaianmaterial['jumlah_pengeluaran_material'], 0, ',', '.') }}
                                 {{ $pemakaianmaterial['satuan'] }}</td>
                             <td
                                 x-text="(() => {
@@ -108,5 +109,7 @@
             </table>
         </div>
     </div>
+
     <x-po_costumer.modal.modal-proses_material.pemakaian_material :datawarehouse="$warehouse" />
+
 </div>

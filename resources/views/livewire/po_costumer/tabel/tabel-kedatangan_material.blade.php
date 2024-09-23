@@ -58,7 +58,9 @@
                             <td class="text-nowrap">
                                 {{ ($poKedatanganMaterial->currentpage() - 1) * $poKedatanganMaterial->perpage() + $loop->index + 1 }}.
                             </td>
-                            <td>{{ $kedatanganmaterial['kode_material'] }} - {{ $kedatanganmaterial['nama_material'] }}
+                            <td>{{ $kedatanganmaterial['kode_material'] }}
+                                <hr class="my-1">
+                                {{ $kedatanganmaterial['nama_material'] }}
                             </td>
                             <td
                                 x-text="(() => {
@@ -66,7 +68,8 @@
                             return `${day}-${month}-${year}`;})()">
                             </td>
                             <td>{{ $kedatanganmaterial['nama_supplier'] }}</td>
-                            <td>{{ $kedatanganmaterial['qty'] }} {{ $kedatanganmaterial['satuan'] }}</td>
+                            <td>{{ number_format($kedatanganmaterial['qty'], 0, ',', '.') }}
+                                {{ $kedatanganmaterial['satuan'] }}</td>
                             <td>{{ $kedatanganmaterial['surat_jalan'] }}</td>
                             @if ($user->role === 'Admin')
                                 <td class='text-nowrap'>
@@ -104,5 +107,5 @@
             </table>
         </div>
     </div>
-    <x-po_costumer.modal.kedatangan_material :datapoKedatanganMaterial="$poKedatanganMaterial" :Datawarehouse="$warehouse" />
+    <x-po_costumer.modal.kedatangan_material :pembelianmaterial="$pembelianMaterial" />
 </div>

@@ -1,6 +1,6 @@
 <div class="d-flex align-items-center">
     <button wire:click="togglePing" class="btn btn-primary btn-sm">
-        {{ $showPing ? 'Stop Ping' : 'Cek Ping' }}
+        {{ $showPing ? 'Stop' : 'Cek server' }}
     </button>
     @if ($downloadSpeed)
         <span class="ms-2">Speed: {{ $downloadSpeed }}</span>

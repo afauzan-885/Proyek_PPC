@@ -1,15 +1,33 @@
-<x.po_costumer>
-    <div class="d-flex justify-content-end mb-2">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination m-auto">
-                <span wire:loading>Memuat..</span>
-                <li class="page-item"><a class="page-link" href="#">Mundur</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Maju</a></li>
-            </ul>
-        </nav>
+<div>
+    @props(['pemakaianMaterial'])
+    <div class="d-flex bd-highlight mb-1">
+        <div class="bd-highlight  mt-1">
+            <div wire:submit="search" wire:ignore>
+                <input type="search" wire:model.live="searchTerm" class='form-control' role="search"
+                    placeholder="Cari Data...">
+            </div>
+        </div>
+        <div class="bd-highlight mt-2">
+            <div x-data="{ tooltip: 'Fitur dalam Pengembangan, jika menggunakannya Page akan direset ke Page 1' }">
+                <button x-tooltip="tooltip"
+                    style="border: none !important; outline: none !important;  background-color: transparent !important; max-width: 50px !important">
+                    <i class="bi bi-question-circle help-icon"></i>
+                </button>
+            </div>
+        </div>
+        <div class="bd-highlight mt-2 ml-4">
+            <button class="border" style="max-width: 100px" wire:click="$refresh">
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
+        </div>
+        <div class=" ms-auto bd-highlight">
+            <nav aria-label="Page navigation">
+                <ul wire:ignore class="pagination m-auto">
+                    <span wire:loading>Memuat..</span>
+                    {{-- {{ $pemakaianMaterial->links() }} --}}
+                </ul>
+            </nav>
+        </div>
     </div>
 
     <div class="border border-dark rounded-3">
@@ -18,55 +36,59 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama Material</th>
-                        <th>Sisa Material</th>
+                        <th>Kode & Nama Material</th>
+                        <th>Material Awal</th>
                         <th>Hasil Produksi</th>
+                        <th>Sisa Material</th>
                         @if ($user->role === 'Admin')
                             <th>Aksi</th>
                         @endif
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Araceli Zhang</td>
-                        <td>info@example.com</td>
-                        <td>20/10/2020</td>
-                        <td>
-                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip"
-                                data-bs-placement="top" data-bs-custom-class="custom-tooltip-primary"
-                                data-bs-title="Print">
-                                <i class="bi bi-printer"></i>
-                            </button>
-                            <button class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip"
-                                data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger"
-                                data-bs-title="Delete">
-                                <i class="bi bi-trash3"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Carmen Mccall</td>
-                        <td>info@example.com</td>
-                        <td>20/10/2020</td>
-                        <td>
-                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip"
-                                data-bs-placement="top" data-bs-custom-class="custom-tooltip-primary"
-                                data-bs-title="Print">
-                                <i class="bi bi-printer"></i>
-                            </button>
-                            <button class="btn btn-outline-danger btn-sm" data-bs-toggle="tooltip"
-                                data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger"
-                                data-bs-title="Delete">
-                                <i class="bi bi-trash3"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    </td>
-                    </tr>
+                    @forelse ($poLaporan as $laporan)
+                        <tr>
+                            <td class="text-nowrap">
+                                {{ ($poLaporan->currentpage() - 1) * $poLaporan->perpage() + $loop->index + 1 }}.
+                            </td>
+                            <td>{{ $laporan->kode_material }}
+                                <hr class="my-1">
+                                {{ $laporan->warehouse->nama_material }}
+                            </td>
+                            <td>{{ number_format($laporan['stok_awal'], 0, ',', '.') }}
+                                {{ $laporan->warehouse->satuan }}</td>
+                            <td>{{ number_format($laporan['jumlah_pengeluaran_material'], 0, ',', '.') }}
+                                {{ $laporan->warehouse->satuan }}</td>
+                            <td>{{ number_format($laporan->stok_awal - $laporan->jumlah_pengeluaran_material, 0, ',', '.') }}
+                                {{ $laporan->warehouse->satuan }}
+                            </td>
+                            @if ($user->role === 'Admin')
+                                <td class='text-nowrap'>
+                                    <div class="btn-group dropstart">
+                                        <button type="button" class="btn btn-hijau-asin dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-expanded="false"></button>
+                                        <div class="dropdown-menu p-1">
+                                            <div class="d-flex flex-column">
+                                                <button type="button" class="btn btn-outline-primary btn-sm">
+                                                    <i class="bi bi-printer"></i> Print
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger btn-sm mt-1"
+                                                    data-bs-custom-class="custom-tooltip-danger">
+                                                    <i class="bi bi-trash3"></i> Hapus
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            @endif
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8">Tidak ada data :(</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
     </div>
-</x.po_costumer>
+</div>

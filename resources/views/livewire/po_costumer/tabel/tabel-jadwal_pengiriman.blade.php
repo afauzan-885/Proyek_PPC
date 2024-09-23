@@ -37,12 +37,13 @@
     </div>
     <div class="border border-dark rounded-3">
         <div class="table-responsive">
-            <table class="table align-middle text-nowrap text-center custom-table m-0">
+            <table class="table align-middle text-center custom-table m-0">
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>Nama Costumer</th>
                         <th>No. PO</th>
+                        <th>Barang yang dikirim</th>
                         <th>PO Awal</th>
                         <th>PO yang Dikirim</th>
                         <th>Tanggal Pengiriman</th>
@@ -59,17 +60,23 @@
                             <td class="text-nowrap">
                                 {{ ($poJadwalPengiriman->currentpage() - 1) * $poJadwalPengiriman->perpage() + $loop->index + 1 }}.
                             </td>
-                            <td>{{ $jadwalpengiriman['nama_customer'] }}</td>
+                            <td class="text-warp" style="max-width: 140px;">{{ $jadwalpengiriman['nama_customer'] }}
+                            </td>
                             <td>{{ $jadwalpengiriman['no_po'] }}</td>
-                            <td>{{ $jadwalpengiriman['permintaan_po'] }}</td>
-                            <td>{{ $jadwalpengiriman['pengeluaran_barang'] }}</td>
+                            <td>
+                                {{ $jadwalpengiriman->pomasuk->kode_barang ?? 'N/A' }}
+                                <hr class="my-1">
+                                {{ $jadwalpengiriman->pomasuk->finishgoods->nama_barang ?? 'N/A' }}
+                            </td>
+                            <td> {{ number_format($jadwalpengiriman['permintaan_po'], 0, ',', '.') }}</td>
+                            <td> {{ number_format($jadwalpengiriman['pengeluaran_barang'], 0, ',', '.') }}</td>
                             <td
                                 x-text="(() => {
                             const [year, month, day] = '{{ $jadwalpengiriman['tanggal_keluar_pt'] }}'.split('-');
                             return `${day}-${month}-${year}`;})()">
                             </td>
                             <td>{{ $jadwalpengiriman['surat_jalan'] }}</td>
-                            <td>
+                            <td class="text-nowrap">
                                 <div class="btn-group dropstart">
                                     <button type="button" class="btn btn-hijau-asin dropdown-toggle"
                                         data-bs-toggle="dropdown" aria-expanded="false">

@@ -31,8 +31,8 @@ return new class extends Migration
             $table->integer('stok_material')->default(0);
             $table->string('satuan', 10)->nullable();
             // $table->decimal('berat', 10, 2);
-            $table->decimal('harga_material', 19);
-            $table->string('deskripsi');
+            $table->decimal('harga_material', 19)->default(0);
+            $table->string('deskripsi')->nullable();
             $table->timestamps();
         });
 

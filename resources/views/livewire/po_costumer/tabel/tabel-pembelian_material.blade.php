@@ -37,16 +37,16 @@
     </div>
     <div class="border border-dark rounded-3">
         <div class="table-responsive">
-            <table class="table align-middle text-nowrap text-center custom-table m-0">
+            <table class="table align-middle text-center custom-table m-0">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama Material</th>
+                        <th>Kode & Nama Material</th>
                         <th>Ukuran</th>
                         <th>Quantity</th>
+                        <th>Nama & Kode Supplier</th>
                         <th>No. PO</th>
                         <th>Harga</th>
-                        <th>Kode Material</th>
                         <th>Total Harga</th>
                         @if ($user->role === 'Admin')
                             <th>Aksi</th>
@@ -59,15 +59,24 @@
                             <td class="text-nowrap">
                                 {{ ($poPembelianMaterial->currentpage() - 1) * $poPembelianMaterial->perpage() + $loop->index + 1 }}.
                             </td>
-                            <td>{{ $pembelianmaterialdata['nama_material'] }}</td>
+                            <td class="text-warp" style="max-width: 140px;">
+                                {{ $pembelianmaterialdata['kode_material'] }}
+                                <hr class="my-1">
+                                {{ $pembelianmaterialdata['nama_material'] }}
+                            </td>
                             <td>{{ $pembelianmaterialdata['ukuran'] }}</td>
-                            <td>{{ $pembelianmaterialdata['qty'] }}</td>
+                            <td>{{ number_format($pembelianmaterialdata['qty'], 0, ',', '.') }}</td>
+                            <td class="text-warp" style="max-width: 130px;">
+                                {{ $pembelianmaterialdata['kode_supplier'] }}
+                                <hr class="my-1">
+                                {{ $pembelianmaterialdata->Supplier->nama_supplier ?? 'N/A' }}
+                            </td>
+                            </td>
                             <td>{{ $pembelianmaterialdata['no_po'] }}</td>
-                            <td>{{ $pembelianmaterialdata['harga_material'] }}</td>
-                            <td>{{ $pembelianmaterialdata['kode_material'] }}</td>
+                            <td>Rp. {{ number_format($pembelianmaterialdata['harga_material'], 0, ',', '.') }}</td>
                             <td>Rp. {{ number_format($pembelianmaterialdata['total_amount'], 0, ',', '.') }}</td>
                             @if ($user->role === 'Admin')
-                                <td>
+                                <td class="text-nowrap">
                                     <div class="btn-group dropstart">
                                         <button type="button" class="btn btn-hijau-asin dropdown-toggle"
                                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -101,5 +110,5 @@
             </table>
         </div>
     </div>
-    <x-po_costumer.modal.pembelian_material :pembelianmaterialdata="$warehouses" />
+    <x-po_costumer.modal.pembelian_material :warehouse="$warehouses" :supplier="$Supplier" />
 </div>

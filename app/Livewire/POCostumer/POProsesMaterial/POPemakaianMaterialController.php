@@ -22,13 +22,15 @@ class POPemakaianMaterialController extends Component
         $jumlah_pengeluaran_material,
         $tgl_pemakaian_mtrial,
         $satuan,
+        $stok_awal,
         $no_po;
 
     public $PoPM_id, $lastPage, $searchTerm = '', $page, $query;
 
     protected $rules = [
         'kode_material' => 'required',
-        'jumlah_pengeluaran_material' => 'required|numeric',
+        'jumlah_pengeluaran_material' => 'required',
+        'stok_awal' => 'required',
         'tgl_pemakaian_mtrial' => 'required',
         'satuan' => 'required',
         'no_po' => 'required',
@@ -42,67 +44,53 @@ class POPemakaianMaterialController extends Component
         ];
     }
 
+    private function checkUserActive()
+    {
+        if (!Auth::user()->is_active) {
+            Auth::logout();
+            session()->flash('error', 'Akun Anda dinonaktifkan. Silakan hubungi admin.');
+            return redirect()->route('login');
+        }
+    }
+
     public function validateKodeMaterial()
     {
         $this->validateOnly('kode_material'); // Hanya validasi field 'kode_material'
     }
 
+
     public function cari()
     {
-        // Validasi apakah kode_material sudah dipilih
-        if (!$this->kode_material) {
-            if ($this->jumlah_pengeluaran_material) { // Cek apakah user sudah input jumlah_pengeluaran_material
-                $this->addError('jumlah_pengeluaran_material', 'Silakan masukkan kode material terlebih dahulu');
-            } else {
-                $this->resetErrorBag('jumlah_pengeluaran_material');
-            }
-            return; // Hentikan proses jika kode_material belum dipilih
-        }
+        $jumlah_pengeluaran_material = WHModel::where('kode_material', $this->kode_material)->first();
 
-        // Validasi stok berdasarkan qty
-        if ($this->jumlah_pengeluaran_material) {
-            // Jika warehouse belum terdefinisi, cari berdasarkan kode_material
-            if (!isset($warehouse)) {
-                $warehouse = WHModel::where('kode_material', $this->kode_material)->first();
-            }
-
-            if (!$warehouse || $this->jumlah_pengeluaran_material > $warehouse->stok_material) {
-                $this->addError('stok', 'Stok tidak mencukupi, saat ini tersisa ' . $warehouse->stok_material . ' ' . $warehouse->satuan);
-            } else {
-                $this->resetErrorBag('jumlah_pengeluaran_material');
-                $this->satuan = $warehouse->satuan;
-            }
+        if ($jumlah_pengeluaran_material) {
+            $this->stok_awal = $jumlah_pengeluaran_material->stok_material;
+            $this->satuan = $jumlah_pengeluaran_material->satuan;
+        } else {
+            $this->addError('kode_material', 'Kode tidak ditemukan');
         }
     }
 
 
     public function storeData()
     {
-        if (!Auth::user()->is_active) {
-            Auth::logout();
-            // Berikan pesan error dan arahkan ke halaman login
-            session()->flash('error', 'Akun Anda tidak aktif. Silakan hubungi admin.');
-            return redirect()->route('login');
-        }
+        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
         $validatedData = $this->validate();
 
         $warehouse = WHModel::firstOrCreate(
             ['kode_material' => $validatedData['kode_material']],
             [
                 'satuan' => $validatedData['satuan'],
-                // Isi kolom lain yang diperlukan di pb__warehouses jika belum ada
             ]
         );
 
         if ($warehouse) {
             // 1. Periksa apakah stok mencukupi sebelum mengurangi
             if ($warehouse->stok_material < $validatedData['jumlah_pengeluaran_material']) {
-                // Tampilkan pesan error jika stok tidak mencukupi
                 session()->flash('error', 'Stok tidak mencukupi.');
-                return; // Hentikan proses penyimpanan data
+                return;
             }
 
-            // 2. Kurangi stok_material dengan jumlah_pengeluaran_material
             $warehouse->stok_material -= $validatedData['jumlah_pengeluaran_material'];
 
             // 3. Pastikan stok_material tidak bernilai negatif (opsional, jika logika bisnis Anda mengharuskan)
@@ -110,8 +98,7 @@ class POPemakaianMaterialController extends Component
                 $warehouse->stok_material = 0;
             }
             $warehouse->save();
-
-            // ... (kode lainnya untuk menyimpan data ke PoPM, reset form, dll.) 
+            $validatedData['kode_material'] = $validatedData['kode_material']['value'];
         } else {
             // Tampilkan pesan error jika data warehouse tidak ditemukan
             session()->flash('error', 'Data warehouse tidak ditemukan.');
@@ -122,13 +109,7 @@ class POPemakaianMaterialController extends Component
 
         $namaMaterial = $validatedData['kode_material'];
 
-        $this->reset(
-            'kode_material',
-            'jumlah_pengeluaran_material',
-            'tgl_pemakaian_mtrial',
-            'no_po',
-            'satuan'
-        );
+        $this->reset();
         session()->flash('suksesinput', 'Material ' . $namaMaterial . ' berhasil ditambahkan.');
     }
 

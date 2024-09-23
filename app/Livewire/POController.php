@@ -6,18 +6,18 @@ use Livewire\Component;
 
 class POController extends Component
 {
-    public $activeTab;
+    public $activeTab = 'PM';
 
-    public function mount()
-    {
-        // Memuat tab aktif dari session storage jika ada
-        $this->activeTab = session('activeTab', 'PM'); // Default ke 'PM' jika tidak ada di session
-    }
+    // public function mount()
+    // {
+    //     // Memuat tab aktif dari session storage jika ada
+    //     $this->activeTab = session('activeTab', 'PM'); // Default ke 'PM' jika tidak ada di session
+    // }
 
     public function setActiveTab($tab)
     {
         $this->activeTab = $tab;
-        session(['activeTab' => $tab]); 
+        session(['activeTab' => $tab]);
     }
 
     public function placeholder(array $params = [])

@@ -2,14 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\CostumerSupplier;
-use App\Models\User;
-use Exception;
+use App\Models\PelangganPemasok\Customer;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Faker\Factory as Faker;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -208,7 +203,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($costumers as $costumer) {
-            CostumerSupplier::create($costumer);
+            Customer::create($costumer);
         }
     }
 }

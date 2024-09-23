@@ -2,7 +2,7 @@
 
 namespace App\Models\POCostumer;
 
-use App\Models\CostumerSupplier;
+use App\Models\PelangganPemasok\Customer;
 use App\Models\PersediaanBarang\PBFinishGood;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,10 +12,11 @@ class POMasuk extends Model
     use HasFactory;
     protected $table = 'po__po_masuk';
     protected $fillable = [
-        'nama_customer',
+        'kode_customer',
         'tanggal_po',
         'term_of_payment',
         'qty',
+        'total_pesanan',
         'harga',
         'no_po',
         'tanggal_pengiriman',
@@ -23,18 +24,18 @@ class POMasuk extends Model
         'total_amount',
     ];
 
-    public function finishGood()
+    public function finishgoods()
     {
-        return $this->belongsTo(PBFinishGood::class);
+        return $this->belongsTo(PBFinishGood::class, 'kode_barang', 'kode_barang');
     }
-    
-    public function costumerSupplier()
+
+    public function Customer()
     {
-        return $this->belongsTo(CostumerSupplier::class, 'kode_customer', 'kode_customer');
+        return $this->belongsTo(Customer::class, 'kode_customer', 'kode_customer');
     }
 
     public function jadwalpengiriman()
     {
-        return $this->belongsTo(POJadwalPengiriman::class, 'no_po', 'no_po');
+        return $this->hasMany(POJadwalPengiriman::class, 'no_po', 'no_po');
     }
 }

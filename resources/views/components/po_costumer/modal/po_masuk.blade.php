@@ -1,4 +1,4 @@
-@props(['pomasukdata', 'customersupplier'])
+@props(['pomasukdata', 'customer'])
 {{-- Input PO Masuk --}}
 <div class="modal fade" wire:ignore.self id="inputpo_masuk" tabindex="-1" aria-labelledby="inputpo_masuklabel"
     aria-hidden="true" x-data="{
@@ -41,8 +41,8 @@
                                             <div class="col-12" wire:ignore>
                                                 <div class="d-flex bd-highlight">
                                                     <div class="bd-highlight">
-                                                        <label for="namacs" class="form-label">
-                                                            Nama customer
+                                                        <label for="kode_customer" class="form-label">
+                                                            Kode Customer
                                                         </label>
                                                     </div>
                                                     <div x-data="{ tooltip: 'Fitur dalam pengembangan, jika ingin menginput massal dengan data yang sama, harap ganti ke data lain untuk memicu reset, setelah itu kembali ke data yang dituju' }">
@@ -52,14 +52,14 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <select class="choices-single" wire:model="nama_customer"
-                                                    wire:change.debounce='cari' id="po-masuk-input_1">
+                                                <select class="choices-single choices-dropdown"
+                                                    wire:model="kode_customer" wire:change.debounce='cari'
+                                                    id="po-masuk-input_1">
                                                     <option value="" selected hidden>Pilih Customer...</option>
-                                                    @foreach ($customersupplier as $cs)
-                                                        <option value="{{ $cs->nama_costumer }}">
-                                                            {{ $cs->kode_costumer }}
-                                                            -
-                                                            {{ $cs->nama_costumer }}</option>
+                                                    @foreach ($customer as $cs)
+                                                        <option value="{{ $cs->kode_customer }}">
+                                                            {{ $cs->kode_customer }} - {{ $cs->nama_customer }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -90,24 +90,17 @@
                                                     </div>
                                                 </div>
 
-                                                <select class="choices-single" wire:model="kode_barang"
+                                                <select class="choices-single choices-dropdown" wire:model="kode_barang"
                                                     wire:change.debounce='cari' id="po-masuk-input_2">
                                                     <option value="" selected hidden>Pilih Kode Barang...</option>
                                                     @foreach ($pomasukdata as $pom)
-                                                        <option value="{{ $pom->kode_barang }}">{{ $pom->kode_barang }}
+                                                        <option value="{{ $pom->kode_barang }}">
+                                                            {{ $pom->kode_barang }}
                                                             -
                                                             {{ $pom->nama_barang }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            {{-- <div class="col-3">
-                                                <label for="quantity" class="form-label"
-                                                    style="visibility: hidden">cari</label>
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    wire:click="cari">
-                                                    <i class="bi bi-search"></i>
-                                                </button>
-                                            </div> --}}
                                         </div>
                                         @error('kode_barang')
                                             <small class="d-block mt-1 text-danger" role="alert">
@@ -148,15 +141,15 @@
                                     <!-- Form Field Start -->
                                     <div class="mb-3">
                                         <div class="row g-1">
-                                            <div class="col-9">
+                                            <div class="col-6">
                                                 <label for="quantity" class="form-label">Harga/Qty</label>
-                                                <input type="text" wire:model='harga' class="form-control"
+                                                <input type="number" wire:model='harga' class="form-control"
                                                     placeholder="Otomatis terisi" id="harga" readonly>
                                             </div>
-                                            <div class="col-3">
+                                            <div class="col-6">
                                                 <label for="quantity" class="form-label"
                                                     style="visibility: hidden">qty</label>
-                                                <input type="text" x-model.number="qty" @input="hitungTotal"
+                                                <input type="number" x-model.number="qty" @input="hitungTotal"
                                                     class="form-control" placeholder="Qty">
                                             </div>
                                         </div>
@@ -258,15 +251,16 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="mb-3">
-                                        <label for="nama_customer" class="form-label">Nama Customer</label>
+                                        <label for="nama_customer" class="form-label">Kode Customer</label>
                                         <div class="input-group">
                                             <select class="form-control" wire:model="nama_customer"
-                                                wire:change.debounce='cari'>
-                                                @foreach ($customersupplier as $cs)
-                                                    <option value="{{ $cs->nama_costumer }}">
-                                                        {{ $cs->kode_costumer }}
+                                                wire:change.debounce='cari' id="po-masuk-input_2">
+                                                <option value="" selected hidden>Pilih Customer...</option>
+                                                @foreach ($customer as $cs)
+                                                    <option value="{{ $cs->nama_customer }}">
+                                                        {{ $cs->kode_customer }}
                                                         -
-                                                        {{ $cs->nama_costumer }}</option>
+                                                        {{ $cs->nama_customer }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -329,15 +323,15 @@
                                     <!-- Form Field Start -->
                                     <div class="mb-3">
                                         <div class="row g-1">
-                                            <div class="col-9">
+                                            <div class="col-6">
                                                 <label for="quantity" class="form-label">Harga/Qty</label>
                                                 <input type="text" wire:model='harga' class="form-control"
-                                                    placeholder="Otomatis terisi" id="harga" readonly>
+                                                    placeholder="Otomatis" id="harga" readonly>
                                             </div>
-                                            <div class="col-3">
+                                            <div class="col-6">
                                                 <label for="quantity" class="form-label"
-                                                    style="visibility: hidden">qty</label>
-                                                <input type="text" x-model.number="qty" @input="hitungTotal"
+                                                    style="visibility: hidden">Qty</label>
+                                                <input type="number" x-model.number="qty" @input="hitungTotal"
                                                     class="form-control" placeholder="Qty">
                                             </div>
                                         </div>

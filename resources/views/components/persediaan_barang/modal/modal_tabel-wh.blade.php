@@ -58,21 +58,6 @@
                                 </div>
 
                                 <div class="col-6">
-                                    <div class="mb-3">
-                                        <label for="harga_mtrial" class="form-label">Harga Material</label>
-                                        <input type="text" min="1" step="any" class="form-control"
-                                            id="harga_mtrial" wire:model.defer="harga_material"
-                                            placeholder="Masukkan Harga Material"
-                                            x-mask:dynamic="$money($input, ',', '.', 2)" />
-                                        @error('harga_material')
-                                            <small class="d-block mt-1 text-danger" role="alert">
-                                                {{ $message }}
-                                            </small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="col-6">
                                     <!-- Form Field Start -->
                                     <div class="mb-3">
                                         <label for="deskripsi" class="form-label">Deskripsi Material</label>

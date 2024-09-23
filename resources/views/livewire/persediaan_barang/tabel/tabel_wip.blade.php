@@ -67,7 +67,10 @@
                             <td class="text-nowrap">
                                 {{ ($Wip->currentpage() - 1) * $Wip->perpage() + $loop->index + 1 }}.
                             </td>
-                            <td>{{ $wip->kode_barang }} - {{ $wip->nama_barang }}</td>
+                            <td>{{ $wip->kode_barang }}
+                                <hr class="my-1">
+                                {{ $wip->nama_barang }}
+                            </td>
                             <td>{{ $wip->jenis_proses }}</td>
                             <td>{{ $wip->stok_barang }}</td>
                             <td>

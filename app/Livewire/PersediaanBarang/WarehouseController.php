@@ -24,10 +24,10 @@ class WarehouseController extends Component
         'kode_material' => 'required|unique:pb__warehouses,kode_material',
         'nama_material' => 'required',
         'ukuran_material' => 'required',
-        'harga_material' => 'required',
+        // 'harga_material' => 'required',
         // 'stok_material' => 'required',
         // 'status' => 'required',
-        'deskripsi' => 'required',
+        'deskripsi' => 'nullable',
     ];
 
     public function messages()
@@ -93,7 +93,7 @@ class WarehouseController extends Component
                 'harga_material' => 'required',
                 'stok_material' => 'required',
                 // 'status' => 'required',
-                'deskripsi' => 'required',
+                'deskripsi' => 'nullable',
             ]);
 
             $validatedData['harga_material'] = (float)preg_replace('/[^\d,]/', '', $validatedData['harga_material']);
@@ -101,9 +101,6 @@ class WarehouseController extends Component
 
             $warehouse = WHModel::findOrFail($this->wh_id);
             $warehouse->update($validatedData);
-
-            // Tambahkan baris ini untuk memicu render ulang komponen
-            $this->dispatch('materialUpdated');
 
             WHModel::findOrFail($this->wh_id)->update($validatedData);
         } catch (ModelNotFoundException $e) {

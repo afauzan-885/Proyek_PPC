@@ -29,7 +29,7 @@
                 <div class="app-header d-flex align-items-center">
 
                     <!-- Tombol ciutkan -->
-                    <div class="d-flex">
+                    <div class="d-flex" wire:ignore.self>
                         <button class="btn btn-outline-primary me-2 toggle-sidebar" id="toggle-sidebar">
                             <i class="bi bi-text-indent-left fs-5"></i>
                         </button>
@@ -86,8 +86,8 @@
                     <div class="container-fluid">
 
                         @if (Route::is('main_app'))
-                            <livewire:dashboard />
-                        @elseif (Route::is('costumer_supplier'))
+                            <livewire:dashboard_controller />
+                        @elseif (Route::is('customer_supplier'))
                             <livewire:cs-controller />
                         @elseif (Route::is('persediaan_barang'))
                             <livewire:pb_controller />
@@ -108,7 +108,7 @@
 
                 <!-- Versi Website start -->
                 <div class="app-footer">
-                    <span>PPC Beta v0.8.5</span>
+                    <span>PPC Beta v0.9</span>
                 </div>
                 <!-- Versi Website end -->
 

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\POCostumer;
 
+use App\Models\PelangganPemasok\Supplier;
 use App\Models\POCostumer\POPembelianMaterial as PPMModel;
 use App\Models\PersediaanBarang\PBWarehouse as WHModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -17,18 +18,28 @@ class POPembelianMaterialController extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
-    public $kode_material, $nama_material, $ukuran, $qty, $no_po, $harga_material, $total_amount;
+    public $kode_material, $nama_material, $ukuran, $qty, $no_po, $harga_material, $total_amount, $kode_supplier;
     public $PPM_id, $lastPage, $searchTerm = '', $page, $query;
 
     protected $rules = [
         'kode_material' => 'required',
         'nama_material' => 'required',
+        'kode_supplier' => 'required',
         'ukuran' => 'required',
         'qty' => 'required',
         'no_po' => 'required',
-        'harga_material' => 'required|numeric',
-        'total_amount' => 'required|numeric',
+        'harga_material' => 'required',
+        'total_amount' => 'required',
     ];
+
+    private function checkUserActive()
+    {
+        if (!Auth::user()->is_active) {
+            Auth::logout();
+            session()->flash('error', 'Akun Anda dinonaktifkan. Silakan hubungi admin.');
+            return redirect()->route('login');
+        }
+    }
 
     public function messages()
     {
@@ -39,7 +50,9 @@ class POPembelianMaterialController extends Component
 
     public function storeData()
     {
+        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
         $validatedData = $this->validate();
+
         function toFloat($value)
         {
             return (float) Str::of($value)
@@ -47,19 +60,19 @@ class POPembelianMaterialController extends Component
                 ->replace(',', '.')
                 ->__toString();
         }
+
         $validatedData['total_amount'] = toFloat($validatedData['total_amount']);
         $validatedData['harga_material'] = toFloat($validatedData['harga_material']);
 
-        //Ekstrak array kompleks dari value, untuk diinput menjadi array sederhana
+        // Ekstrak array kompleks dari value, untuk diinput menjadi array sederhana
         $validatedData['kode_material'] = $validatedData['kode_material']['value'];
+        $validatedData['kode_supplier'] = $validatedData['kode_supplier']['value'];
 
         PPMModel::create($validatedData);
 
-
         $namaMaterial = $validatedData['nama_material'];
-        $this->dispatch('reset-choices');
 
-        $this->resetExcept('kode_material');
+        $this->reset();
         session()->flash('suksesinput', 'Data ' . $namaMaterial . ' berhasil ditambahkan.');
     }
 
@@ -90,7 +103,7 @@ class POPembelianMaterialController extends Component
         $warehouse = WHModel::where('kode_material', $this->kode_material)->first();
 
         if ($warehouse) {
-            $this->harga_material = $warehouse->harga_material;
+            // $this->harga_material = $warehouse->harga_material;
             $this->nama_material = $warehouse->nama_material; // Add this line
             $this->ukuran = $warehouse->ukuran_material; // Add this line
 
@@ -104,10 +117,12 @@ class POPembelianMaterialController extends Component
 
     public function updateData()
     {
+        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
         try {
             $validatedData = $this->validate([
                 'kode_material' => 'required',
                 'nama_material' => 'required',
+                'kode_supplier' => 'required',
                 'ukuran' => 'required',
                 'qty' => 'required',
                 'no_po' => 'required',
@@ -123,6 +138,7 @@ class POPembelianMaterialController extends Component
             // Ekstrak nilai 'value' dari 'kode_material' hanya jika 'kode_material' adalah array
             if (is_array($validatedData['kode_material'])) {
                 $validatedData['kode_material'] = $validatedData['kode_material']['value'];
+                $validatedData['kode_supplier'] = $validatedData['kode_supplier']['value'];
             }
 
             PPMModel::findOrFail($this->PPM_id)->update($validatedData);
@@ -154,7 +170,7 @@ class POPembelianMaterialController extends Component
                 break;
 
             case 'kode_barang':
-                $warehouse = WHModel::where('kode_material', $this->kode_barang)->first();
+                $warehouse = WHModel::where('kode_barang', $this->kode_material)->first();
                 if ($warehouse) {
                     $this->hitungTotalAmount();
                     $this->harga_material = $warehouse->harga_material;
@@ -163,7 +179,7 @@ class POPembelianMaterialController extends Component
                     $this->total_amount = $warehouse->total_amount;
                     $this->hitungTotalAmount();
                 } else {
-                    $this->reset(['nama_customer', 'harga_material', 'total_harga']);
+                    $this->reset(['nama_customer', 'harga_material', 'total_amount']);
                     session()->flash('message', 'Kode barang tidak valid.');
                 }
                 break;
@@ -172,6 +188,7 @@ class POPembelianMaterialController extends Component
 
     public function delete($id)
     {
+        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
         $pembelianMaterial = PPMModel::find($id);
         $namamaterial = $pembelianMaterial->nama_material;
         $pembelianMaterial->delete();
@@ -206,21 +223,26 @@ class POPembelianMaterialController extends Component
     {
         $searchTerm = '%' . strtolower(str_replace([' ', '.'], '', $this->searchTerm)) . '%';
 
-        $poPembelianMaterial = PPMModel::where(function ($query) use ($searchTerm) {
-            $query->whereRaw('LOWER(REPLACE(REPLACE(kode_material, " ", ""), ".", "")) LIKE ?', [$searchTerm])
-                ->orWhereRaw('LOWER(REPLACE(REPLACE(nama_material, " ", ""), ".", "")) LIKE ?', [$searchTerm])
-                ->orWhereRaw('LOWER(REPLACE(REPLACE(no_po, " ", ""), ".", "")) LIKE ?', [$searchTerm]);
-        })
+        $poPembelianMaterial = PPMModel::with('Supplier')
+            ->where(function ($query) use ($searchTerm) {
+                $query->whereRaw('LOWER(REPLACE(REPLACE(kode_material, " ", ""), ".", "")) LIKE ?', [$searchTerm])
+                    ->orWhereRaw('LOWER(REPLACE(REPLACE(nama_material, " ", ""), ".", "")) LIKE ?', [$searchTerm])
+                    ->orWhereRaw('LOWER(REPLACE(REPLACE(kode_supplier, " ", ""), ".", "")) LIKE ?', [$searchTerm])
+                    ->orWhereRaw('LOWER(REPLACE(REPLACE(no_po, " ", ""), ".", "")) LIKE ?', [$searchTerm]);
+            })
             ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(no_po, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
             ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(kode_material, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
             ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(nama_material, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+            ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(kode_supplier, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
             ->paginate(9);
 
         $warehouses = WHModel::all();
+        $Supplier = Supplier::all();
 
         return view('livewire.po_costumer.tabel.tabel-pembelian_material', [
             'poPembelianMaterial' => $poPembelianMaterial,
             'warehouses' => $warehouses,
+            'Supplier' => $Supplier,
             'user' => Auth::user(),
         ]);
     }

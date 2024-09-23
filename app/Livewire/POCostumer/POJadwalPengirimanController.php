@@ -83,6 +83,7 @@ class POJadwalPengirimanController extends Component
 
             $pomasuk->qty -= $validatedData['pengeluaran_barang'];
             $pomasuk->save();
+            $validatedData['no_po'] = $validatedData['no_po']['value'];
 
             PJPModel::create($validatedData);
 
@@ -201,7 +202,7 @@ class POJadwalPengirimanController extends Component
     {
         $searchTerm = '%' . strtolower(str_replace([' ', '.'], '', $this->searchTerm)) . '%';
 
-        $poJadwalPengiriman = PJPModel::where(function ($query) use ($searchTerm) {
+        $poJadwalPengiriman = PJPModel::with('pomasuk.finishgoods')->where(function ($query) use ($searchTerm) {
             $query->whereRaw('LOWER(REPLACE(REPLACE(nama_customer, " ", ""), ".", "")) LIKE ?', [$searchTerm])
                 ->orWhereRaw('LOWER(REPLACE(REPLACE(no_po, " ", ""), ".", "")) LIKE ?', [$searchTerm])
                 ->orWhereRaw('LOWER(REPLACE(REPLACE(surat_jalan, " ", ""), ".", "")) LIKE ?', [$searchTerm]);

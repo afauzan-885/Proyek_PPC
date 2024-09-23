@@ -5,10 +5,10 @@
             <span class="menu-text">Dashboard</span>
         </a>
     </li>
-    <li class="{{ request()->is('costumer-supplier') ? 'active current-page' : '/costumer-supplier' }}">
-        <a href="{{ route('costumer_supplier') }}"wire:navigate>
+    <li class="{{ request()->is('customer-supplier') ? 'active current-page' : '/customer-supplier' }}">
+        <a href="{{ route('customer_supplier') }}"wire:navigate>
             <i class="bi bi-envelope"></i>
-            <span class="menu-text">Costumer Supplier</span>
+            <span class="menu-text">Customer Supplier</span>
         </a>
     </li>
     <li class="{{ request()->is('persediaan-barang') ? 'active current-page' : '/persediaan-barang' }}">

@@ -7,8 +7,8 @@ use Livewire\Component;
 class POLaporanController extends Component
 
 {
-    public $activeTab = 'LP';
-    
+    public $activeTab = 'LPM';
+
     public function setActiveTab($tab)
     {
         $this->activeTab = $tab;

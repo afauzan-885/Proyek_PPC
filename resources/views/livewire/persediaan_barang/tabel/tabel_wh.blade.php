@@ -58,11 +58,16 @@
                             <td class="text-nowrap">
                                 {{ ($Warehouse->currentpage() - 1) * $Warehouse->perpage() + $loop->index + 1 }}.
                             </td>
-                            <td>{{ $warehouse->kode_material }} - {{ $warehouse->nama_material }}</td>
+                            <td class="text-warp" style="max-width: 160px;">
+                                {{ $warehouse->kode_material }}
+                                <hr class="my-1">
+                                {{ $warehouse->nama_material }}
+                            </td>
                             <td>{{ $warehouse->ukuran_material }}</td>
-                            <td>{{ $warehouse->stok_material }} {{ $warehouse->satuan }}</td>
+                            <td> {{ number_format($warehouse['stok_material'], 0, ',', '.') }} {{ $warehouse->satuan }}
+                            </td>
                             <td>Rp {{ number_format($warehouse['harga_material'], 0, ',', '.') }}</td>
-                            <td class="text-warp" style="max-width: 160px;">{{ $warehouse->deskripsi }}</td>
+                            <td>{{ $warehouse['deskripsi'] ?: 'N/A' }}</td>
                             <td>
                                 @if ($warehouse->stok_material > 0)
                                     <h5 class="mt-2">

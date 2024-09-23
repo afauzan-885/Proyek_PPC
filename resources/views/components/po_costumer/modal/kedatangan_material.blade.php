@@ -1,5 +1,5 @@
 <div>
-    @props(['Datawarehouse'])
+    @props(['pembelianmaterial'])
     <div class="modal fade" wire:ignore.self id="inputkedatangan_material" aria-labelledby="inputkedatangan_materiallabel"
         aria-hidden="true" tabindex="-1">
         <div class="modal-dialog">
@@ -23,72 +23,45 @@
                                         <div class="mb-3">
                                             <label for="nama_material" class="form-label">Nama Material</label>
                                             <input type="text" class="form-control" wire:model="nama_material"
-                                                id="nama_material" readonly />
+                                                id="nama_material" readonly placeholder="Otomatis" />
                                             @error('nama_material')
                                                 <small class="d-block mt-1 text-danger"
                                                     role="alert">{{ $message }}</small>
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-6" wire:ignore>
                                         <div class="mb-3">
-                                            <div class="row g-1">
-                                                <div class="col-12" wire:ignore>
-                                                    <div class="d-flex bd-highlight">
-                                                        <div class="bd-highlight">
-                                                            <label for="kode_material" class="form-label">Kode
-                                                                Material</label>
-                                                        </div>
-                                                        <div x-data="{ tooltip: 'Fitur dalam pengembangan, jika ingin menginput massal dengan data yang sama, harap ganti ke data lain untuk memicu reset, setelah itu kembali ke data yang dituju' }">
-                                                            <span x-tooltip="tooltip"
-                                                                style="border: none ; outline: none;  background-color: transparent; width: 10px; margin-left: 3px">
-                                                                <i class="bi bi-question-circle help-icon"></i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <select class="choices-single" wire:model="kode_material"
-                                                        wire:change.debounce='cari' id="kedatangan-material_input">
-                                                        <option value="" selected hidden>Pilih Kode Barang...
-                                                        </option>
-                                                        @foreach ($Datawarehouse as $wh)
-                                                            <option value="{{ $wh->kode_material }}">
-                                                                {{ $wh->kode_material }} - {{ $wh->nama_material }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                                            <div class="d-flex bd-highlight">
+                                                <div class="bd-highlight">
+                                                    <label for="kode_material" class="form-label">Kode
+                                                        Material</label>
+                                                </div>
+                                                <div x-data="{ tooltip: 'Fitur dalam pengembangan, jika ingin menginput massal dengan data yang sama, harap ganti ke data lain untuk memicu reset, setelah itu kembali ke data yang dituju' }">
+                                                    <span x-tooltip="tooltip"
+                                                        style="border: none ; outline: none;  background-color: transparent; width: 10px; margin-left: 3px">
+                                                        <i class="bi bi-question-circle help-icon"></i>
+                                                    </span>
                                                 </div>
                                             </div>
-                                            @error('kode_barang')
+                                            <select class="choices-single choices-dropdown" wire:model="kode_material"
+                                                wire:change.debounce='cari' id="kedatangan-material_input">
+                                                <option value="" selected hidden>Cari Kode...
+                                                </option>
+                                                @foreach ($pembelianmaterial as $ppm)
+                                                    <option value="{{ $ppm->kode_material }}">
+                                                        {{ $ppm->kode_material }} - {{ $ppm->nama_material }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+
+                                            @error('kode_material')
                                                 <small class="d-block mt-1 text-danger" role="alert">
                                                     {{ $message }}
                                                 </small>
                                             @enderror
                                         </div>
                                     </div>
-                                    {{-- <div class="col-6">
-                                        <div class="mb-3">
-                                            <label for="kode_material" class="form-label">Kode Material</label>
-                                            <div class="input-group" wire:change.debounce.500ms="validateKodeMaterial">
-                                                <select wire:model="kode_material" id="kode_material"
-                                                    class="form-select">
-                                                    <option value="" selected hidden>Pilih Kode Barang...</option>
-                                                    @foreach ($datawarehouse as $wh)
-                                                        <option value="{{ $wh->kode_material }}">
-                                                            {{ $wh->kode_material }} - {{ $wh->nama_material }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    wire:click="cari">
-                                                    <i class="bi bi-search"></i>
-                                                </button>
-                                            </div>
-                                            @error('kode_material')
-                                                <small class="d-block mt-1 text-danger"
-                                                    role="alert">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                    </div> --}}
 
                                     <div class="col-6">
                                         <!-- Form Field Start -->
@@ -109,10 +82,10 @@
                                     <div class="col-6">
                                         <!-- Form Field Start -->
                                         <div class="mb-3">
-                                            <label for="nama_supplier" class="form-label">Nama Supplier</label>
-                                            <input type="text" class="form-control" wire:model="nama_supplier"
-                                                id="nama_supplier" placeholder="Masukkan Nama Supplier" />
-                                            @error('nama_supplier')
+                                            <label for="kode_supplier" class="form-label">Kode Supplier</label>
+                                            <input type="text" class="form-control" wire:model="kode_supplier"
+                                                id="kode_supplier" placeholder="Otomatis" readonly />
+                                            @error('kode_supplier')
                                                 <small class="d-block mt-1 text-danger"
                                                     role="alert">{{ $message }}</small>
                                             @enderror
@@ -121,7 +94,7 @@
 
                                     <div class="col-6">
                                         <div class="row g-1">
-                                            <div class="col-6">
+                                            <div class="col-7">
                                                 <label for="qty" class="form-label">QTY</label>
                                                 <input type="number" class="form-control" wire:model="qty"
                                                     id="qty" placeholder="3 Kg/3 Lyr" />
@@ -130,7 +103,7 @@
                                                         role="alert">{{ $message }}</small>
                                                 @enderror
                                             </div>
-                                            <div class="col-6">
+                                            <div class="col-5">
                                                 <label for="satuan" class="form-label">Satuan</label>
                                                 <select class="form-select" wire:model="satuan">
                                                     <option value="" selected hidden>
@@ -153,6 +126,19 @@
                                             <input type="text" class="form-control" wire:model="surat_jalan"
                                                 id="surat_jalan" placeholder="Masukkan Surat Jalan" />
                                             @error('surat_jalan')
+                                                <small class="d-block mt-1 text-danger"
+                                                    role="alert">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-6" style="display: none">
+                                        <!-- Form Field Start -->
+                                        <div class="mb-3">
+                                            <label for="harga_material" class="form-label">Harga Material</label>
+                                            <input type="text" class="form-control" wire:model="harga_material"
+                                                id="harga_material" placeholder="Masukkan Surat Jalan" readonly
+                                                hidden />
+                                            @error('harga_material')
                                                 <small class="d-block mt-1 text-danger"
                                                     role="alert">{{ $message }}</small>
                                             @enderror
@@ -214,14 +200,13 @@
                                         <div class="mb-3">
                                             <label for="kode_material" class="form-label">Kode Material</label>
                                             <div class="input-group">
-                                                <select wire:model="kode_material" id="kode_material"
-                                                    wire:change.debounce.500ms="cari" class="form-control">
-                                                    class="form-select">
-                                                    <option value="" selected hidden>Pilih Kode Barang...
+                                                <select class="form-control" wire:model="kode_material"
+                                                    wire:change.debounce='cari' id="kedatangan-material_input">
+                                                    <option value="" selected hidden>Cari Kode...
                                                     </option>
-                                                    @foreach ($datawarehouse as $wh)
-                                                        <option value="{{ $wh->kode_material }}">
-                                                            {{ $wh->kode_material }} - {{ $wh->nama_material }}
+                                                    @foreach ($pembelianmaterial as $ppm)
+                                                        <option value="{{ $ppm->kode_material }}">
+                                                            {{ $ppm->kode_material }} - {{ $ppm->nama_material }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -252,10 +237,10 @@
                                     <div class="col-6">
                                         <!-- Form Field Start -->
                                         <div class="mb-3">
-                                            <label for="nama_supplier" class="form-label">Nama Supplier</label>
-                                            <input type="text" class="form-control" wire:model="nama_supplier"
-                                                id="nama_supplier" placeholder="Masukkan Nama Supplier" />
-                                            @error('nama_supplier')
+                                            <label for="kode_supplier" class="form-label">Nama Supplier</label>
+                                            <input type="text" class="form-control" wire:model="kode_supplier"
+                                                id="kode_supplier" placeholder="Otomatis" readonly />
+                                            @error('kode_supplier')
                                                 <small class="d-block mt-1 text-danger"
                                                     role="alert">{{ $message }}</small>
                                             @enderror

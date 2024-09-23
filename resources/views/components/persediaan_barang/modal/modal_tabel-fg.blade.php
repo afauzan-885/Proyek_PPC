@@ -179,10 +179,14 @@
 
                                 <div class="col-6">
                                     <div class="mb-3">
-                                        <label for="harga" class="form-label">Harga</label>
-                                        <input type="text" min="1" step="any" class="form-control"
-                                            id="harga" wire:model="harga" placeholder="Masukkan Harga"
-                                            x-mask:dynamic="$money($input, ',', '.')" />
+                                        <label for="stok_material" class="form-label">Stok Material</label>
+                                        <input type="number" class="form-control" id="no_part"
+                                            wire:model="stok_material" placeholder="Edit Stok" />
+                                        @error('stok_material')
+                                            <small class="d-block mt-1 text-danger" role="alert">
+                                                {{ $message }}
+                                            </small>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -196,6 +200,14 @@
                                             <option value="W-Workshop">W-Workshop</option>
                                             <option value="A-Assy">A-Assy</option>
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="harga" class="form-label">Harga</label>
+                                        <input type="text" min="1" step="any" class="form-control"
+                                            id="harga" wire:model="harga" placeholder="Masukkan Harga"
+                                            x-mask:dynamic="$money($input, ',', '.')" />
                                     </div>
                                 </div>
                             </div>

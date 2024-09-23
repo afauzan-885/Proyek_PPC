@@ -4,6 +4,7 @@ namespace App\Livewire\POCostumer;
 
 use App\Models\POCostumer\POKedatanganMaterial as PKMModel;
 use App\Models\PersediaanBarang\PBWarehouse as WHModel;
+use App\Models\POCostumer\POPembelianMaterial;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -19,9 +20,10 @@ class POKedatanganMaterialController extends Component
         $nama_material,
         $kode_material,
         $tgl_msk_material,
-        $nama_supplier,
+        $kode_supplier,
         $qty,
         $surat_jalan,
+        $harga_material,
         $satuan;
 
     public $PKM_id, $lastPage, $searchTerm = '', $page, $query;
@@ -30,7 +32,7 @@ class POKedatanganMaterialController extends Component
         'nama_material' => 'required',
         'kode_material' => 'required',
         'tgl_msk_material' => 'required',
-        'nama_supplier' => 'required',
+        'kode_supplier' => 'required',
         'qty' => 'required',
         'surat_jalan' => 'required',
         'satuan' => 'required',
@@ -60,11 +62,12 @@ class POKedatanganMaterialController extends Component
 
     public function cari()
     {
-        $warehouse = WHModel::where('kode_material', $this->kode_material)->first();
+        $pembelianMaterial = POPembelianMaterial::where('kode_material', $this->kode_material)->first();
 
-        if ($warehouse) {
-            $this->nama_material = $warehouse->nama_material;
-            $this->resetErrorBag('kode_material');
+        if ($pembelianMaterial) {
+            $this->nama_material = $pembelianMaterial->nama_material;
+            $this->kode_supplier = $pembelianMaterial->kode_supplier;
+            $this->harga_material = $pembelianMaterial->harga_material;
         } else {
             $this->addError('kode_material', 'Kode tidak ditemukan');
         }
@@ -88,13 +91,15 @@ class POKedatanganMaterialController extends Component
         // 2. Update stok_material dan satuan di pb__warehouses
         $warehouse->stok_material += $validatedData['qty'];
         $warehouse->satuan = $validatedData['satuan'];
+        $warehouse->harga_material = $this->harga_material ?? 0;
+
         $warehouse->save();
 
         $validatedData['kode_material'] = $validatedData['kode_material']['value'];
 
         PKMModel::create($validatedData);
 
-        $this->resetExcept('kode_material');
+        $this->reset();
         session()->flash('suksesinput', 'Material berhasil ditambahkan.');
     }
 
@@ -201,11 +206,13 @@ class POKedatanganMaterialController extends Component
             ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(surat_jalan, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
             ->paginate(9);
 
-        $warehouse = WHModel::all();
+        // $warehouse = WHModel::all();
+        $pembelianMaterial = POPembelianMaterial::all();
 
         return view('livewire.po_costumer.tabel.tabel-kedatangan_material', [
             'poKedatanganMaterial' => $poKedatanganMaterial,
-            'warehouse' => $warehouse,
+            // 'warehouse' => $warehouse,
+            'pembelianMaterial' => $pembelianMaterial,
             'user' => Auth::user(), // Pass the authenticated user
         ]);
     }

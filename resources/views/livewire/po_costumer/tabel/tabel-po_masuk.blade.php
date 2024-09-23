@@ -41,13 +41,13 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama Customer</th>
+                        <th>Kode & Nama Customer</th>
                         <th>Tanggal PO</th>
                         <th>Term Of Payment</th>
                         <th>Quantity</th>
                         <th>No. PO</th>
                         <th>Tanggal Pengiriman</th>
-                        <th>Kode Barang</th>
+                        <th>Kode & Nama Barang</th>
                         <th>Total Harga</th>
                         @if ($user->role === 'Admin')
                             <th>Aksi</th>
@@ -60,7 +60,11 @@
                             <td class="text-nowrap">
                                 {{ ($poMasuk->currentpage() - 1) * $poMasuk->perpage() + $loop->index + 1 }}.
                             </td>
-                            <td class="text-warp" style="max-width: 160px;">{{ $pomasuk['nama_customer'] }}</td>
+                            <td class="text-warp" style="max-width: 160px;">
+                                {{ $pomasuk['kode_customer'] }}
+                                <hr class="my-1">
+                                {{ $pomasuk->Customer->nama_customer ?? 'N/A' }}
+                            </td>
                             <td
                                 x-text="(() => {
                                 const [year, month, day] = '{{ $pomasuk['tanggal_po'] }}'.split('-');
@@ -68,7 +72,7 @@
                             })()">
                             </td>
                             <td class="text-warp" style="max-width: 160px;">{{ $pomasuk['term_of_payment'] }}</td>
-                            <td>{{ $pomasuk['qty'] }}</td>
+                            <td>{{ number_format($pomasuk['qty'], 0, ',', '.') }}</td>
                             <td>{{ $pomasuk['no_po'] }}</td>
                             <td
                                 x-text="(() => {
@@ -76,7 +80,11 @@
                                 return `${day}-${month}-${year}`;
                             })()">
                             </td>
-                            <td>{{ $pomasuk['kode_barang'] }}</td>
+                            <td>
+                                {{ $pomasuk['kode_barang'] }}
+                                <hr class="my-1">
+                                {{ $pomasuk->finishgoods->nama_barang ?? 'N/A' }}
+                            </td>
                             <td>Rp. {{ number_format($pomasuk['total_amount'], 0, ',', '.') }}</td>
                             @if ($user->role === 'Admin')
                                 <td class='text-nowrap'>
@@ -113,5 +121,5 @@
             </table>
         </div>
     </div>
-    <x-po_costumer.modal.po_masuk :pomasukdata="$finishgoods" :customersupplier="$customer_supplier" />
+    <x-po_costumer.modal.po_masuk :pomasukdata="$finishgoods" :customer="$Customer" />
 </div>

@@ -28,26 +28,34 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-6" wire:ignore>
                                     <div class="mb-3">
-                                        <label for="no_po" class="form-label">No. PO</label>
-                                        <div class="input-group">
-                                            <select wire:model="no_po" id="no_po" class="form-select">
-                                                <option value="" selected hidden>Cari No...</option>
-                                                @foreach ($pomasuk as $pm)
-                                                    <option value="{{ $pm->no_po }}">
-                                                        {{ $pm->no_po }} - {{ $pm->nama_customer }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            <button type="button" class="btn btn-outline-secondary" wire:click="cari">
-                                                <i class="bi bi-search"></i>
-                                            </button>
-                                            @error('no_po')
-                                                <small class="d-block mt-1 text-danger" role="alert">{{ $message }}
-                                                </small>
-                                            @enderror
+                                        <div class="d-flex bd-highlight">
+                                            <div class="bd-highlight">
+                                                <label for="no_po" class="form-label">No. PO</label>
+                                            </div>
+                                            <div x-data="{ tooltip: 'Fitur dalam pengembangan, jika ingin menginput massal dengan data yang sama, harap ganti ke data lain untuk memicu reset, setelah itu kembali ke data yang dituju' }">
+                                                <span x-tooltip="tooltip"
+                                                    style="border: none ; outline: none;  background-color: transparent; width: 10px; margin-left: 3px">
+                                                    <i class="bi bi-question-circle help-icon"></i>
+                                                </span>
+                                            </div>
                                         </div>
+                                        <select class="choices-single choices-dropdown"wire:model="no_po" id="no_po"
+                                            class="form-select" wire:change.debounce='cari'>
+                                            <option value="" selected hidden>Cari No...</option>
+                                            @foreach ($pomasuk as $pm)
+                                                <option value="{{ $pm->no_po }}">
+                                                    {{ $pm->no_po }} - {{ $pm->nama_customer }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+
+                                        @error('no_po')
+                                            <small class="d-block mt-1 text-danger" role="alert">
+                                                {{ $message }}
+                                            </small>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-6">

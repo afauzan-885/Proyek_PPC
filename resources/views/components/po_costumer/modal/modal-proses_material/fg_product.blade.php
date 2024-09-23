@@ -29,11 +29,12 @@
                                     </div>
                                 </div>
 
-                                <div class="col-6">
+                                {{-- <div class="col-6">
                                     <div class="mb-3">
                                         <label for="kode_produk" class="form-label">Kode produk</label>
                                         <div class="input-group" wire:change.debounce.500ms="validateKodeMaterial">
-                                            <select wire:model="kode_produk" id="kode_produk" class="form-select">
+                                            <select wire:change.debounce='cari' wire:model="kode_produk"
+                                                id="kode_produk" class="form-select">
                                                 <option value="" selected hidden>Pilih Kode Produk...</option>
                                                 @foreach ($datafinishgood as $fg)
                                                     <option value="{{ $fg->kode_barang }}">
@@ -41,13 +42,42 @@
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            <button type="button" class="btn btn-outline-secondary" wire:click="cari">
-                                                <i class="bi bi-search"></i>
-                                            </button>
                                         </div>
                                         @error('kode_material')
                                             <small class="d-block mt-1 text-danger"
                                                 role="alert">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div> --}}
+
+                                <div class="col-6" wire:ignore>
+                                    <div class="mb-3">
+                                        <div class="d-flex bd-highlight">
+                                            <div class="bd-highlight">
+                                                <label for="kode_produk" class="form-label">Kode
+                                                    Produk</label>
+                                            </div>
+                                            <div x-data="{ tooltip: 'Fitur dalam pengembangan, jika ingin menginput massal dengan data yang sama, harap ganti ke data lain untuk memicu reset, setelah itu kembali ke data yang dituju' }">
+                                                <span x-tooltip="tooltip"
+                                                    style="border: none ; outline: none;  background-color: transparent; width: 10px; margin-left: 3px">
+                                                    <i class="bi bi-question-circle help-icon"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <select class="choices-single choices-dropdown" wire:change.debounce='cari'
+                                            wire:model="kode_produk" id="kode_produk" class="form-select">
+                                            <option value="" selected hidden>Pilih Kode Produk...</option>
+                                            @foreach ($datafinishgood as $fg)
+                                                <option value="{{ $fg->kode_barang }}">
+                                                    {{ $fg->kode_barang }} - {{ $fg->nama_barang }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+
+                                        @error('kode_produk')
+                                            <small class="d-block mt-1 text-danger" role="alert">
+                                                {{ $message }}
+                                            </small>
                                         @enderror
                                     </div>
                                 </div>

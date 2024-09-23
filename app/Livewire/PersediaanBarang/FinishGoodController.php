@@ -2,13 +2,12 @@
 
 namespace App\Livewire\PersediaanBarang;
 
-use App\Models\CostumerSupplier;
+use App\Models\PelangganPemasok\Customer;
 use App\Models\PersediaanBarang\PBfinishGood as FGModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Str;
-use Livewire\Attributes\Lazy;
 use Illuminate\Support\Facades\Auth; // Import the Auth facade
 
 class FinishGoodController extends Component
@@ -17,8 +16,7 @@ class FinishGoodController extends Component
     protected $paginationTheme = 'bootstrap';
     public $query;
 
-    //Public Finish Good
-    public $kode_barang, $nama_barang, $no_part, $harga, $tipe_barang, $deskripsi;
+    public $kode_barang, $nama_barang, $no_part, $harga, $tipe_barang, $deskripsi, $stok_material;
 
     public $fg_id,  $searchTerm = '', $lastPage, $page;
     // protected $listeners = ['refreshComponent' => '$refresh'];
@@ -50,14 +48,9 @@ class FinishGoodController extends Component
         ];
     }
 
-    // public function refreshComponent()
-    // {
-    //     $this->dispatch('refreshComponent'); // Memicu event custom
-    // }
-
     public function storeData()
     {
-        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
+        $this->checkUserActive();
         $validatedData = $this->validate();
 
         $hargaKeys = ['harga'];
@@ -92,13 +85,13 @@ class FinishGoodController extends Component
 
     public function updateData()
     {
-        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
+        $this->checkUserActive();
         try {
             $validatedData = $this->validate([
                 'kode_barang' => 'required',
                 'nama_barang' => 'required',
                 'no_part' => 'required',
-                // 'stok_material' => 'required',
+                'stok_material' => 'required',
                 'harga' => 'required',
                 'tipe_barang' => 'required',
                 // 'status' => 'required',
@@ -118,7 +111,7 @@ class FinishGoodController extends Component
 
     public function delete($id)
     {
-        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
+        $this->checkUserActive();
 
         $finishgood = FGModel::find($id);
         $namaBarang = $finishgood->nama_barang;
@@ -142,15 +135,15 @@ class FinishGoodController extends Component
 
     public function updatedSearchTerm()
     {
-        if ($this->searchTerm) { // Jika ada input pencarian
+        if ($this->searchTerm) {
             if (empty($this->lastPage)) {
-                $this->lastPage = $this->page; // Simpan halaman saat ini jika pencarian baru dimulai
+                $this->lastPage = $this->page;
             }
-            $this->resetPage(); // Reset ke halaman 1 saat pencarian berlangsung
+            $this->resetPage();
         } else {
             if ($this->lastPage) {
                 $this->setPage($this->lastPage);
-                $this->lastPage = null; // Reset lastPage setelah digunakan
+                $this->lastPage = null;
             }
         }
     }
@@ -168,7 +161,7 @@ class FinishGoodController extends Component
             ->paginate(9);
 
 
-        $costumerSuppliers = CostumerSupplier::all(); // Ambil data dari model CostumerSupplier
+        $costumerSuppliers = Customer::all(); // Ambil data dari model CostumerSupplier
         return view('livewire.persediaan_barang.tabel.tabel_fg', [
             'finishGoods' => $finishGoods,
             'user' => Auth::user(), // Pass the authenticated user

@@ -12,25 +12,27 @@ return new class extends Migration
         //PO Masuk
         Schema::create('po__po_masuk', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_customer');
+            $table->string('kode_customer');
             $table->date('tanggal_po');
             $table->string('term_of_payment', 50);
             $table->integer('qty');
+            $table->integer('total_pesanan');
             $table->decimal('harga', 19);
-            $table->string('no_po', 50)->unique();
+            $table->string('no_po', 50);
             $table->date('tanggal_pengiriman');
             $table->string('kode_barang', 50);
             $table->decimal('total_amount', 19);
             $table->timestamps();
         });
 
-         //Pembelian Material
-         Schema::create('po__pembelian_material', function (Blueprint $table) {
+        //Pembelian Material
+        Schema::create('po__pembelian_material', function (Blueprint $table) {
             $table->id();
             $table->string('kode_material');
             $table->string('nama_material');
+            $table->string('kode_supplier');
             $table->string('ukuran', 50);
-            $table->integer('qty');
+            $table->bigInteger('qty');
             $table->string('no_po', 50);
             $table->decimal('harga_material', 19);
             $table->decimal('total_amount', 19);
@@ -49,13 +51,14 @@ return new class extends Migration
             $table->string('satuan', 10);
             $table->timestamps();
         });
- 
+
 
         //Proses Material
         Schema::create('po__pm__pemakaian_material', function (Blueprint $table) {
             $table->id();
             $table->string('kode_material');
             $table->integer('jumlah_pengeluaran_material');
+            $table->integer('stok_awal');
             $table->string('no_po');
             $table->string('satuan');
             $table->date('tgl_pemakaian_mtrial');

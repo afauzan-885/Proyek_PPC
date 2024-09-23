@@ -57,6 +57,8 @@ class POProdukWIPController extends Component
         }
     }
 
+
+
     public function storeData()
     {
         $this->checkUserActive(); // Panggil fungsi pemeriksaan status

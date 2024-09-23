@@ -7,20 +7,9 @@
     {
         public function up(): void
         {
-        //Sinkronisasi data customer supplier ke finish goods
-            DB::unprepared('
-            CREATE TRIGGER `Sinkronisasi_data_Costumer_Supplier`
-            AFTER UPDATE ON `costumer_suppliers`
-            FOR EACH ROW
-            BEGIN
-                UPDATE pb__finish_goods
-                SET kode_costumer = NEW.kode_costumer
-                WHERE kode_costumer = OLD.kode_costumer;
-            END
+            //Sinkronisasi data customer supplier ke finish goods
 
-        ');
-
-        //sinkronisasi kalkulasi data harga material dengan qty di PO Masuk
+            //sinkronisasi kalkulasi data harga material dengan qty di PO Masuk
             DB::unprepared('
             CREATE TRIGGER `Sinkronisasi_dan_Kalkulasi_PO_Masuk` 
             AFTER UPDATE ON `pb__finish_goods`
@@ -35,7 +24,7 @@
 
         ');
 
-        //Sinkronisasi dan Kalkulasi data Pembelian Material
+            //Sinkronisasi dan Kalkulasi data Pembelian Material
             DB::unprepared('
             CREATE TRIGGER `Sinkronisasi_Data_Pembelian_Material` 
             AFTER UPDATE ON `pb__warehouses`
@@ -51,9 +40,9 @@
             END
 
         ');
-    }
-        
-        
+        }
+
+
         public function down(): void
         {
             DB::unprepared('DROP TRIGGER `Sinkronisasi_data_Costumer_Supplier`');
