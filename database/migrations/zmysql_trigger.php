@@ -18,7 +18,7 @@
                 UPDATE po__po_masuk
                 SET kode_barang = NEW.kode_barang,
                     harga = NEW.harga,
-                    total_amount = harga * qty
+                    total_amount = harga * total_pesanan
                 WHERE kode_barang = OLD.kode_barang;
             END
 

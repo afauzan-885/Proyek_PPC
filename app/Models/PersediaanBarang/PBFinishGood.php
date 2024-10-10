@@ -29,4 +29,8 @@ class PBFinishGood extends Model
     {
         return $this->hasMany(POJadwalPengiriman::class, 'kode_barang', 'kode_barang');
     }
+    public function customer()
+    {
+        return $this->hasMany(Customer::class, 'kode_customer', 'kode_customer');
+    }
 }

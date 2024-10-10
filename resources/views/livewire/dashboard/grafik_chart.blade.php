@@ -16,7 +16,7 @@
                 },
                 series: @json($series), // Gunakan data dari controller
                 xaxis: {
-                    // range: 3,
+                    range: 3,
                     categories: @json($categories) // Gunakan categories dari controller
 
                 }

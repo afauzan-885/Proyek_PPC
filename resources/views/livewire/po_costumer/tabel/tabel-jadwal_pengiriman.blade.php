@@ -60,7 +60,9 @@
                             <td class="text-nowrap">
                                 {{ ($poJadwalPengiriman->currentpage() - 1) * $poJadwalPengiriman->perpage() + $loop->index + 1 }}.
                             </td>
-                            <td class="text-warp" style="max-width: 140px;">{{ $jadwalpengiriman['nama_customer'] }}
+                            <td class="text-warp" style="max-width: 160px;">{{ $jadwalpengiriman['kode_customer'] }}
+                                <hr class="my-1">
+                                {{ $jadwalpengiriman->pomasuk->customer->nama_customer ?? 'N/A' }}
                             </td>
                             <td>{{ $jadwalpengiriman['no_po'] }}</td>
                             <td>
@@ -90,7 +92,7 @@
                                             </button>
                                             <button class="btn btn-outline-danger btn-sm mt-1" type="button"
                                                 wire:click="delete({{ $jadwalpengiriman->id }})" data-bs-title="Delete"
-                                                wire:confirm="Yakin menghapus {{ $jadwalpengiriman->nama_customer }} ?">
+                                                wire:confirm="Yakin menghapus {{ $jadwalpengiriman->pomasuk->customer->nama_customer ?? 'N/A' }} ? ">
                                                 <i class="bi bi-trash3"></i> Delete
                                             </button>
                                         </div>

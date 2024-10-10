@@ -244,7 +244,7 @@ class POJadwalPengirimanController extends Component
     {
         $searchTerm = '%' . strtolower(str_replace([' ', '.'], '', $this->searchTerm)) . '%';
 
-        $poJadwalPengiriman = PJPModel::with('pomasuk.finishgoods')->where(function ($query) use ($searchTerm) {
+        $poJadwalPengiriman = PJPModel::with('pomasuk.finishgoods.customer')->where(function ($query) use ($searchTerm) {
             $query->whereRaw('LOWER(REPLACE(REPLACE(kode_customer, " ", ""), ".", "")) LIKE ?', [$searchTerm])
                 ->orWhereRaw('LOWER(REPLACE(REPLACE(no_po, " ", ""), ".", "")) LIKE ?', [$searchTerm])
                 ->orWhereRaw('LOWER(REPLACE(REPLACE(surat_jalan, " ", ""), ".", "")) LIKE ?', [$searchTerm]);
