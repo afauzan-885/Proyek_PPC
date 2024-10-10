@@ -25,7 +25,7 @@ class FinishGoodController extends Component
         'kode_barang' => 'required|unique:pb__finish_goods,kode_barang',
         'nama_barang' => 'required',
         'no_part' => 'required',
-        // 'stok_material' => 'required',
+        'stok_material' => 'required',
         'harga' => 'required',
         'tipe_barang' => 'required',
         // 'status' => 'required',
@@ -94,19 +94,17 @@ class FinishGoodController extends Component
                 'stok_material' => 'required',
                 'harga' => 'required',
                 'tipe_barang' => 'required',
-                // 'status' => 'required',
             ]);
 
             $validatedData['harga'] = (float) str_replace('.', '', $validatedData['harga']);
-            sleep(1);
+            $validatedData['harga'] = str_replace(',', '.', $validatedData['harga']);
 
             $fg = FGModel::findOrFail($this->fg_id);
             $fg->update($validatedData);
-
-            session()->flash('suksesupdate', 'Item ' . $fg->nama_barang . ' dengan kode ' . $fg->kode_barang . ' berhasil diupdate.');
         } catch (ModelNotFoundException $e) {
             session()->flash('error', 'Data tidak ditemukan.');
         }
+        session()->flash('suksesupdate', 'Item ' . $fg->nama_barang . ' dengan kode ' . $fg->kode_barang . ' berhasil diupdate.');
     }
 
     public function delete($id)

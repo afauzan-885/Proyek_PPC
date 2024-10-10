@@ -89,8 +89,8 @@
                                         </button>
                                         <div class="dropdown-menu p-1">
                                             <div class="d-flex flex-column">
-                                                <button class="btn btn-outline-primary btn-sm"data-bs-toggle="modal"
-                                                    data-bs-target="#editformfg"
+                                                <button type="button" class="btn btn-outline-primary btn-sm"
+                                                    data-bs-toggle="modal" data-bs-target="#editformfg"
                                                     wire:click="showData({{ $finishgood->id }})">
                                                     <i class="bi bi-pencil-square"></i> Edit
                                                 </button>
@@ -114,5 +114,5 @@
             </table>
         </div>
     </div>
-    <x-persediaan_barang.modal.modal_tabel-fg :finishGoodsdata="$costumerSuppliers" />
+    <x-persediaan_barang.modal.modal_tabel-fg />
 </div>

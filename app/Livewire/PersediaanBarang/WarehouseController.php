@@ -101,12 +101,10 @@ class WarehouseController extends Component
 
             $warehouse = WHModel::findOrFail($this->wh_id);
             $warehouse->update($validatedData);
-
-            WHModel::findOrFail($this->wh_id)->update($validatedData);
         } catch (ModelNotFoundException $e) {
             session()->flash('error', 'Data tidak ditemukan.');
         }
-        session()->flash('suksesupdate', 'Data Warehouse berhasil diupdate.');
+        session()->flash('suksesupdate', 'Material ' . $warehouse->nama_material . ' berhasil diupdate.');
     }
 
     public function delete($id)

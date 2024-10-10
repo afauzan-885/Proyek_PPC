@@ -58,7 +58,7 @@
                                                     <option value="" selected hidden>Pilih Customer...</option>
                                                     @foreach ($customer as $cs)
                                                         <option value="{{ $cs->kode_customer }}">
-                                                            {{ $cs->kode_customer }} - {{ $cs->nama_customer }}
+                                                            {{ $cs->kode_customer }} - {{ $cs->kode_customer }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -176,7 +176,7 @@
                                             <input type="date" class="form-control"
                                                 wire:model='tanggal_pengiriman' id="tgl_msk_Barang" />
                                         </div>
-                                        @error('no_po')
+                                        @error('tanggal_pengiriman')
                                             <small class="d-block mt-1 text-danger"
                                                 role="alert">{{ $message }}</small>
                                         @enderror
@@ -251,13 +251,13 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="mb-3">
-                                        <label for="nama_customer" class="form-label">Kode Customer</label>
+                                        <label for="kode_customer" class="form-label">Kode Customer</label>
                                         <div class="input-group">
-                                            <select class="form-control" wire:model="nama_customer"
+                                            <select class="form-control" wire:model="kode_customer"
                                                 wire:change.debounce='cari' id="po-masuk-input_2">
                                                 <option value="" selected hidden>Pilih Customer...</option>
                                                 @foreach ($customer as $cs)
-                                                    <option value="{{ $cs->nama_customer }}">
+                                                    <option value="{{ $cs->kode_customer }}">
                                                         {{ $cs->kode_customer }}
                                                         -
                                                         {{ $cs->nama_customer }}</option>
@@ -358,7 +358,7 @@
                                             <input type="date" class="form-control"
                                                 wire:model='tanggal_pengiriman' id="tgl_msk_Barang" />
                                         </div>
-                                        @error('no_po')
+                                        @error('tanggal_pengiriman')
                                             <small class="d-block mt-1 text-danger"
                                                 role="alert">{{ $message }}</small>
                                         @enderror

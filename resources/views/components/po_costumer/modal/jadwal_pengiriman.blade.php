@@ -19,10 +19,10 @@
                                 <div class="col-6">
                                     <!-- Form Field Start -->
                                     <div class="mb-3">
-                                        <label for="nama_customer" class="form-label">Nama Costumer</label>
-                                        <input type="text" wire:model="nama_customer" class="form-control"
-                                            id="nama_material" placeholder="Otomatis" readonly />
-                                        @error('nama_customer')
+                                        <label for="kode_customer" class="form-label">Kode Customer</label>
+                                        <input type="text" wire:model="kode_customer" class="form-control"
+                                            id="kode_material" placeholder="Otomatis" readonly />
+                                        @error('kode_customer')
                                             <small class="d-block mt-1 text-danger"
                                                 role="alert">{{ $message }}</small>
                                         @enderror
@@ -46,7 +46,7 @@
                                             <option value="" selected hidden>Cari No...</option>
                                             @foreach ($pomasuk as $pm)
                                                 <option value="{{ $pm->no_po }}">
-                                                    {{ $pm->no_po }} - {{ $pm->nama_customer }}
+                                                    {{ $pm->no_po }} - {{ $pm->kode_customer }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -160,10 +160,10 @@
                                 <div class="col-6">
                                     <!-- Form Field Start -->
                                     <div class="mb-3">
-                                        <label for="nama_customer" class="form-label">Nama Costumer</label>
-                                        <input type="text" wire:model="nama_customer" class="form-control"
-                                            id="nama_material" placeholder="Otomatis" readonly />
-                                        @error('nama_customer')
+                                        <label for="kode_customer" class="form-label">Kode Customer</label>
+                                        <input type="text" wire:model="kode_customer" class="form-control"
+                                            id="kode_material" placeholder="Otomatis" readonly />
+                                        @error('kode_customer')
                                             <small class="d-block mt-1 text-danger"
                                                 role="alert">{{ $message }}</small>
                                         @enderror
@@ -177,7 +177,7 @@
                                                 <option value="" selected hidden>Cari No...</option>
                                                 @foreach ($pomasuk as $pm)
                                                     <option value="{{ $pm->no_po }}">
-                                                        {{ $pm->no_po }} - {{ $pm->nama_customer }}
+                                                        {{ $pm->no_po }} - {{ $pm->kode_customer }}
                                                     </option>
                                                 @endforeach
                                             </select>

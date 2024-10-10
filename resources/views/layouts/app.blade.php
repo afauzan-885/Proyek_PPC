@@ -14,14 +14,12 @@
     <link rel="stylesheet" href="assets/css/choices.css">
 
     <link rel="stylesheet" href="assets/css/tippy.css" />
-    <link rel="stylesheet" href="assets/css/hierarchy-select.min.css" />
     <link rel="stylesheet" href="assets/vendor/overlay-scroll/OverlayScrollbars.min.css" />
     <link rel="stylesheet" href="./assets/fonts/fontawesome-free-web/css/all.css">
     <!-- Toastify CSS -->
     <link rel="stylesheet" href="assets/vendor/toastify/toastify.css" />
     <title>{{ $title ?? 'PPC' }}</title>
-    {{-- @vite(['resources/js/app.js']) --}}
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
 
 </head>
 
@@ -34,9 +32,10 @@
     <script data-navigate-once src="assets/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="resources/js/app.js" />
     <script src="assets/js/fuses.js"></script>
+    <script src="assets/js/apexchart.js"></script>
 
     <script src="assets/js/choices.js"></script>
-    <script src="assets/js/custom-choices.js"></script>
+    {{-- <script src="assets/js/custom-choices.js"></script> --}}
     <script src="assets/js/tooltip_alpinejs.js"></script>
     <script src="assets/js/toast-notifikasi.js"></script>
 
@@ -46,11 +45,6 @@
     <!-- Overlay Scroll JS -->
     <script src="assets/vendor/overlay-scroll/jquery.overlayScrollbars.min.js"></script>
     <script src="assets/vendor/overlay-scroll/custom-scrollbar.js"></script>
-    <script src="assets/js/hierarchy-select.js"></script>
-
-    <!-- Moment JS -->
-    <script src="assets/js/moment.min.js"></script>
-
 
     <!-- Custom JS files -->
     <script src="assets/js/sidebar.js"></script>

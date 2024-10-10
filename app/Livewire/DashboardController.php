@@ -29,6 +29,18 @@ class DashboardController extends Component
         $this->totalpo = "Pesanan: " . $totalpo;
     }
 
+    public function previousPage()
+    {
+        $this->gotoPage($this->page - 1); // Jika menggunakan pagination
+        // Atau logika navigasi kustom Anda di sini
+    }
+
+    public function nextPage()
+    {
+        $this->gotoPage($this->page + 1); // Jika menggunakan pagination
+        // Atau logika navigasi kustom Anda di sini
+    }
+
 
     public function placeholder(array $params = [])
     {

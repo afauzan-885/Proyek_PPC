@@ -1,5 +1,8 @@
 <div>
-    <div id="chart"></div>
+    <div class="card-header text-center border-0">
+        <h4 class="card-title">Grafik Pesanan</h4>
+        <div id="chart" style="max-height: 360px;"></div>
+    </div>
 
     @push('scripts')
         <script>
@@ -13,7 +16,7 @@
                 },
                 series: @json($series), // Gunakan data dari controller
                 xaxis: {
-                    // range: 2,
+                    // range: 3,
                     categories: @json($categories) // Gunakan categories dari controller
 
                 }

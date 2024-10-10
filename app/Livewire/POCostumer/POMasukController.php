@@ -28,7 +28,7 @@ class POMasukController extends Component
         'term_of_payment' => 'required',
         'qty' => 'required',
         'harga' => 'required',
-        'no_po' => 'required',
+        'no_po' => 'required|unique:po__po_masuk',
         'tanggal_pengiriman' => 'required',
         'kode_barang' => 'required',
         'total_amount' => 'required',
@@ -38,7 +38,8 @@ class POMasukController extends Component
     public function messages()
     {
         return [
-            '*' => 'Form ini tidak boleh kosong'
+            '*' => 'Form ini tidak boleh kosong',
+            'no_po.unique' => 'No. PO ini sudah ada.',
         ];
     }
 
@@ -53,7 +54,7 @@ class POMasukController extends Component
 
     public function storeData()
     {
-        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
+        $this->checkUserActive();
 
         $validatedData = $this->validate();
         function toFloat($value)

@@ -1,6 +1,5 @@
 {{-- Modal input data FG --}}
 
-@props(['csdata'])
 <div class="modal fade" wire:ignore.self id="inputformfg" tabindex="-1" aria-labelledby="inputformfglabel"
     aria-hidden="true">
     <div class="modal-dialog">
@@ -18,26 +17,6 @@
                     <div class="row">
                         <div class="col-xl-12 col-12">
                             <div class="row">
-
-                                {{-- <div class="col-6">
-                                        <div class="mb-3">
-                                            <label for="kode_costumer" class="form-label">Kode Costumer</label>
-                                            <select wire:ignore wire:model="kode_costumer" id="kode_costumer"
-                                                class="form-select">
-                                                <option value="" selected hidden>Pilih Kode Costumer....</option>
-                                                @foreach ($csdata as $cs)
-                                                    <option value="{{ $cs->kode_costumer }}">{{ $cs->kode_costumer }} -
-                                                        {{ $cs->nama_costumer }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('kode_costumer')
-                                                <small class="d-block mt-1 text-danger" role="alert">
-                                                    {{ $message }}
-                                                </small>
-                                            @enderror
-                                        </div>
-                                    </div> --}}
-
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <label for="nama_kodebrng" class="form-label">Kode Barang</label>
@@ -130,7 +109,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="editformfg" wire:ignore. self data-bs-backdrop="static" tabindex="-1"
+<div class="modal fade" id="editformfg" wire:ignore.self data-bs-backdrop="static" tabindex="-1"
     aria-labelledby="editformfglabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -147,14 +126,6 @@
                     <div class="row">
                         <div class="col-xl-12 col-12">
                             <div class="row">
-                                {{-- <div class="col-6">
-                                        <div class="mb-3">
-                                            <label for="kodecs" class="form-label">Kode Costumer</label>
-                                            <input type="text" class="form-control" id="kodecs"
-                                                wire:model="kode_costumer" placeholder="Masukkan Kode Costumer"
-                                                disabled />
-                                        </div>
-                                    </div> --}}
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <label for="nama_kodebrng" class="form-label">Kode Barang</label>
@@ -219,6 +190,10 @@
                         @if (session('suksesupdate'))
                             <div class="text-success word-break">
                                 <small>{{ session('suksesupdate') }}</small>
+                            </div>
+                        @elseif (session('error'))
+                            <div class="text-danger word-break">
+                                <small>{{ session('error') }}</small>
                             </div>
                         @endif
                     </div>

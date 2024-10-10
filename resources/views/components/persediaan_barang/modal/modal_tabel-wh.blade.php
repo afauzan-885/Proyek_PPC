@@ -174,26 +174,22 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <div class="row">
-                        <div class="col-auto">
-                            @if (session('suksesupdate'))
-                                <div class="text-success">
-                                    <small>{{ session('suksesupdate') }}</small>
-                                </div>
-                            @elseif (session('error'))
-                                <div class="text-danger">
-                                    <small>{{ session('error') }}</small>
-                                </div>
-                            @endif
-                        </div>
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn btn-primary">
-                                <span wire:loading.remove>Update Data</span>
-                                <span wire:loading><x-loading /></span>
-                            </button>
-                        </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <div class="flex-grow-1" style="max-width: 320px">
+                        @if (session('suksesupdate'))
+                            <div class="text-success word-break">
+                                <small>{{ session('suksesupdate') }}</small>
+                            </div>
+                        @elseif (session('error'))
+                            <div class="text-danger word-break">
+                                <small>{{ session('error') }}</small>
+                            </div>
+                        @endif
                     </div>
+                    <button type="submit" class="btn btn btn-primary">
+                        <span wire:loading.remove>Update Data</span>
+                        <span wire:loading><x-loading /></span>
+                    </button>
                 </div>
             </form>
         </div>

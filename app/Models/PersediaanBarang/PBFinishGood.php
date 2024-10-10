@@ -20,7 +20,6 @@ class PBFinishGood extends Model
         'stok_material',
         'harga',
         'tipe_barang',
-        'status',
     ];
     public function popmprodukfg()
     {

@@ -92,7 +92,7 @@ return new class extends Migration
         //Jadwal Pengiriman
         Schema::create('po__jadwal_pengiriman', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_customer');
+            $table->string('kode_customer');
             $table->string('no_po', 50);
             $table->string('permintaan_po', 50);
             $table->string('pengeluaran_barang');

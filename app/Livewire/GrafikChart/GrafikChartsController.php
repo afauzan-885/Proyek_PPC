@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\GrafikChart;
 
 use App\Models\PersediaanBarang\PBFinishGood;
 use Livewire\Component;
@@ -17,7 +17,7 @@ class GrafikChartsController extends Component
     //     $pomasukData = POMasuk::select('total_pesanan', 'kode_barang', 'created_at')->get();
 
     //     // Kelompokkan data berdasarkan kode_barang
-    //     $groupedData = $pomasukData->groupBy('kode_barang');
+    //     $gruppomasukData = $pomasukData->groupBy('kode_barang');
 
     //     // Ambil semua tanggal pengiriman yang unik dan urutkan, format sesuai kebutuhan
     //     $categories = $pomasukData->pluck('created_at')->unique()->sort()->map(function ($date) {
@@ -25,7 +25,7 @@ class GrafikChartsController extends Component
     //     })->values()->toArray();
 
     //     // Siapkan data series untuk ApexCharts, pastikan setiap seri memiliki data untuk semua kategori
-    //     $series = $groupedData->map(function ($items, $kodeBarang) use ($categories) {
+    //     $series = $gruppomasukData->map(function ($items, $kodeBarang) use ($categories) {
     //         $data = [];
     //         foreach ($categories as $category) {
     //             $totalPesanan = $items->filter(function ($item) use ($category) {
@@ -53,7 +53,7 @@ class GrafikChartsController extends Component
             ->get();
 
         // Kelompokkan data dan hitung total pesanan per tanggal untuk setiap kode barang
-        $groupedData = $pomasukData->groupBy('kode_barang')->map(function ($items) {
+        $gruppomasukData = $pomasukData->groupBy('kode_barang')->map(function ($items) {
             return $items->groupBy('formatted_date')->map->sum('total_pesanan');
         });
 
@@ -61,7 +61,7 @@ class GrafikChartsController extends Component
         $categories = $pomasukData->pluck('formatted_date')->unique()->sort()->values()->toArray();
 
         // Siapkan data series, pastikan setiap seri memiliki data untuk semua kategori
-        $series = $groupedData->map(function ($dataPerTanggal, $kodeBarang) use ($categories) {
+        $series = $gruppomasukData->map(function ($dataPerTanggal, $kodeBarang) use ($categories) {
             $data = [];
             foreach ($categories as $category) {
                 $data[] = $dataPerTanggal[$category] ?? 0;
@@ -82,7 +82,7 @@ class GrafikChartsController extends Component
     {
         $chartData = $this->prepareChartData();
 
-        return view('livewire.grafik_chart')
+        return view('livewire.dashboard.grafik_chart')
             ->with([
                 'categories' => $chartData['categories'],
                 'series' => $chartData['series'],

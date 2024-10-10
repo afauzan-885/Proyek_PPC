@@ -1,7 +1,7 @@
 <div>
     <div class="row">
         <div class="col-xl-4 col-sm-6 col-xl-4 col-12">
-            <div class="card mb-4">
+            <div class="card mb-2">
                 <a href="{{ route('customer_supplier') }}" wire:navigate>
                     <div class="card-body">
                         <div class="d-flex flex-row">
@@ -19,7 +19,7 @@
 
         </div>
         <div class="col-xl-4 col-sm-6 col-xl-4 col-12">
-            <div class="card mb-4">
+            <div class="card mb-2">
                 <a href="{{ route('persediaan_barang') }}" wire:navigate>
                     <div class="card-body">
                         <div class="d-flex flex-row">
@@ -37,7 +37,7 @@
         </div>
 
         <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-xl-4 col-12">
-            <div class="card mb-4">
+            <div class="card mb-2">
                 <a href="{{ route('po_costumer') }}" wire:navigate>
                     <div class="card-body">
                         <div class="d-flex flex-row">
@@ -55,24 +55,31 @@
         </div>
     </div>
     <!-- ========== Grafik Section ========== -->
-    <div class="card">
-        <div class="card-header text-center border-0">
-            <h3 class="card-title">Grafik Kemajuan</h3>
-        </div>
-        <div class="row">
-            <div class="col-xl-6 col-12">
-                <div class="card p-2">
-                    <div class="card-header text-center border-0">
-                        <h4 class="card-title">PO Customer</h4>
-                    </div>
-                    <livewire:Grafik_Charts_Controller />
-                </div>
+    <div class="row">
+        <div class="col-xl-6 col-12 mb-2">
+            <div class="card mb-2">
+                <livewire:GrafikChart.Grafik_Charts_Controller />
             </div>
-            <div class="col-xl-6 col-12">
-                <div class="card p-2">
-                    Isi
+            <div class="card p-1">
+                <livewire:GrafikChart.Top_Penjualan_Controller />
+            </div>
+        </div>
+
+        <div class="col-xl-6 col-12">
+            {{-- <div class="col-auto">
+                <div class="card">
+                    <livewire:GrafikChart.Top_Penjualan_Controller />
+                </div>
+            </div> --}}
+            <div class="col-auto ">
+                <div class="card p-1 mb-2">
+                    <livewire:GrafikChart.Permintaan_Produk_Controller />
+                </div>
+                <div class="card p-1">
+                    <livewire:GrafikChart.Stok_Produk_Controller />
                 </div>
             </div>
         </div>
     </div>
+
 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\POCostumer;
 
+use App\Models\PersediaanBarang\PBFinishGood;
 use App\Models\POCostumer\POJadwalPengiriman as PJPModel;
 use App\Models\POCostumer\POMasuk as PMModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -16,7 +17,7 @@ class POJadwalPengirimanController extends Component
     protected $paginationTheme = 'bootstrap';
 
     public
-        $nama_customer,
+        $kode_customer,
         $no_po,
         $permintaan_po,
         $pengeluaran_barang,
@@ -26,7 +27,7 @@ class POJadwalPengirimanController extends Component
     public $PJP_id, $lastPage, $searchTerm = '', $page, $query;
 
     protected $rules = [
-        'nama_customer' => 'required',
+        'kode_customer' => 'required',
         'no_po' => 'required',
         'permintaan_po' => 'required',
         'pengeluaran_barang' => 'required',
@@ -56,7 +57,7 @@ class POJadwalPengirimanController extends Component
         sleep(1);
         if ($pomasuk) {
             $this->permintaan_po = $pomasuk->qty;
-            $this->nama_customer = $pomasuk->nama_customer;
+            $this->kode_customer = $pomasuk->kode_customer;
         } else {
             $this->addError('no_po', 'No. PO tidak ditemukan.');
         }
@@ -70,7 +71,7 @@ class POJadwalPengirimanController extends Component
         $pomasuk = PMModel::firstOrCreate(
             ['no_po' => $validatedData['no_po']],
             [
-                'nama_customer' => $validatedData['nama_customer'],
+                'kode_customer' => $validatedData['kode_customer'],
             ]
         );
 
@@ -81,6 +82,24 @@ class POJadwalPengirimanController extends Component
                 return; // Hentikan proses penyimpanan data
             }
 
+            // Ambil kode_barang dari $pomasuk
+            $kode_barang = $pomasuk->kode_barang;
+
+            // Ambil data finishgood berdasarkan kode_barang dari $pomasuk
+            $finishgood = PBFinishGood::where('kode_barang', $kode_barang)->first();
+
+            // Validasi stok_material
+            if ($finishgood && $validatedData['pengeluaran_barang'] > $finishgood->stok_material) {
+                session()->flash('error', 'Stok material tidak mencukupi.');
+                return; // Hentikan proses penyimpanan data
+            }
+
+            // Kurangi stok_material di tabel finishgood
+            if ($finishgood) {
+                $finishgood->stok_material -= $validatedData['pengeluaran_barang'];
+                $finishgood->save();
+            }
+
             $pomasuk->qty -= $validatedData['pengeluaran_barang'];
             $pomasuk->save();
             $validatedData['no_po'] = $validatedData['no_po']['value'];
@@ -89,7 +108,7 @@ class POJadwalPengirimanController extends Component
 
             $this->dispatch('poMasukUpdated');
             $this->reset(
-                'nama_customer',
+                'kode_customer',
                 'no_po',
                 'permintaan_po',
                 'pengeluaran_barang',
@@ -119,37 +138,60 @@ class POJadwalPengirimanController extends Component
 
             $original_stok = $poPJP->pengeluaran_barang;
 
-            // Cari data WIP saat ini
+            // Cari data PMModel 
             $poMasuk = PMModel::where('no_po', $validatedData['no_po'])->first();
 
             if ($poMasuk) {
-                // Kembalikan stok ke kondisi semula (sebelum update PoWIP ini)
+                // Kembalikan stok poMasuk ke kondisi semula
                 $poMasuk->qty += $original_stok;
 
-                // Hitung stok baru setelah update PoWIP
-                $new_stok = $poMasuk->qty - $validatedData['pengeluaran_barang'];
+                // Hitung stok baru poMasuk setelah update 
+                $new_stok_pomasuk = $poMasuk->qty - $validatedData['pengeluaran_barang'];
 
-                // Memastikan stok tidak negatif
-                if ($new_stok < 0) {
+                // Memastikan stok poMasuk tidak negatif
+                if ($new_stok_pomasuk < 0) {
                     session()->flash('error', 'Pengiriman PO tidak boleh membuat PO Awal menjadi negatif.');
                     return redirect()->back()->withInput();
                 }
 
-                // Periksa apakah ada perubahan data sebelum melakukan update
-                if ($poMasuk->fill($validatedData)->isDirty()) {
-                    $poMasuk->update([
-                        'qty' => $new_stok,
-                    ]);
+                // Ambil kode_barang dari $poMasuk
+                $kode_barang = $poMasuk->kode_barang;
 
-                    $namaCustomer = $validatedData['nama_customer'];
-                    session()->flash('suksesupdate', 'Jadwal ' . $namaCustomer . ' berhasil diupdate.');
+                // Ambil data finishgood berdasarkan kode_barang dari $poMasuk
+                $finishgood = PBFinishGood::where('kode_barang', $kode_barang)->first();
+
+                if ($finishgood) {
+                    // Kembalikan stok finishgood ke kondisi semula
+                    $finishgood->stok_material += $original_stok;
+
+                    // Hitung stok baru finishgood setelah update
+                    $new_stok_finishgood = $finishgood->stok_material - $validatedData['pengeluaran_barang'];
+
+                    // Memastikan stok finishgood tidak negatif
+                    if ($new_stok_finishgood < 0) {
+                        session()->flash('error', 'Stok material tidak mencukupi.');
+                        return redirect()->back()->withInput();
+                    }
+
+                    // Update stok finishgood
+                    $finishgood->stok_material = $new_stok_finishgood;
+                    $finishgood->save();
                 } else {
-                    session()->flash('suksesupdate', 'Update berhasil, data tidak ada yang berubah.');
+                    // Tangani kasus di mana finishgood tidak ditemukan
+                    session()->flash('error', 'Data tidak ditemukan untuk kode barang ini.');
                 }
+
+                // Update stok poMasuk
+                $poMasuk->qty = $new_stok_pomasuk;
+                $poMasuk->save();
+
+                $namaCustomer = $validatedData['kode_customer'];
+                session()->flash('suksesupdate', 'Jadwal ' . $namaCustomer . ' berhasil diupdate.');
             } else {
-                // Tangani kasus di mana WIP tidak ditemukan
-                session()->flash('error', 'Data WIP tidak ditemukan untuk kode barang ini.');
+                // Tangani kasus di mana PMModel tidak ditemukan
+                session()->flash('error', 'Data PMModel tidak ditemukan untuk kode barang ini.');
             }
+
 
             // Periksa apakah ada perubahan data sebelum melakukan update pada PoWIP
             if ($poPJP->fill($validatedData)->isDirty()) {
@@ -170,7 +212,7 @@ class POJadwalPengirimanController extends Component
     {
         $this->checkUserActive(); // Panggil fungsi pemeriksaan status
         $customer = PJPModel::find($id);
-        $namaCustomer = $customer->nama_customer;
+        $namaCustomer = $customer->kode_customer;
         $noPo = $customer->no_po;
         $customer->delete();
         $this->dispatch('toastify',  $namaCustomer . ' (No.PO: ' . $noPo . ') berhasil dihapus.');
@@ -203,11 +245,11 @@ class POJadwalPengirimanController extends Component
         $searchTerm = '%' . strtolower(str_replace([' ', '.'], '', $this->searchTerm)) . '%';
 
         $poJadwalPengiriman = PJPModel::with('pomasuk.finishgoods')->where(function ($query) use ($searchTerm) {
-            $query->whereRaw('LOWER(REPLACE(REPLACE(nama_customer, " ", ""), ".", "")) LIKE ?', [$searchTerm])
+            $query->whereRaw('LOWER(REPLACE(REPLACE(kode_customer, " ", ""), ".", "")) LIKE ?', [$searchTerm])
                 ->orWhereRaw('LOWER(REPLACE(REPLACE(no_po, " ", ""), ".", "")) LIKE ?', [$searchTerm])
                 ->orWhereRaw('LOWER(REPLACE(REPLACE(surat_jalan, " ", ""), ".", "")) LIKE ?', [$searchTerm]);
         })
-            ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(nama_customer, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
+            ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(kode_customer, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
             ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(no_po, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
             ->orderByRaw('INSTR(LOWER(REPLACE(REPLACE(surat_jalan, " ", ""), ".", "")), ?) ASC', [strtolower(str_replace([' ', '.'], '', $this->searchTerm))])
             ->orderBy('no_po')->paginate(9);

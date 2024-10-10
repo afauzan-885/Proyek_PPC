@@ -63,15 +63,15 @@ class SupplierController extends Component
 
     public function updateData()
     {
-        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
+        $this->checkUserActive();
         try {
             $validatedData = $this->validate([
                 'nama_supplier' => 'required',
                 'kode_supplier' => 'required',
                 'no_telepon_pt' => 'required',
                 'alamat_supplier' => 'required',
-                'kontak_supplier' => 'required',
-                'email_supplier' => 'required',
+                'kontak_supplier' => 'nullable',
+                'email_supplier' => 'nullable',
             ]);
 
             Supplier::findOrFail($this->supplier_id)->update($validatedData);
@@ -90,7 +90,7 @@ class SupplierController extends Component
 
     public function delete($id)
     {
-        $this->checkUserActive(); // Panggil fungsi pemeriksaan status
+        $this->checkUserActive();
 
         $supplier = Supplier::find($id);
         $namaSupplier = $supplier->nama_supplier;
@@ -101,15 +101,15 @@ class SupplierController extends Component
 
     public function updatedSearchTerm()
     {
-        if ($this->searchTerm) { // Jika ada input pencarian
+        if ($this->searchTerm) {
             if (empty($this->lastPage)) {
-                $this->lastPage = $this->page; // Simpan halaman saat ini jika pencarian baru dimulai
+                $this->lastPage = $this->page;
             }
-            $this->resetPage(); // Reset ke halaman 1 saat pencarian berlangsung
+            $this->resetPage();
         } else {
             if ($this->lastPage) {
                 $this->setPage($this->lastPage);
-                $this->lastPage = null; // Reset lastPage setelah digunakan
+                $this->lastPage = null;
             }
         }
     }
@@ -127,7 +127,7 @@ class SupplierController extends Component
 
         return view('livewire.customer_supplier.tabel_supplier', [
             'Suppliers' => $Supplier,
-            'user' => Auth::user(), // Pass the authenticated user
+            'user' => Auth::user(),
         ]);
     }
 }

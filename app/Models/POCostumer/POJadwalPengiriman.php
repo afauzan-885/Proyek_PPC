@@ -11,7 +11,7 @@ class POJadwalPengiriman extends Model
   use HasFactory;
   protected $table = 'po__jadwal_pengiriman';
   protected $fillable = [
-    'nama_customer',
+    'kode_customer',
     'no_po',
     'permintaan_po',
     'pengeluaran_barang',
