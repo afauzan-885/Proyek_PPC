@@ -1,6 +1,6 @@
 <div>
     @props(['produkWIP'])
-    <div class="d-flex bd-highlight mb-1">
+    <div class="d-flex bd-highlight mb-1" style="position: sticky; top: -20px; background-color: #fff;">
         <div class="bd-highlight p-1">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#inputwip_product">
                 <i class="bi bi-file-earmark-plus"></i>

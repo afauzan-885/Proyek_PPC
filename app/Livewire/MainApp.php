@@ -7,6 +7,7 @@ use Livewire\Component;
 
 class MainApp extends Component
 {
+    protected $listeners = ['refreshComponent' => '$refresh'];
     public $user;
 
     public function mount()

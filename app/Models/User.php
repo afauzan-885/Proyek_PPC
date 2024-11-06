@@ -15,8 +15,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'reset_request_status', 
+        'tentang_saya',
+        'kontak',
+        'tanggal_lahir',
         'role',
         'is_active',
+        'photo',
     ];
     
 

@@ -15,10 +15,10 @@ class Daftar extends Component
     public $isSubmitting = false, $password_confirmation;
 
     protected $rules = [
-        'name' => '|string|max:255',
-        'email' => '|string|email|max:255|unique:users',
-        'role' => '|in:Admin,Member',
-        'password' => '|string|min:8|confirmed',
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'role' => 'required|in:Admin,Member',
+        'password' => 'required|string|min:8|confirmed',
     ];
 
     public function messages()

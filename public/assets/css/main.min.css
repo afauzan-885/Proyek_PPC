@@ -3261,7 +3261,7 @@ textarea.form-control-lg {
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
-    border: var(--bs-border-width) solid var(--bs-border-color);
+    border: var(--bs-border-width) solid black;
     print-color-adjust: exact;
 }
 
@@ -15951,7 +15951,6 @@ a:hover {
     .page-wrapper.pinned:not(.sidebar-hovered) .sidebar-wrapper {
         width: 98px;
     }
-
     .page-wrapper.pinned:not(.sidebar-hovered)
         .sidebar-wrapper
         .sidebar-menu
@@ -15965,7 +15964,13 @@ a:hover {
         .sidebar-wrapper
         .sidebar-menu
         li.treeview:after {
-        display: none !important;
+        display: none ;
+    }
+}
+
+@media (min-width: 768px) {
+    .page-wrapper.pinned:not(.sidebar-hovered) #logo_pt {
+        display: none;
     }
 }
 

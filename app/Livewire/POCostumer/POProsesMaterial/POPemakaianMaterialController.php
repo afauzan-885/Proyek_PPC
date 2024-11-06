@@ -173,7 +173,7 @@ class POPemakaianMaterialController extends Component
         $pemakaianmaterial = $pemakaianMaterial->kode_material;
         $pemakaianMaterial->delete();
 
-        $this->dispatch('toastify', 'Material ' . $pemakaianmaterial . ' berhasil dihapus.');
+        $this->dispatch('toastify_sukses', 'Material ' . $pemakaianmaterial . ' berhasil dihapus.');
     }
 
     public function closeModal()

@@ -166,7 +166,7 @@ class POKedatanganMaterialController extends Component
         $kedatanganmaterial = $kedatanganMaterial->nama_material;
         $kedatanganMaterial->delete();
 
-        $this->dispatch('toastify', 'Material ' . $kedatanganmaterial . ' berhasil dihapus.');
+        $this->dispatch('toastify_sukses', 'Material ' . $kedatanganmaterial . ' berhasil dihapus.');
     }
 
 
@@ -196,7 +196,7 @@ class POKedatanganMaterialController extends Component
     {
         $searchTerm = '%' . strtolower(str_replace([' ', '.'], '', $this->searchTerm)) . '%';
 
-        $poKedatanganMaterial = PKMModel::where(function ($query) use ($searchTerm) {
+        $poKedatanganMaterial = PKMModel::with('supplier')->where(function ($query) use ($searchTerm) {
             $query->whereRaw('LOWER(REPLACE(REPLACE(nama_material, " ", ""), ".", "")) LIKE ?', [$searchTerm])
                 ->orWhereRaw('LOWER(REPLACE(REPLACE(kode_material, " ", ""), ".", "")) LIKE ?', [$searchTerm])
                 ->orWhereRaw('LOWER(REPLACE(REPLACE(surat_jalan, " ", ""), ".", "")) LIKE ?', [$searchTerm]);

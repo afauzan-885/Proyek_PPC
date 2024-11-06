@@ -1,9 +1,12 @@
 document.addEventListener("livewire:init", () => {
+    const defaultMessages = {
+        sukses: "Aksi berhasil!",
+        gagal: "Aksi gagal!",
+    };
+
     Livewire.on("toastify", (message) => {
-        const finalMessage =
-            message ||
-            defaultMessages[message.split("_")[0]] ||
-            "Aksi berhasil dilakukan!";
+        const [key, ...rest] = message.split("_");
+        const finalMessage = message || defaultMessages[key] || "Aksi dilakukan!";
 
         Toastify({
             text: finalMessage,
@@ -11,21 +14,29 @@ document.addEventListener("livewire:init", () => {
             gravity: "top",
             position: "center",
             backgroundColor: "#0dcaf0dc3545",
-
             close: true,
         }).showToast();
     });
 
-    // Menambahkan listener untuk peristiwa wire:offline
-    Livewire.on("wire:offline", () => {
+    Livewire.on("toastify_sukses", (message) => {
         Toastify({
-            text: "Anda sedang offline. Beberapa fitur mungkin tidak berfungsi.",
-            duration: 5000, // Durasi yang lebih lama untuk pesan offline
+            text: message || defaultMessages.sukses,
+            duration: 3350,
             gravity: "top",
-            position: "right",
+            position: "center",
+            backgroundColor: "#4CAF50", // Warna hijau untuk sukses
             close: true,
-            backgroundColor: "#dc3545", // Warna merah dari Bootstrap alert-danger
-            stopOnFocus: true, // Menghentikan timer saat toast difokuskan
+        }).showToast();
+    });
+
+    Livewire.on("toastify_gagal", (message) => {
+        Toastify({
+            text: message || defaultMessages.gagal,
+            duration: 3350,
+            gravity: "top",
+            position: "center",
+            backgroundColor: "#F44336", // Warna merah untuk gagal
+            close: true,
         }).showToast();
     });
 });

@@ -1,6 +1,6 @@
 <div>
     @props(['Wip'])
-    <div class="d-flex bd-highlight mb-1">
+    <div class="d-flex bd-highlight mb-1" style="position: sticky; top: -20px; background-color: #fff;">
         <div class="bd-highlight p-1">
             <button type="button" class="btn btn-success" data-bs-target="#inputformwip" x-data="{ openModal: false }"
                 @click="

@@ -215,7 +215,7 @@ class POJadwalPengirimanController extends Component
         $namaCustomer = $customer->kode_customer;
         $noPo = $customer->no_po;
         $customer->delete();
-        $this->dispatch('toastify',  $namaCustomer . ' (No.PO: ' . $noPo . ') berhasil dihapus.');
+        $this->dispatch('toastify_sukses',  $namaCustomer . ' (No.PO: ' . $noPo . ') berhasil dihapus.');
     }
 
     public function closeModal()

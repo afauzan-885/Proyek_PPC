@@ -1,4 +1,4 @@
-<ul class="sidebar-menu">
+<ul class="sidebar-menu" >
     <li class="{{ request()->is('main_app') ? 'active current-page' : '/dashboard' }}">
         <a href="{{ route('main_app') }}"wire:navigate>
             <i class="bi bi-house"></i>

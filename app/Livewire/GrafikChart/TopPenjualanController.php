@@ -17,11 +17,11 @@ class TopPenjualanController extends Component
         $this->loadTopProducts();
     }
 
-    public function placeholder(array $params = [])
-    {
+    // public function placeholder(array $params = [])
+    // {
 
-        return view('livewire.placeholder.tabel_placeholder', $params);
-    }
+    //     return view('livewire.placeholder.tabel_placeholder', $params);
+    // }
 
     public function loadTopProducts()
     {

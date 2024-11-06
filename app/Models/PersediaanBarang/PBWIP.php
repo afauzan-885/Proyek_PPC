@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PBWIP extends Model
 {
     use HasFactory;
-    protected $table = 'pb__WIP';
+    protected $table = 'pb__wip';
     protected $fillable = [
         'kode_barang',
         'nama_barang',

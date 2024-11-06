@@ -4,13 +4,12 @@ namespace App\Livewire\POCostumer;
 
 use App\Models\PelangganPemasok\Customer;
 use App\Models\POCostumer\POMasuk as PMModel;
-use App\Models\PersediaanBarang\PBfinishGood as FGModel;
+use App\Models\PersediaanBarang\PBFinishGood as FGModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use NumberFormatter;
 use Illuminate\Support\Str;
-
 use Livewire\WithPagination;
 
 class POMasukController extends Component
@@ -28,7 +27,7 @@ class POMasukController extends Component
         'term_of_payment' => 'required',
         'qty' => 'required',
         'harga' => 'required',
-        'no_po' => 'required|unique:po__po_masuk',
+        'no_po' => 'required',
         'tanggal_pengiriman' => 'required',
         'kode_barang' => 'required',
         'total_amount' => 'required',
@@ -77,7 +76,7 @@ class POMasukController extends Component
 
         $namaCustomer = $validatedData['kode_customer'];
 
-        $this->reset();
+        $this->resetExcept('kode_customer', 'kode_barang');
         session()->flash('suksesinput',   $namaCustomer . ' berhasil ditambahkan.');
         $this->dispatch('dataStored');
     }
@@ -216,7 +215,7 @@ class POMasukController extends Component
         $kodeCustomer = $pomasuk->kode_customer;
         $pomasuk->delete();
 
-        $this->dispatch('toastify', 'Customer ' . $kodeCustomer . ' berhasil dihapus.');
+        $this->dispatch('', 'Customer ' . $kodeCustomer . ' berhasil dihapus.');
         // session()->flash('sukseshapus', 'Data PO Masuk berhasil dihapus.');
     }
 
@@ -261,9 +260,6 @@ class POMasukController extends Component
 
         $finishgoods = FGModel::all();
         $Customer = Customer::all();
-
-        // $this->searchCustomers(); // Panggil fungsi searchCustomers
-
         return view('livewire.po_costumer.tabel.tabel-po_masuk', [
             'poMasuk' => $poMasuk,
             'finishgoods' => $finishgoods,

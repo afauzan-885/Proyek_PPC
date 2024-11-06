@@ -3,12 +3,12 @@
 namespace App\Livewire\PersediaanBarang;
 
 use App\Models\PersediaanBarang\PBWarehouse as WHModel;
+use App\Models\POCostumer\POPembelianMaterial;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Str;
-use Livewire\Attributes\Lazy;
 
 // #[Lazy(isolate:false)]
 class WarehouseController extends Component
@@ -82,7 +82,7 @@ class WarehouseController extends Component
         }
     }
 
-    public function updateData()
+   public function updateData()
     {
         $this->checkUserActive();
         try {
@@ -101,6 +101,20 @@ class WarehouseController extends Component
 
             $warehouse = WHModel::findOrFail($this->wh_id);
             $warehouse->update($validatedData);
+
+            // Replikasi logika trigger
+            $pembelianMaterial = POPembelianMaterial::where('kode_material', $warehouse->kode_material)->first();
+
+            if ($pembelianMaterial) {
+                POPembelianMaterial::where('kode_material', $warehouse->kode_material)
+                    ->update([
+                        'kode_material' => $warehouse->kode_material,
+                        'harga_material' => $warehouse->harga_material,
+                        'ukuran' => $warehouse->ukuran_material,
+                        'total_amount' => $warehouse->harga_material * $pembelianMaterial->qty
+                    ]);
+            }
+
         } catch (ModelNotFoundException $e) {
             session()->flash('error', 'Data tidak ditemukan.');
         }
@@ -114,7 +128,7 @@ class WarehouseController extends Component
         $namaMaterial = $warehouse->nama_material;
         $warehouse->delete();
 
-        $this->dispatch('toastify', 'Material ' . $namaMaterial . ' berhasil dihapus.');
+        $this->dispatch('toastify_sukses', 'Material ' . $namaMaterial . ' berhasil dihapus.');
     }
 
     public function closeModal()

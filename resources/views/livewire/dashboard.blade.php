@@ -58,10 +58,10 @@
     <div class="row">
         <div class="col-xl-6 col-12 mb-2">
             <div class="card mb-2">
-                <livewire:GrafikChart.Grafik_Charts_Controller />
+                <livewire:GrafikChart.GrafikChartsController />
             </div>
             <div class="card p-1">
-                <livewire:GrafikChart.Top_Penjualan_Controller />
+                <livewire:GrafikChart.TopPenjualanController />
             </div>
         </div>
 

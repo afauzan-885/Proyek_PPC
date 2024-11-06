@@ -3,7 +3,6 @@
 namespace App\Models\PersediaanBarang;
 
 use App\Models\PelangganPemasok\Customer;
-use App\Models\POCostumer\PO_PM_FgProduct;
 use App\Models\POCostumer\POJadwalPengiriman;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,10 +20,6 @@ class PBFinishGood extends Model
         'harga',
         'tipe_barang',
     ];
-    public function popmprodukfg()
-    {
-        return $this->hasMany(PO_PM_FgProduct::class);
-    }
     public function pomasuk()
     {
         return $this->hasMany(POJadwalPengiriman::class, 'kode_barang', 'kode_barang');

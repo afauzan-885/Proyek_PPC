@@ -57,6 +57,19 @@ class POProdukWIPController extends Component
         }
     }
 
+    public function cari()
+    {
+        $Wip = WIPModel::where('kode_barang', $this->kode_barang)->first();
+
+        if ($Wip) {
+            $this->nama_produk = $Wip->nama_barang;
+            $this->hasil_ok = $Wip->stok_barang;
+            $this->resetErrorBag('kode_barang');
+        } else {
+            $this->addError('kode_barang', 'Kode tidak ditemukan');
+        }
+    }
+
 
 
     public function storeData()
@@ -170,7 +183,7 @@ class POProdukWIPController extends Component
         $namaproduk = $produkWIP->nama_produk;
         $produkWIP->delete();
 
-        $this->dispatch('toastify', 'Produk ' . $namaproduk . ' berhasil dihapus.');
+        $this->dispatch('toastify_sukses', 'Produk ' . $namaproduk . ' berhasil dihapus.');
     }
 
     public function closeModal()

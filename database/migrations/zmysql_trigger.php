@@ -5,42 +5,42 @@
 
     return new class extends Migration
     {
-        public function up(): void
-        {
-            //Sinkronisasi data customer supplier ke finish goods
+        // public function up(): void
+        // {
+        //     //Sinkronisasi data customer supplier ke finish goods
 
-            //sinkronisasi kalkulasi data harga material dengan qty di PO Masuk
-            DB::unprepared('
-            CREATE TRIGGER `Sinkronisasi_dan_Kalkulasi_PO_Masuk` 
-            AFTER UPDATE ON `pb__finish_goods`
-            FOR EACH ROW 
-            BEGIN
-                UPDATE po__po_masuk
-                SET kode_barang = NEW.kode_barang,
-                    harga = NEW.harga,
-                    total_amount = harga * total_pesanan
-                WHERE kode_barang = OLD.kode_barang;
-            END
+        //     //sinkronisasi kalkulasi data harga material dengan qty di PO Masuk
+        //     DB::unprepared('
+        //     CREATE TRIGGER `Sinkronisasi_dan_Kalkulasi_PO_Masuk` 
+        //     AFTER UPDATE ON `pb__finish_goods`
+        //     FOR EACH ROW 
+        //     BEGIN
+        //         UPDATE po__po_masuk
+        //         SET kode_barang = NEW.kode_barang,
+        //             harga = NEW.harga,
+        //             total_amount = harga * total_pesanan
+        //         WHERE kode_barang = OLD.kode_barang;
+        //     END
 
-        ');
+        // ');
 
-            //Sinkronisasi dan Kalkulasi data Pembelian Material
-            DB::unprepared('
-            CREATE TRIGGER `Sinkronisasi_Data_Pembelian_Material` 
-            AFTER UPDATE ON `pb__warehouses`
-            FOR EACH ROW 
-            BEGIN
-            UPDATE po__pembelian_material
-            SET
-                kode_material = NEW.kode_material,
-                harga_material = NEW.harga_material,
-                ukuran = NEW.ukuran_material,
-                total_amount = NEW.harga_material * qty
-                WHERE kode_material = OLD.kode_material;
-            END
+        //     //Sinkronisasi dan Kalkulasi data Pembelian Material
+        //     DB::unprepared('
+        //     CREATE TRIGGER `Sinkronisasi_Data_Pembelian_Material` 
+        //     AFTER UPDATE ON `pb__warehouses`
+        //     FOR EACH ROW 
+        //     BEGIN
+        //     UPDATE po__pembelian_material
+        //     SET
+        //         kode_material = NEW.kode_material,
+        //         harga_material = NEW.harga_material,
+        //         ukuran = NEW.ukuran_material,
+        //         total_amount = NEW.harga_material * qty
+        //         WHERE kode_material = OLD.kode_material;
+        //     END
 
-        ');
-        }
+        // ');
+        // }
 
 
         public function down(): void

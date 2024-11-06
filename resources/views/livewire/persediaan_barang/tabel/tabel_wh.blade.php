@@ -1,6 +1,6 @@
 <div>
     @props(['Warehouse'])
-    <div class="d-flex bd-highlight mb-1">
+    <div class="d-flex bd-highlight mb-1" style="position: sticky; top: -20px; background-color: #fff;">
         <div class="p-1 bd-highlight">
             <button type="button" class="btn btn-success " data-bs-toggle="modal" data-bs-target="#inputformwh">
                 <i class="bi bi-file-earmark-plus"></i>

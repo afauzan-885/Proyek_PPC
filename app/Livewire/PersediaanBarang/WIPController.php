@@ -105,7 +105,7 @@ class WIPController extends Component
         $namaBarang = $wip->nama_barang;
         $wip->delete();
 
-        $this->dispatch('toastify', 'Barang ' . $namaBarang . ' berhasil dihapus.');
+        $this->dispatch('toastify_sukses', 'Barang ' . $namaBarang . ' berhasil dihapus.');
     }
 
     public function closeModal()

@@ -110,7 +110,7 @@
                                         <div class="mb-3">
                                             <div class="d-flex bd-highlight">
                                                 <div class="bd-highlight">
-                                                    <label for="nama_supplier" class="form-label">Nama Supplier</label>
+                                                    <label for="kode_supplier" class="form-label">Kode Supplier</label>
                                                     </label>
                                                 </div>
                                                 <div x-data="{ tooltip: 'Fitur dalam pengembangan, jika ingin menginput massal dengan data yang sama, harap ganti ke data lain untuk memicu reset, setelah itu kembali ke data yang dituju' }">
@@ -120,8 +120,8 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <select class="choices-single choices-dropdown" wire:model="nama_supplier"
-                                                wire:change.debounce='cari' id="kedatangan-material_input">
+                                            <select class="choices-single choices-dropdown" wire:model="kode_supplier"
+                                                wire:change.debounce='cari' id="kode_supplier">
                                                 <option value="" selected hidden>Cari Supplier ...
                                                 </option>
                                                 @foreach ($supplier as $sp)
@@ -130,7 +130,7 @@
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            @error('nama_supplier')
+                                            @error('kode_supplier')
                                                 <small class="d-block mt-1 text-danger"
                                                     role="alert">{{ $message }}</small>
                                             @enderror
@@ -290,17 +290,17 @@
 
                                     <div wire:ignore class="col-6">
                                         <div class="mb-3">
-                                            <label for="nama_supplier" class="form-label">Nama Supplier</label>
+                                            <label for="kode_supplier" class="form-label">Nama Supplier</label>
                                             <div class="input-group">
-                                                <select class="form-control" wire:model="nama_supplier"
+                                                <select class="form-control" wire:model="kode_supplier"
                                                     wire:change.debounce='cari' id="kedatangan-material_input">
                                                     <option value="" selected hidden>Cari Supplier ...
                                                     </option>
                                                     @foreach ($supplier as $sp)
-                                                        <option value="{{ $sp->kode_supplier }}">
-                                                            {{ $sp->kode_supplier }} - {{ $sp->nama_supplier }}
-                                                        </option>
-                                                    @endforeach
+                                                    <option value="{{ $sp->kode_supplier }}">
+                                                        {{ $sp->kode_supplier }} - {{ $sp->nama_supplier }}
+                                                    </option>
+                                                @endforeach
                                                 </select>
                                             </div>
                                             @error('kode_supplier')

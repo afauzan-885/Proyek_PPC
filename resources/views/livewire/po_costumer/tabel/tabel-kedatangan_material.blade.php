@@ -1,6 +1,6 @@
 <div>
     @props(['poKedatanganMaterial'])
-    <div class="d-flex bd-highlight mb-1">
+    <div class="d-flex bd-highlight mb-1" style="position: sticky; top: -20px; background-color: #fff;">
         <div class="bd-highlight p-1">
             <button type="button" class="btn btn-success" data-bs-toggle="modal"
                 data-bs-target="#inputkedatangan_material">
@@ -44,7 +44,7 @@
                         <th>No</th>
                         <th>Kode & Nama Material</th>
                         <th>Tgl Masuk Material</th>
-                        <th>Nama Supplier</th>
+                        <th>Kode & Nama Supplier</th>
                         <th>QTY(Sheet/Lyr/Kg)</th>
                         <th>Surat Jalan</th>
                         @if ($user->role === 'Admin')
@@ -67,7 +67,9 @@
                             const [year, month, day] = '{{ $kedatanganmaterial['tgl_msk_material'] }}'.split('-');
                             return `${day}-${month}-${year}`;})()">
                             </td>
-                            <td>{{ $kedatanganmaterial['nama_supplier'] }}</td>
+                            <td>{{ $kedatanganmaterial['kode_supplier'] }} <hr class="my-1">
+                                {{ $kedatanganmaterial->supplier?->nama_supplier ?? 'NA' }}</td>
+                            
                             <td>{{ number_format($kedatanganmaterial['qty'], 0, ',', '.') }}
                                 {{ $kedatanganmaterial['satuan'] }}</td>
                             <td>{{ $kedatanganmaterial['surat_jalan'] }}</td>

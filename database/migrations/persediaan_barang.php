@@ -36,7 +36,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('pb__WIP', function (Blueprint $table) {
+        Schema::create('pb__wip', function (Blueprint $table) {
             $table->id();
             $table->string('kode_barang', 50)->unique();
             $table->string('nama_barang', 50);

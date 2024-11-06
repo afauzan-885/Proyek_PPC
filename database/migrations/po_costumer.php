@@ -45,7 +45,7 @@ return new class extends Migration
             $table->string('nama_material', 50);
             $table->string('kode_material', 50);
             $table->date('tgl_msk_material');
-            $table->string('nama_supplier', 50);
+            $table->string('kode_supplier', 50);
             $table->string('qty', 50);
             $table->string('surat_jalan', 50);
             $table->string('satuan', 10);

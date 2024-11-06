@@ -3,7 +3,8 @@
 namespace App\Livewire\PersediaanBarang;
 
 use App\Models\PelangganPemasok\Customer;
-use App\Models\PersediaanBarang\PBfinishGood as FGModel;
+use App\Models\PersediaanBarang\PBFinishGood as FGModel;
+use App\Models\POCostumer\POMasuk;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -19,13 +20,12 @@ class FinishGoodController extends Component
     public $kode_barang, $nama_barang, $no_part, $harga, $tipe_barang, $deskripsi, $stok_material;
 
     public $fg_id,  $searchTerm = '', $lastPage, $page;
-    // protected $listeners = ['refreshComponent' => '$refresh'];
 
     protected $rules = [
         'kode_barang' => 'required|unique:pb__finish_goods,kode_barang',
         'nama_barang' => 'required',
         'no_part' => 'required',
-        'stok_material' => 'required',
+        // 'stok_material' => 'required',
         'harga' => 'required',
         'tipe_barang' => 'required',
         // 'status' => 'required',
@@ -52,9 +52,9 @@ class FinishGoodController extends Component
     {
         $this->checkUserActive();
         $validatedData = $this->validate();
-
+    
         $hargaKeys = ['harga'];
-
+    
         foreach ($hargaKeys as $hargaKey) {
             if (isset($validatedData[$hargaKey])) {
                 $validatedData[$hargaKey] = (float)Str::of($validatedData[$hargaKey])
@@ -64,12 +64,15 @@ class FinishGoodController extends Component
             }
         }
 
+        $validatedData['stok_material'] = 0;
+    
         FGModel::create($validatedData);
         sleep(1);
-
-        $this->reset(); // Reset semua input field setelah menyimpan
+    
+        $this->reset(); // Reset all input fields after saving
         session()->flash('suksesinput', 'Item ' . $validatedData['nama_barang'] . ' dengan kode ' . $validatedData['kode_barang'] . ' berhasil ditambahkan.');
     }
+    
 
     public function showData(int $id)
     {
@@ -101,6 +104,19 @@ class FinishGoodController extends Component
 
             $fg = FGModel::findOrFail($this->fg_id);
             $fg->update($validatedData);
+
+           // Replikasi logika trigger 
+           $poMasuk = POMasuk::where('kode_barang', $fg->kode_barang)->first();
+
+           if ($poMasuk) {
+               POMasuk::where('kode_barang', $fg->kode_barang)
+                   ->update([
+                       'kode_barang' => $fg->kode_barang,
+                       'harga' => $fg->harga,
+                       'total_amount' => $fg->harga * $poMasuk->total_pesanan
+                   ]);
+           }
+
         } catch (ModelNotFoundException $e) {
             session()->flash('error', 'Data tidak ditemukan.');
         }
@@ -115,7 +131,7 @@ class FinishGoodController extends Component
         $namaBarang = $finishgood->nama_barang;
         $finishgood->delete();
 
-        $this->dispatch('toastify',  $namaBarang . ' berhasil dihapus.');
+        $this->dispatch('toastify_sukses',  $namaBarang . ' berhasil dihapus.');
     }
 
     public function closeModal()

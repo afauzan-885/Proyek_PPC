@@ -11,11 +11,17 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('reset_request_status', ['pending', 'approved', 'rejected'])->nullable();
+            $table->timestamp('reset_request_expiry')->nullable();
+            $table->string('tentang_saya')->nullable();
+            $table->string('kontak')->nullable();
+            $table->date('tanggal_lahir')->nullable();
             $table->string('remember')->nullable();
             $table->string('role')->default('member');
+            $table->string('photo')->nullable()->default(''); 
             $table->boolean('is_active')->default(false); 
             $table->rememberToken();
             $table->timestamps();

@@ -4,8 +4,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" href="./assets/images/Logo Persada.png" />
     <link rel="stylesheet" href="assets/fonts/bootstrap/bootstrap-icons.css" />
     <link rel="stylesheet" href="assets/css/main.min.css" />
@@ -30,7 +28,6 @@
     <!--  jQuery first, then Bootstrap Bundle JS -->
     <script data-navigate-once src="assets/js/jquery.min.js"></script>
     <script data-navigate-once src="assets/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="resources/js/app.js" />
     <script src="assets/js/fuses.js"></script>
     <script src="assets/js/apexchart.js"></script>
 

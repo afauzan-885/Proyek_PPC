@@ -97,7 +97,7 @@ class CustomerController extends Component
         $namaCustomer = $customer->nama_customer;
         $customer->delete();
 
-        $this->dispatch('toastify',  $namaCustomer . ' berhasil dihapus.');
+        $this->dispatch('toastify_sukses',  $namaCustomer . ' berhasil dihapus.');
         // Tampilkan pesan flash dengan nama customer
     }
 

@@ -58,7 +58,7 @@
                                                     <option value="" selected hidden>Pilih Customer...</option>
                                                     @foreach ($customer as $cs)
                                                         <option value="{{ $cs->kode_customer }}">
-                                                            {{ $cs->kode_customer }} - {{ $cs->kode_customer }}
+                                                            {{ $cs->kode_customer }} - {{ $cs->nama_customer }}
                                                         </option>
                                                     @endforeach
                                                 </select>

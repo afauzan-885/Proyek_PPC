@@ -19,8 +19,8 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="mb-3">
-                                        <label for="nama_kodebrng" class="form-label">Kode Barang</label>
-                                        <input type="text" class="form-control" id="nama_kodebrng"
+                                        <label for="kode_barang" class="form-label">Kode Barang</label>
+                                        <input type="text" class="form-control" id="kode_barang"
                                             wire:model="kode_barang" placeholder="Masukkan Kode Barang" />
                                         @error('kode_barang')
                                             <small class="d-block mt-1 text-danger" role="alert">
@@ -32,8 +32,8 @@
 
                                 <div class="col-6">
                                     <div class="mb-3">
-                                        <label for="nama_brng" class="form-label">Nama Barang</label>
-                                        <input type="text" class="form-control" id="nama_brng"
+                                        <label for="nama_barang" class="form-label">Nama Barang</label>
+                                        <input type="text" class="form-control" id="nama_barang"
                                             wire:model="nama_barang" placeholder="Masukkan Nama Barang" />
                                         @error('nama_barang')
                                             <small class="d-block mt-1 text-danger" role="alert">

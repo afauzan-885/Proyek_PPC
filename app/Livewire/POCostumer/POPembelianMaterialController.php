@@ -7,10 +7,12 @@ use App\Models\POCostumer\POPembelianMaterial as PPMModel;
 use App\Models\PersediaanBarang\PBWarehouse as WHModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Livewire\Component;
 use NumberFormatter;
 use Illuminate\Support\Str;
 use Livewire\WithPagination;
+use ZipArchive;
 
 class POPembelianMaterialController extends Component
 {
@@ -19,7 +21,7 @@ class POPembelianMaterialController extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $kode_material, $nama_material, $ukuran, $qty, $no_po, $harga_material, $total_amount, $kode_supplier;
-    public $PPM_id, $lastPage, $searchTerm = '', $page, $query;
+    public $PPM_id, $lastPage, $searchTerm = '', $page, $query, $selectData = [];
 
     protected $rules = [
         'kode_material' => 'required',
@@ -72,7 +74,7 @@ class POPembelianMaterialController extends Component
 
         $namaMaterial = $validatedData['nama_material'];
 
-        $this->reset();
+        $this->resetExcept('kode_material', 'kode_supplier');
         session()->flash('suksesinput', 'Data ' . $namaMaterial . ' berhasil ditambahkan.');
     }
 
@@ -193,7 +195,7 @@ class POPembelianMaterialController extends Component
         $namamaterial = $pembelianMaterial->nama_material;
         $pembelianMaterial->delete();
 
-        $this->dispatch('toastify', 'Material ' . $namamaterial . ' berhasil dihapus.');
+        $this->dispatch('toastify_sukses', 'Material ' . $namamaterial . ' berhasil dihapus.');
     }
 
 
@@ -245,5 +247,58 @@ class POPembelianMaterialController extends Component
             'Supplier' => $Supplier,
             'user' => Auth::user(),
         ]);
+    }
+
+    public function downloadPDF()
+    {
+        $laporan = PPMModel::with('Warehouse', 'Supplier')
+            ->whereIn('id', $this->selectData)
+            ->get();
+
+        if ($laporan->isEmpty()) {
+            $this->dispatch('toastify_gagal', 'Silakan pilih yang ingin diunduh.');
+            return;
+        }
+
+        $pdfFiles = [];
+        $zipFileName = 'purchase_orders.zip';
+
+        collect($laporan)->groupBy('no_po')->each(function ($group, $noPo) use (&$pdfFiles) {
+            $pdf = FacadePdf::loadView('livewire.pdf.pdf-pembelian_material', ['laporan' => $group]);
+            $filename = 'PO_' . $noPo . '.pdf';
+            $pdfFiles[] = $filename;
+
+            // Simpan file PDF tunggal di storage/app/public
+            $pdf->save(storage_path('app/public/' . $filename));
+        });
+
+        if (count($pdfFiles) === 1) {
+            // Jika hanya ada 1 PDF, unduh langsung
+            $fullPath = storage_path('app/public/' . $pdfFiles[0]);
+            return response()->download($fullPath)->deleteFileAfterSend(true);
+        } 
+        
+        else {
+            // Jika lebih dari 1 PDF, buat file Zip
+            $zip = new ZipArchive;
+            if ($zip->open(storage_path('app/public/' . $zipFileName), ZipArchive::CREATE) === TRUE) {
+                foreach ($pdfFiles as $file) {
+                    $zip->addFile(storage_path('app/public/' . $file), $file);
+                }
+                $zip->close();
+        
+                // Hapus file-file PDF individual
+                foreach ($pdfFiles as $file) {
+                    unlink(storage_path('app/public/' . $file));
+                }
+        
+                return response()->download(storage_path('app/public/' . $zipFileName))->deleteFileAfterSend(true);
+            } else {
+                $this->dispatch('toastify_gagal', 'Gagal membuat file zip.');
+                return;
+            }
+        }
+
+        $this->reset('selectData'); // Reset setelah unduhan
     }
 }

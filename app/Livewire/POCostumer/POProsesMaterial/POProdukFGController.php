@@ -173,7 +173,7 @@ class POProdukFGController extends Component
         $namaproduk = $produkFG->nama_produk;
         $produkFG->delete();
 
-        $this->dispatch('toastify', 'Produk ' . $namaproduk . ' berhasil dihapus.');
+        $this->dispatch('toastify_sukses', 'Produk ' . $namaproduk . ' berhasil dihapus.');
         // session()->flash('sukseshapus', 'Data berhasil dihapus.');
     }
 

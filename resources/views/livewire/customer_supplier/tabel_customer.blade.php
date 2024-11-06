@@ -1,6 +1,6 @@
 <div>
     @props(['Customers'])
-    <div class="d-flex bd-highlight mb-2">
+    <div class="d-flex bd-highlight mb-2" style="position: sticky; top: -20px; background-color: #fff;">
         <div class="bd-highlight">
             <button type="button" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#inputformcustomer">
                 <i class="bi bi-file-earmark-plus"></i>

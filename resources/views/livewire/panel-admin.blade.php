@@ -12,6 +12,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th></th>
                                     <th>Nama</th>
                                     <th>Email</th>
                                     <th>Role</th>
@@ -24,6 +25,10 @@
                                 <tbody>
                                     <tr>
                                         <td>{{ $loop->iteration }}.</td>
+                                        <td>
+                                            <img src="{{ $user->photo ? asset('storage/' . $user->photo) : asset('assets/images/person-vector.png') }}"
+                                                alt="Profile Photo" class="img-fluid rounded-circle img-2x"/>
+                                        </td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
 
@@ -33,9 +38,46 @@
                                         </td>
                                         <td>
                                             <span
-                                                class="badge border border-primary text-{{ $user->is_active ? 'success border border-success' : 'danger border border-danger' }}">
-                                                {{ $user->is_active ? 'Aktif' : 'Tidak Aktif' }}
+                                                class="badge border border-primary text-{{ $user->is_active ? ($user->reset_request_status === 'pending' ? 'warning' : 'success') : 'danger' }} {{ $user->reset_request_status === 'pending' ? 'border-warning' : ($user->is_active ? 'border-success' : 'border-danger') }}">
+                                                {{ $user->is_active ? ($user->reset_request_status === 'pending' ? 'Aktif/Request Reset' : 'Aktif') : 'Tidak Aktif' }}
                                             </span>
+
+                                            @if ($user->reset_request_status === 'pending')
+                                                <button type="button" class="btn btn-sm btn-primary"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#konfirmasiReset{{ $user->id }}">
+                                                    Konfirmasi
+                                                </button>
+
+                                                <div wire:ignore.self class="modal fade"
+                                                    id="konfirmasiReset{{ $user->id }}" tabindex="-1"
+                                                    aria-labelledby="konfirmasiResetLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="konfirmasiResetLabel">
+                                                                    Konfirmasi Reset Password</h5>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Konfirmasi permintaan reset password untuk user
+                                                                {{ $user->name }}?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Tutup</button>
+                                                                <button type="button" class="btn btn-danger"
+                                                                    wire:click="rejectUser({{ $user->id }})"
+                                                                    data-bs-dismiss="modal">Tolak</button>
+                                                                <button type="button" class="btn btn-primary"
+                                                                    wire:click="approveUser({{ $user->id }})"
+                                                                    data-bs-dismiss="modal">Setujui</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
                                         </td>
                                         <td class='text-nowrap'>
                                             <div class="btn-group dropstart">

@@ -61,29 +61,29 @@
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade {{ $activeTab == 'PM' ? 'show active' : '' }}" id="nav-po_masuk"
                         role="tabpanel" aria-labelledby="nav-po_masuk-tab" tabindex="0">
-                        <livewire:Po_Costumer.Po_Masuk_Controller poMasuk />
+                        <livewire:POCostumer.POMasukController poMasuk />
                     </div>
                     <div class="tab-pane fade {{ $activeTab == 'PPM' ? 'show active' : '' }}"
                         id="nav-pembelian_material" role="tabpanel" aria-labelledby="nav-pembelian_material-tab"
                         tabindex="0">
-                        <livewire:Po_Costumer.Po_Pembelian_Material_Controller poPembelianMaterial />
+                        <livewire:POCostumer.POPembelianMaterialController poPembelianMaterial />
                     </div>
                     <div class="tab-pane fade {{ $activeTab == 'PKM' ? 'show active' : '' }}"
                         id="nav-kedatangan_material" role="tabpanel" aria-labelledby="nav-kedatangan_material-tab"
                         tabindex="0">
-                        <livewire:Po_Costumer.Po_Kedatangan_Material_Controller :poKedatanganMaterial />
+                        <livewire:POCostumer.POKedatanganMaterialController :poKedatanganMaterial />
                     </div>
                     <div class="tab-pane fade {{ $activeTab == 'PoPM' ? 'show active' : '' }}" id="nav-proses_material"
                         role="tabpanel" aria-labelledby="nav-proses_material-tab" tabindex="0">
-                        <livewire:Po_Costumer.Po_Proses_Material_Controller />
+                        <livewire:POCostumer.POProsesMaterialController />
                     </div>
                     <div class="tab-pane fade {{ $activeTab == 'PJP' ? 'show active' : '' }}" id="nav-jadwal_pengiriman"
                         role="tabpanel" aria-labelledby="nav-jadwal_pengiriman-tab" tabindex="0">
-                        <livewire:Po_Costumer.Po_Jadwal_Pengiriman_Controller :poJadwalPengiriman />
+                        <livewire:POCostumer.POJadwalPengirimanController :poJadwalPengiriman />
                     </div>
                     <div class="tab-pane fade {{ $activeTab == 'PoL' ? 'show active' : '' }}" id="nav-laporan"
                         role="tabpanel" aria-labelledby="nav-laporan-tab" tabindex="0">
-                        <livewire:Po_Costumer.Po_Laporan_Controller />
+                        <livewire:POCostumer.POLaporanController />
 
                     </div>
                 </div>

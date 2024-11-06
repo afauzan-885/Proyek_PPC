@@ -96,7 +96,7 @@ class SupplierController extends Component
         $namaSupplier = $supplier->nama_supplier;
         $supplier->delete();
 
-        $this->dispatch('toastify',  $namaSupplier . ' berhasil dihapus.');
+        $this->dispatch('toastify_sukses',  $namaSupplier . ' berhasil dihapus.');
     }
 
     public function updatedSearchTerm()

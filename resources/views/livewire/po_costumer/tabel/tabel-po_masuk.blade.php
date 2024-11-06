@@ -1,13 +1,15 @@
 <div>
     @props(['poMasuk'])
-    <div class="d-flex bd-highlight mb-1">
+    <div class="d-flex bd-highlight mb-1" style="position: sticky; top: -20px; background-color: #fff;">
+        
         <div class="bd-highlight p-1">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#inputpo_masuk">
                 <i class="bi bi-file-earmark-plus"></i>
                 Baru
             </button>
         </div>
-        <div class="bd-highlight  mt-1">
+
+        <div class="bd-highlight mt-1">
             <div wire:submit="search" wire:ignore>
                 <input type="search" wire:model.live="searchTerm" class='form-control' role="search"
                     placeholder="Cari Data...">
@@ -21,7 +23,7 @@
                 </button>
             </div>
         </div>
-        <div class="bd-highlight mt-2 ml-4">
+        <div class="bd-highlight mt-2">
             <button class="border" style="max-width: 100px" wire:click="$refresh">
                 <i class="bi bi-arrow-clockwise"></i>
             </button>

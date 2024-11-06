@@ -29,6 +29,8 @@ class PanelAdminController extends Component
         $user = User::find($userId);
         if ($user) {
             $user->is_active = true;
+            $user->reset_request_status = 'approved';
+            $user->reset_request_expiry = now()->addMinutes(1); 
             $user->save();
 
             // Hapus cache sebelumnya
@@ -37,7 +39,7 @@ class PanelAdminController extends Component
             // Buat cache baru selama 60 detik
             Cache::remember('user_status' . $userId, 60, function () use ($user) {
                 return response()->json([
-                    'is_active' => $user->is_active
+                    'is_active' => $user->is_active,
                 ]);
             });
 
@@ -51,6 +53,15 @@ class PanelAdminController extends Component
         }
     }
 
+    public function rejectUser($userId)
+    {
+        $user = User::find($userId);
+        if ($user) {
+            $user->reset_request_status = 'rejected';
+            $user->reset_request_expiry = now()->addMinutes(1); // Contoh: waktu tunggu 10 menit
+            $user->save();
+        }
+    }
 
     public function deactivateUser($userId)
     {
@@ -65,16 +76,15 @@ class PanelAdminController extends Component
             // Buat cache baru selama 60 detik
             Cache::remember('user_status' . $userId, 60, function () use ($user) {
                 return response()->json([
-                    'is_active' => $user->is_active
+                    'is_active' => $user->is_active,
                 ]);
             });
 
-            $this->dispatch('toastify', 'User Berhasil Dinonaktifkan.');
+            $this->dispatch('toastify_sukses', 'User Berhasil Dinonaktifkan.');
         } else {
             session()->flash('error', 'Pengguna tidak ditemukan.');
         }
     }
-
 
     public function delete($userId)
     {
@@ -82,7 +92,7 @@ class PanelAdminController extends Component
 
         if ($user) {
             $user->delete();
-            $this->dispatch('toastify', 'User Berhasil Dihapus.');
+            $this->dispatch('toastify_sukses', 'User Berhasil Dihapus.');
         } else {
             session()->flash('error', 'Pengguna tidak ditemukan.');
         }
@@ -97,8 +107,7 @@ class PanelAdminController extends Component
     {
         $user = User::all();
         return view('livewire.panel-admin', [
-
-            'user' => $user
+            'user' => $user,
         ]);
     }
 }

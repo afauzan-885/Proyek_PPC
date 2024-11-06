@@ -19,12 +19,13 @@ class POPembelianMaterial extends Model
         'qty',
         'no_po',
         'harga_material',
+        'tanggal_pengiriman',
         'total_amount',
     ];
 
     public function Warehouse()
     {
-        return $this->belongsTo(PBWarehouse::class);
+        return $this->belongsTo(PBWarehouse::class, 'kode_material', 'kode_material') ;
     }
     public function Supplier()
     {
