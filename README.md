@@ -26,7 +26,4 @@ Proyek PPC (Program Planning and Controll) ini dibuat untuk memenuhi tugas kulia
 * **Boostrap 5:** Framework CSS populer yang menyediakan komponen UI siap pakai dan sistem grid responsif, mempercepat pengembangan tampilan yang menarik dan konsisten.
 
 
-Semua framework tidak menggunakan CDN (disimpan secara lokal, sehingga harus update secara manual.
-## Lisensi
-
-Proyek ini bersifat close-source
+framework front-end tidak menggunakan CDN (disimpan secara lokal, sehingga harus update secara manual.
